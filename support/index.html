@@ -1,63 +1,122 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hans">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Support and troubleshooting for BetterNotch for Mac.">
+    <meta name="description" content="BetterNotch 的系统要求、常见问题和故障排查方法。">
     <meta name="theme-color" content="#080808">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/support/">
     <link rel="stylesheet" href="../assets/styles.css">
-    <title>Support — BetterNotch for Mac</title>
+    <title>使用支持 — BetterNotch</title>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">跳到主要内容</a>
     <header class="site-header">
-      <a class="wordmark" href="../" aria-label="BetterNotch home">BetterNotch</a>
-      <nav class="site-nav" aria-label="Primary navigation">
-        <a href="./" aria-current="page">Support</a>
-        <a href="../privacy/">Privacy</a>
+      <a class="wordmark" href="../" aria-label="BetterNotch 首页">BetterNotch</a>
+      <nav class="site-nav" aria-label="主要导航">
+        <a href="./" aria-current="page">使用支持</a>
+        <a href="../privacy/">隐私政策</a>
+        <a href="#en" lang="en">English</a>
       </nav>
     </header>
     <main id="main" class="document">
-      <header class="document-header">
-        <p class="eyebrow">Help when you need it</p>
-        <h1>Support</h1>
-        <p class="lede">BetterNotch requires macOS 26 or later and is designed for a MacBook display with a physical notch.</p>
-      </header>
-      <section class="document-section" aria-labelledby="support-en">
-        <h2 id="support-en">English</h2>
-        <p>macOS 14 and 15 are not supported because they do not provide the “Show menu bar background” control required by the desktop effect.</p>
-        <p>Before reporting an issue:</p>
-        <ol>
-          <li>In System Settings → Menu Bar, turn off “Show menu bar background.”</li>
-          <li>Try the same steps with any wallpaper type, including dynamic, aerial, or video wallpapers; the overlay does not replace the wallpaper.</li>
-          <li>If the result looks stale, choose Original Wallpaper, then enable Gradient or Solid Black again.</li>
-          <li>If Launch at Login needs approval, open BetterNotch Settings and use “Open Login Items Settings,” then return to BetterNotch so it can refresh the system status.</li>
-          <li>When reporting a problem, include the Mac model, macOS version, selected effect, connected-display setup, and exact steps to reproduce. Do not attach a private wallpaper unless you are comfortable sharing it.</li>
-        </ol>
-        <div class="contact-box">
-          <p>Support email: <a href="mailto:longbuild@icloud.com">longbuild@icloud.com</a></p>
-        </div>
-      </section>
-      <section class="document-section" lang="zh-Hans" aria-labelledby="support-zh">
-        <h2 id="support-zh">简体中文</h2>
-        <p>BetterNotch 要求 macOS 26 或更高版本，并面向带物理刘海的 MacBook 显示屏。macOS 14 和 15 不受支持，因为它们没有桌面效果所需的“显示菜单栏背景”开关。</p>
-        <p>反馈问题前，请先尝试：</p>
-        <ol>
-          <li>在“系统设置 → 菜单栏”中关闭“显示菜单栏背景”。</li>
-          <li>任意壁纸类型都可以使用，包括动态、航拍或视频壁纸；图层不会替换壁纸。</li>
-          <li>如果效果没有更新，请先选择“原始壁纸”，再重新选择“渐变”或“纯黑”。</li>
-          <li>如果“登录时启动”需要批准，请在 BetterNotch 设置中选择“打开登录项设置”，完成批准后返回 BetterNotch，App 会刷新系统状态。</li>
-          <li>反馈时请提供 Mac 型号、macOS 版本、所选效果、外接显示器配置和完整复现步骤。除非你愿意分享，否则不要附上私人壁纸。</li>
-        </ol>
-        <div class="contact-box">
-          <p>支持邮箱：<a href="mailto:longbuild@icloud.com">longbuild@icloud.com</a></p>
-        </div>
-      </section>
+      <article id="zh">
+        <header class="document-header">
+          <p class="eyebrow">使用帮助与问题反馈</p>
+          <h1>使用支持</h1>
+          <p class="lede">BetterNotch 支持 macOS 26 或更高版本，核心效果为带物理刘海的 MacBook 设计，同时支持为每块显示器独立设置。</p>
+        </header>
+
+        <section class="document-section" aria-labelledby="before-starting-zh">
+          <h2 id="before-starting-zh">开始使用前</h2>
+          <p>前往“系统设置 → 菜单栏”，关闭“显示菜单栏背景”。如果该选项保持开启，系统菜单栏底板会影响 BetterNotch 的视觉效果。</p>
+        </section>
+
+        <section class="document-section" aria-labelledby="effect-missing-zh">
+          <h2 id="effect-missing-zh">如果效果没有出现</h2>
+          <ol>
+            <li>确认已经启用桌面效果。</li>
+            <li>选择“渐变”或“纯黑”。“原始壁纸”表示该显示器不应用效果。</li>
+            <li>如果连接了多块显示器，请确认当前设置的是目标显示器。</li>
+            <li>尝试切换一次效果，或者关闭并重新启用桌面效果。</li>
+            <li>如果问题仍然存在，请退出并重新打开 BetterNotch。</li>
+          </ol>
+        </section>
+
+        <section class="document-section" aria-labelledby="launch-at-login-zh">
+          <h2 id="launch-at-login-zh">登录时启动</h2>
+          <p>“登录时启动”开关位于 BetterNotch 设置中。</p>
+          <p>如果 macOS 提示需要批准，请选择“打开登录项设置”，在系统设置中完成授权，然后返回 BetterNotch。App 会自动刷新当前状态。</p>
+        </section>
+
+        <section class="document-section" aria-labelledby="contact-support-zh">
+          <h2 id="contact-support-zh">联系支持</h2>
+          <p>如果问题仍未解决，请发送邮件至 <a href="mailto:longbuild@icloud.com">longbuild@icloud.com</a>，并尽量提供：</p>
+          <ul>
+            <li>Mac 型号和 macOS 版本</li>
+            <li>当前选择的效果</li>
+            <li>内建及外接显示器配置</li>
+            <li>问题出现前的操作步骤</li>
+            <li>必要时附上截图，并先遮盖个人信息</li>
+          </ul>
+          <div class="contact-box">
+            <p>我们会尽力协助你定位问题。</p>
+          </div>
+        </section>
+      </article>
+
+      <div class="locale-divider" aria-hidden="true">
+        <span lang="en">English</span>
+      </div>
+
+      <article id="en" class="translation-block" lang="en" aria-labelledby="support-title-en">
+        <header class="document-header">
+          <p class="eyebrow">Help and issue reporting</p>
+          <h2 id="support-title-en" class="display-title">Support</h2>
+          <p class="lede">BetterNotch requires macOS 26 or later. Its core effect is designed for MacBook models with a physical notch, and each display can be configured independently.</p>
+        </header>
+
+        <section class="document-section" aria-labelledby="before-starting-en">
+          <h3 id="before-starting-en" class="section-title">Before you begin</h3>
+          <p>Open System Settings → Menu Bar and turn off “Show menu bar background.” If this option remains enabled, the system menu bar backdrop will interfere with BetterNotch’s visual effect.</p>
+        </section>
+
+        <section class="document-section" aria-labelledby="effect-missing-en">
+          <h3 id="effect-missing-en" class="section-title">If the effect does not appear</h3>
+          <ol>
+            <li>Make sure Desktop Effect is enabled.</li>
+            <li>Choose Gradient or Solid Black. Original Wallpaper means no effect is applied to that display.</li>
+            <li>If you use multiple displays, confirm that you are configuring the intended display.</li>
+            <li>Switch to another effect once, or turn Desktop Effect off and back on.</li>
+            <li>If the problem continues, quit and reopen BetterNotch.</li>
+          </ol>
+        </section>
+
+        <section class="document-section" aria-labelledby="launch-at-login-en">
+          <h3 id="launch-at-login-en" class="section-title">Launch at Login</h3>
+          <p>The Launch at Login switch is in BetterNotch Settings.</p>
+          <p>If macOS says approval is required, select “Open Login Items Settings,” approve BetterNotch in System Settings, then return to the app. BetterNotch will refresh the current status automatically.</p>
+        </section>
+
+        <section class="document-section" aria-labelledby="contact-support-en">
+          <h3 id="contact-support-en" class="section-title">Contact support</h3>
+          <p>If the issue is still unresolved, email <a href="mailto:longbuild@icloud.com">longbuild@icloud.com</a> and include as much of the following as possible:</p>
+          <ul>
+            <li>Your Mac model and macOS version</li>
+            <li>The currently selected effect</li>
+            <li>Your built-in and external display configuration</li>
+            <li>The steps you took before the problem appeared</li>
+            <li>A screenshot if needed, with personal information redacted first</li>
+          </ul>
+          <div class="contact-box">
+            <p>We will do our best to help you identify the cause.</p>
+          </div>
+        </section>
+      </article>
     </main>
     <footer class="site-footer">
       <p>© 2026 Tenglong Li</p>
-      <p><a href="../privacy/">Privacy Policy / 隐私政策</a></p>
+      <p><a href="../privacy/">隐私政策 / Privacy Policy</a></p>
     </footer>
   </body>
 </html>
