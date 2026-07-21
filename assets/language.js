@@ -3,6 +3,7 @@
   const panels = document.querySelectorAll("[data-locale-panel]");
   const selects = document.querySelectorAll("[data-locale-select]");
   const legacyButtons = document.querySelectorAll("[data-locale-button]");
+  const menus = document.querySelectorAll("[data-language-menu]");
   const textItems = document.querySelectorAll("[data-en][data-zh]");
   const ariaItems = document.querySelectorAll("[data-aria-en][data-aria-zh]");
 
@@ -38,7 +39,22 @@
   });
 
   legacyButtons.forEach((button) => {
-    button.addEventListener("click", () => setLanguage(button.dataset.localeButton));
+    button.addEventListener("click", () => {
+      setLanguage(button.dataset.localeButton);
+      button.closest("[data-language-menu]")?.removeAttribute("open");
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    menus.forEach((menu) => {
+      if (!menu.contains(event.target)) menu.removeAttribute("open");
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      menus.forEach((menu) => menu.removeAttribute("open"));
+    }
   });
 
   setLanguage("en");
