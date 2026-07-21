@@ -1,7 +1,7 @@
 (() => {
   const root = document.documentElement;
   const panels = document.querySelectorAll("[data-locale-panel]");
-  const buttons = document.querySelectorAll("[data-locale-button]");
+  const selects = document.querySelectorAll("[data-locale-select]");
   const textItems = document.querySelectorAll("[data-en][data-zh]");
   const ariaItems = document.querySelectorAll("[data-aria-en][data-aria-zh]");
 
@@ -12,8 +12,8 @@
       panel.hidden = panel.dataset.localePanel !== language;
     });
 
-    buttons.forEach((button) => {
-      button.setAttribute("aria-pressed", String(button.dataset.localeButton === language));
+    selects.forEach((select) => {
+      select.value = language;
     });
 
     textItems.forEach((item) => {
@@ -28,8 +28,8 @@
     document.title = isEnglish ? root.dataset.titleEn : root.dataset.titleZh;
   }
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => setLanguage(button.dataset.localeButton));
+  selects.forEach((select) => {
+    select.addEventListener("change", () => setLanguage(select.value));
   });
 
   setLanguage("en");

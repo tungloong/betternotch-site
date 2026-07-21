@@ -114,33 +114,32 @@ main,
   display: flex;
   align-items: center;
   gap: 22px;
+  white-space: nowrap;
 }
 
-.language-switch {
-  display: inline-flex;
-  padding: 3px;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.language-picker select {
+  min-width: 92px;
+  padding: 7px 28px 7px 11px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.035);
-}
-
-.language-switch button {
-  padding: 6px 10px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
+  background-color: rgba(255, 255, 255, 0.055);
   color: var(--muted);
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
 }
 
-.language-switch button[aria-pressed="true"] {
-  background: var(--ink);
-  color: #111;
-}
-
-.language-switch button:focus-visible {
+.language-picker select:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
@@ -354,13 +353,18 @@ h3 {
   }
 
   .site-nav {
-    gap: 16px;
+    gap: 14px;
   }
 
   .header-actions {
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px 16px;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .language-picker select {
+    min-width: 84px;
+    padding-right: 24px;
   }
 
   .hero {

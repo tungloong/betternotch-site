@@ -19,10 +19,13 @@
           <a href="./" aria-current="page" data-en="Support" data-zh="使用支持">Support</a>
           <a href="../privacy/" data-en="Privacy Policy" data-zh="隐私政策">Privacy Policy</a>
         </nav>
-        <div class="language-switch" role="group" aria-label="Language / 语言">
-          <button type="button" data-locale-button="en" aria-pressed="true">English</button>
-          <button type="button" data-locale-button="zh-Hans" aria-pressed="false">中文</button>
-        </div>
+        <label class="language-picker">
+          <span class="visually-hidden">Language / 语言</span>
+          <select data-locale-select aria-label="Language / 语言">
+            <option value="en" selected>English</option>
+            <option value="zh-Hans">中文</option>
+          </select>
+        </label>
       </div>
     </header>
     <main id="main" class="document">
