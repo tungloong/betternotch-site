@@ -1,4 +1,6 @@
 (() => {
+  const storageKey = "betternotch.language";
+  const supportedLanguages = new Set(["en", "zh-Hans"]);
   const root = document.documentElement;
   const panels = document.querySelectorAll("[data-locale-panel]");
   const selects = document.querySelectorAll("[data-locale-select]");
@@ -7,7 +9,25 @@
   const textItems = document.querySelectorAll("[data-en][data-zh]");
   const ariaItems = document.querySelectorAll("[data-aria-en][data-aria-zh]");
 
-  function setLanguage(language) {
+  function storedLanguage() {
+    try {
+      const language = localStorage.getItem(storageKey);
+      return supportedLanguages.has(language) ? language : "en";
+    } catch {
+      return "en";
+    }
+  }
+
+  function rememberLanguage(language) {
+    try {
+      localStorage.setItem(storageKey, language);
+    } catch {
+      // Local storage may be unavailable in a restricted browsing context.
+    }
+  }
+
+  function setLanguage(language, shouldRemember = true) {
+    if (!supportedLanguages.has(language)) language = "en";
     const isEnglish = language === "en";
 
     panels.forEach((panel) => {
@@ -32,6 +52,7 @@
 
     root.lang = language;
     document.title = isEnglish ? root.dataset.titleEn : root.dataset.titleZh;
+    if (shouldRemember) rememberLanguage(language);
   }
 
   selects.forEach((select) => {
@@ -57,5 +78,11 @@
     }
   });
 
-  setLanguage("en");
+  window.addEventListener("storage", (event) => {
+    if (event.key === storageKey && supportedLanguages.has(event.newValue)) {
+      setLanguage(event.newValue, false);
+    }
+  });
+
+  setLanguage(storedLanguage(), false);
 })();
