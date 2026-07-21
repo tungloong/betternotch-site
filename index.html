@@ -1,26 +1,32 @@
 <!doctype html>
-<html lang="zh-Hans">
+<html lang="en" data-title-en="BetterNotch — Let the notch fade into the menu bar" data-title-zh="BetterNotch — 让刘海隐入菜单栏">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="BetterNotch 让物理刘海尽可能隐入菜单栏，并支持逐显示器独立设置。">
+    <meta name="description" content="BetterNotch helps the physical notch blend naturally into the menu bar, with independent settings for every display.">
     <meta name="theme-color" content="#080808">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/">
     <link rel="stylesheet" href="assets/styles.css">
-    <title>BetterNotch — 让刘海隐入菜单栏</title>
+    <script src="assets/language.js" defer></script>
+    <title>BetterNotch — Let the notch fade into the menu bar</title>
   </head>
   <body>
-    <a class="skip-link" href="#main">跳到主要内容</a>
+    <a class="skip-link" href="#main" data-en="Skip to main content" data-zh="跳到主要内容">Skip to main content</a>
     <header class="site-header">
-      <a class="wordmark" href="./" aria-label="BetterNotch 首页">BetterNotch</a>
-      <nav class="site-nav" aria-label="主要导航">
-        <a href="support/">使用支持</a>
-        <a href="privacy/">隐私政策</a>
-        <a href="#en" lang="en">English</a>
-      </nav>
+      <a class="wordmark" href="./" aria-label="BetterNotch home" data-aria-en="BetterNotch home" data-aria-zh="BetterNotch 首页">BetterNotch</a>
+      <div class="header-actions">
+        <nav class="site-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主要导航">
+          <a href="support/" data-en="Support" data-zh="使用支持">Support</a>
+          <a href="privacy/" data-en="Privacy Policy" data-zh="隐私政策">Privacy Policy</a>
+        </nav>
+        <div class="language-switch" role="group" aria-label="Language / 语言">
+          <button type="button" data-locale-button="en" aria-pressed="true">English</button>
+          <button type="button" data-locale-button="zh-Hans" aria-pressed="false">中文</button>
+        </div>
+      </div>
     </header>
     <main id="main">
-      <article id="zh" class="locale-home">
+      <article id="zh" class="locale-home" data-locale-panel="zh-Hans" lang="zh-Hans" hidden>
         <section class="hero">
           <p class="eyebrow">专为带刘海的 MacBook 设计</p>
           <h1>让刘海隐入菜单栏。</h1>
@@ -59,43 +65,39 @@
         </section>
       </article>
 
-      <div class="locale-divider" aria-hidden="true">
-        <span lang="en">English</span>
-      </div>
-
-      <article id="en" class="locale-home locale-home--secondary" lang="en" aria-labelledby="home-title-en">
-        <section class="hero hero--secondary">
+      <article id="en" class="locale-home" data-locale-panel="en" lang="en" aria-labelledby="home-title-en">
+        <section class="hero">
           <p class="eyebrow">Designed for MacBook models with a notch</p>
-          <h2 id="home-title-en" class="display-title">Let the notch fade into the menu bar.</h2>
+          <h1 id="home-title-en">Let the notch fade into the menu bar.</h1>
           <p class="lede">BetterNotch uses gradient and solid-black effects to soften the presence of the physical notch as much as possible, helping the top of the display flow naturally into the menu bar. Each display can be configured independently, and the app is designed to run continuously with low resource use.</p>
         </section>
 
         <section class="feature-grid" aria-label="Features">
           <article class="feature-card">
             <span class="feature-number" aria-hidden="true">01</span>
-            <h3>Natural blend</h3>
+            <h2>Natural blend</h2>
             <p>Softens the outline of the physical notch so the top of the display feels more complete and visually balanced.</p>
           </article>
           <article class="feature-card">
             <span class="feature-number" aria-hidden="true">02</span>
-            <h3>Per-display control</h3>
+            <h2>Per-display control</h2>
             <p>Choose the right effect separately for the built-in display and each external display.</p>
           </article>
           <article class="feature-card">
             <span class="feature-number" aria-hidden="true">03</span>
-            <h3>Lightweight by design</h3>
+            <h2>Lightweight by design</h2>
             <p>Works only where needed at the top of the screen, making it suitable for long-term background use.</p>
           </article>
         </section>
 
         <section class="resource-grid" aria-label="Resources">
           <a class="card" href="support/">
-            <h3>Support</h3>
+            <h2>Support</h2>
             <p>Find system requirements, common questions, and troubleshooting steps, or contact us directly.</p>
             <span class="arrow" aria-hidden="true">Get support →</span>
           </a>
           <a class="card" href="privacy/">
-            <h3>Privacy Policy</h3>
+            <h2>Privacy Policy</h2>
             <p>Learn which settings BetterNotch stores on your Mac and how we protect your privacy.</p>
             <span class="arrow" aria-hidden="true">Read the privacy policy →</span>
           </a>
@@ -104,7 +106,7 @@
     </main>
     <footer class="site-footer">
       <p>© 2026 Tenglong Li</p>
-      <p>BetterNotch 官方支持与隐私页面 · Official Support &amp; Privacy</p>
+      <p data-en="Official BetterNotch support and privacy pages" data-zh="BetterNotch 官方支持与隐私页面">Official BetterNotch support and privacy pages</p>
     </footer>
   </body>
 </html>
