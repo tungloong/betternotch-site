@@ -6,8 +6,8 @@
     <meta name="description" content="BetterNotch lets the physical notch disappear into the menu bar, with per-display controls and lightweight background operation. Requires macOS 26 or later.">
     <meta name="theme-color" content="#f3eee4">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/">
-    <link rel="stylesheet" href="assets/styles.css?v=20260723-2">
-    <script src="assets/language.js?v=20260721-4" defer></script>
+    <link rel="stylesheet" href="assets/styles.css?v=20260723-3">
+    <script src="assets/language.js?v=20260723-1" defer></script>
     <title>BetterNotch — Let the physical notch disappear into the menu bar</title>
   </head>
   <body>
@@ -27,7 +27,7 @@
           <a href="privacy/" data-en="Privacy" data-zh="隐私政策">Privacy</a>
         </nav>
         <details class="language-menu" data-language-menu>
-          <summary>Language <span class="language-chevron" aria-hidden="true"></span></summary>
+          <summary><span data-en="Language" data-zh="语言">Language</span> <span class="language-chevron" aria-hidden="true"></span></summary>
           <div class="language-options" aria-label="Language / 语言">
             <button type="button" data-locale-button="en" aria-pressed="true">English</button>
             <button type="button" data-locale-button="zh-Hans" aria-pressed="false">中文</button>
@@ -37,226 +37,110 @@
     </header>
 
     <main id="main">
-      <!-- ============ ENGLISH ============ -->
-      <article id="en" class="locale-home" data-locale-panel="en" lang="en" aria-labelledby="home-title-en">
-
+      <article class="locale-home" aria-labelledby="home-title">
         <section class="hero">
           <div class="hero-copy">
-            <p class="eyebrow">For MacBook models with a notch</p>
-            <h1 id="home-title-en">Let the physical notch disappear into the menu&nbsp;bar.</h1>
-            <p class="lede">BetterNotch blends the notch into your menu bar with a signature Gradient effect — and keeps it there, all day, using almost no resources.</p>
+            <p class="eyebrow" data-en="For MacBook models with a notch" data-zh="专为带刘海的 MacBook 设计">For MacBook models with a notch</p>
+            <h1 id="home-title" data-en="Let the physical notch disappear into the menu bar." data-zh="让物理刘海自然隐入菜单栏。">Let the physical notch disappear into the menu bar.</h1>
+            <p class="lede" data-en="BetterNotch blends the notch into your menu bar with its signature Gradient effect, then runs lightly in the background." data-zh="BetterNotch 用招牌的渐变效果，让刘海自然融入菜单栏，并以轻量方式在后台常驻。">BetterNotch blends the notch into your menu bar with its signature Gradient effect, then runs lightly in the background.</p>
             <div class="hero-cta">
-              <a class="button button-primary" href="support/">Get started</a>
-              <span class="sysreq">macOS 26 or later</span>
+              <a class="button button-primary" href="support/#before-starting" data-en="Setup guide" data-zh="查看设置指南">Setup guide</a>
+              <span class="sysreq" data-en="macOS 26 or later" data-zh="需要 macOS 26 或更高版本">macOS 26 or later</span>
             </div>
           </div>
 
-          <div class="hero-demo" role="img" aria-label="Menu bar before and after: the notch visible, then hidden by BetterNotch">
+          <div class="hero-demo" role="img" aria-label="Menu bar before and after: the notch visible, then hidden by BetterNotch" data-aria-en="Menu bar before and after: the notch visible, then hidden by BetterNotch" data-aria-zh="菜单栏前后对比：刘海可见，随后被 BetterNotch 隐去">
             <figure class="menubar-demo">
               <div class="menubar-frame">
-                <img src="assets/menubar-original.png" alt="Original menu bar with a visible notch" width="2200" height="500" loading="eager" decoding="async">
+                <img src="assets/menubar-original.png" alt="Original menu bar with a visible notch" data-alt-en="Original menu bar with a visible notch" data-alt-zh="原始菜单栏，刘海清晰可见" width="2200" height="500" loading="eager" decoding="async">
                 <span class="demo-notch" aria-hidden="true"></span>
               </div>
-              <figcaption><span class="state-dot state-original"></span>Before — a visible notch</figcaption>
+              <figcaption><span class="state-dot state-original"></span><span data-en="Before — a visible notch" data-zh="使用前 — 刘海清晰可见">Before — a visible notch</span></figcaption>
             </figure>
             <div class="demo-arrow" aria-hidden="true">→</div>
             <figure class="menubar-demo">
               <div class="menubar-frame">
-                <img src="assets/menubar-gradient.png" alt="Menu bar with the Gradient effect, the notch no longer visible" width="2200" height="500" loading="eager" decoding="async">
+                <img src="assets/menubar-gradient.png" alt="Menu bar with the Gradient effect, the notch no longer visible" data-alt-en="Menu bar with the Gradient effect, the notch no longer visible" data-alt-zh="应用渐变效果后的菜单栏，刘海已不再可见" width="2200" height="500" loading="eager" decoding="async">
               </div>
-              <figcaption><span class="state-dot state-gradient"></span>After — hidden by BetterNotch</figcaption>
+              <figcaption><span class="state-dot state-gradient"></span><span data-en="After — hidden by BetterNotch" data-zh="使用后 — 刘海自然隐去">After — hidden by BetterNotch</span></figcaption>
             </figure>
           </div>
         </section>
 
         <section class="showcase">
-          <h2 class="section-title">One click. It&rsquo;s just&hellip; gone.</h2>
+          <h2 class="section-title" data-en="One click. It’s just… gone." data-zh="一次点击，刘海就这样消失了。">One click. It’s just… gone.</h2>
           <figure class="showcase-figure">
-            <img src="assets/proof-hero-en.png" alt="BetterNotch overview: the original menu bar with a notch, the solid black look, and the signature Gradient effect" width="2880" height="1800" loading="lazy" decoding="async">
+            <img src="assets/proof-hero-en.png" alt="BetterNotch overview: the original menu bar with a notch, the solid black look, and the signature Gradient effect" data-alt-en="BetterNotch overview: the original menu bar with a notch, the solid black look, and the signature Gradient effect" data-alt-zh="BetterNotch 效果总览：带刘海的原始菜单栏、纯黑外观，以及招牌的渐变效果" width="2880" height="1800" loading="lazy" decoding="async">
           </figure>
         </section>
 
-        <section class="effects" aria-labelledby="effects-title-en">
-          <h2 id="effects-title-en" class="section-title">Three looks, per display</h2>
+        <section class="effects" aria-labelledby="effects-title">
+          <h2 id="effects-title" class="section-title" data-en="Three looks, per display" data-zh="三种外观，逐屏设置">Three looks, per display</h2>
           <div class="effect-grid">
             <article class="effect-card">
               <figure class="effect-thumb">
-                <img src="assets/menubar-original.png" alt="Original menu bar with the notch visible" width="2200" height="500" loading="lazy" decoding="async">
+                <img src="assets/menubar-original.png" alt="Original menu bar with the notch visible" data-alt-en="Original menu bar with the notch visible" data-alt-zh="原始菜单栏，刘海清晰可见" width="2200" height="500" loading="lazy" decoding="async">
               </figure>
-              <h3>Original</h3>
-              <p>Your Mac, untouched. Turn the effect off for any display, any time.</p>
+              <h3 data-en="Original" data-zh="原始">Original</h3>
+              <p data-en="Your Mac, untouched. Turn the effect off for any display, any time." data-zh="保持系统原样。随时可以为任意一块显示器关闭效果。">Your Mac, untouched. Turn the effect off for any display, any time.</p>
             </article>
             <article class="effect-card effect-card-featured">
               <figure class="effect-thumb">
-                <img src="assets/menubar-gradient.png" alt="Menu bar with the Gradient effect" width="2200" height="500" loading="lazy" decoding="async">
+                <img src="assets/menubar-gradient.png" alt="Menu bar with the Gradient effect" data-alt-en="Menu bar with the Gradient effect" data-alt-zh="应用渐变效果的菜单栏" width="2200" height="500" loading="lazy" decoding="async">
               </figure>
-              <h3>Gradient <span class="badge">Signature</span></h3>
-              <p>The notch fades into a full menu bar so it feels like it was never there.</p>
+              <h3><span data-en="Gradient" data-zh="渐变">Gradient</span> <span class="badge" data-en="Signature" data-zh="招牌">Signature</span></h3>
+              <p data-en="The notch fades into a full menu bar so it feels like it was never there." data-zh="刘海自然融入完整菜单栏，仿佛从未存在过。">The notch fades into a full menu bar so it feels like it was never there.</p>
             </article>
-            <article class="effect-card">
-              <figure class="effect-thumb effect-thumb-solid" aria-hidden="true">
-                <span class="solid-bar"></span>
-              </figure>
-              <h3>Solid Black</h3>
-              <p>Prefer a completely black menu bar? One click for a clean, uniform look.</p>
+            <article class="effect-card effect-card-copy-only">
+              <p class="effect-mode-label" data-en="Alternative look" data-zh="替代样式">Alternative look</p>
+              <h3 data-en="Solid Black" data-zh="纯黑">Solid Black</h3>
+              <p data-en="Prefer a completely black menu bar? One click for a clean, uniform look." data-zh="偏好完整黑色菜单栏？一键切换，干净利落。">Prefer a completely black menu bar? One click for a clean, uniform look.</p>
             </article>
           </div>
         </section>
 
-        <section class="app-shot" aria-labelledby="app-title-en">
+        <section class="app-shot" aria-labelledby="app-title">
           <div class="app-copy">
-            <h2 id="app-title-en" class="section-title">A tiny app that stays out of your&nbsp;way</h2>
+            <h2 id="app-title" class="section-title" data-en="A tiny app that stays out of your way" data-zh="一个小巧、从不打扰你的应用">A tiny app that stays out of your way</h2>
             <ul class="check-list">
-              <li><strong>Per-display control</strong> — choose an effect for the built-in display and each external display independently.</li>
-              <li><strong>Lightweight by design</strong> — a static effect that runs quietly in the background and restores after login.</li>
-              <li><strong>Private by default</strong> — settings stay on your Mac. No account, no analytics, no tracking.</li>
+              <li><strong data-en="Per-display control" data-zh="逐屏设置">Per-display control</strong><span data-en=" — choose an effect for the built-in display and each external display independently." data-zh="——内建显示器和每块外接显示器都可以独立选择效果。"> — choose an effect for the built-in display and each external display independently.</span></li>
+              <li><strong data-en="Lightweight by design" data-zh="轻量运行">Lightweight by design</strong><span data-en=" — a static effect that runs quietly in the background and restores after login." data-zh="——静态效果在后台安静运行，登录后自动恢复。"> — a static effect that runs quietly in the background and restores after login.</span></li>
+              <li><strong data-en="Private by default" data-zh="默认私密">Private by default</strong><span data-en=" — settings stay on your Mac. No account, no analytics, no tracking." data-zh="——设置只保存在本机。无账号、无分析、无跟踪。"> — settings stay on your Mac. No account, no analytics, no tracking.</span></li>
             </ul>
           </div>
           <figure class="app-figure">
-            <img src="assets/app-controls-en.png" alt="The BetterNotch app showing Original, Gradient and Solid Black styles with a fade strength control" width="2880" height="1800" loading="lazy" decoding="async">
+            <img src="assets/app-controls-en.png" data-src-en="assets/app-controls-en.png" data-src-zh="assets/app-controls-zh.png" alt="The BetterNotch app showing Original, Gradient and Solid Black styles with a fade strength control" data-alt-en="The BetterNotch app showing Original, Gradient and Solid Black styles with a fade strength control" data-alt-zh="BetterNotch 应用界面，显示原始、渐变、纯黑三种样式与渐变强度控制" width="2880" height="1800" loading="lazy" decoding="async">
           </figure>
         </section>
 
-        <section id="features" class="feature-grid" aria-label="Why BetterNotch">
+        <section id="features" class="feature-grid" aria-label="Why BetterNotch" data-aria-en="Why BetterNotch" data-aria-zh="为什么选择 BetterNotch">
           <article class="feature-card">
             <span class="feature-number" aria-hidden="true">01</span>
-            <h3>Built for the notch</h3>
-            <p>Designed specifically for MacBook models with a physical notch — not a generic wallpaper hack.</p>
+            <h3 data-en="Built for the notch" data-zh="为刘海而生">Built for the notch</h3>
+            <p data-en="Designed specifically for MacBook models with a physical notch." data-zh="专为带物理刘海的 MacBook 设计。">Designed specifically for MacBook models with a physical notch.</p>
           </article>
           <article class="feature-card">
             <span class="feature-number" aria-hidden="true">02</span>
-            <h3>Made for multiple displays</h3>
-            <p>Built-in and external displays can each have their own look, rendered at the right menu bar height.</p>
+            <h3 data-en="Made for multiple displays" data-zh="为多显示器而生">Made for multiple displays</h3>
+            <p data-en="Built-in and external displays can each have their own look, rendered at the right menu bar height." data-zh="内建与外接显示器可分别设置外观，并按各自菜单栏高度渲染。">Built-in and external displays can each have their own look, rendered at the right menu bar height.</p>
           </article>
           <article class="feature-card">
             <span class="feature-number" aria-hidden="true">03</span>
-            <h3>Runs all day</h3>
-            <p>A lightweight background effect you can set once and forget about — it comes back after every login.</p>
+            <h3 data-en="Runs all day" data-zh="全天常驻">Runs all day</h3>
+            <p data-en="A lightweight background effect you can set once and forget about — it comes back after every login." data-zh="轻量后台效果，一次设置即可，每次登录后自动恢复。">A lightweight background effect you can set once and forget about — it comes back after every login.</p>
           </article>
         </section>
 
-        <section class="resource-grid" aria-label="Resources">
+        <section class="resource-grid" aria-label="Resources" data-aria-en="Resources" data-aria-zh="页面导航">
           <a class="card" href="support/">
-            <h3>Support</h3>
-            <p>System requirements, setup steps, and answers to common questions.</p>
-            <span class="arrow" aria-hidden="true">Get support →</span>
+            <h3 data-en="Support" data-zh="使用支持">Support</h3>
+            <p data-en="System requirements, setup steps, and answers to common questions." data-zh="查看系统要求、设置步骤和常见问题解答。">System requirements, setup steps, and answers to common questions.</p>
+            <span class="arrow" aria-hidden="true" data-en="Get support →" data-zh="查看使用支持 →">Get support →</span>
           </a>
           <a class="card" href="privacy/">
-            <h3>Privacy</h3>
-            <p>See exactly what stays on your Mac — and what never leaves it.</p>
-            <span class="arrow" aria-hidden="true">Read the privacy policy →</span>
-          </a>
-        </section>
-      </article>
-
-      <!-- ============ 中文 ============ -->
-      <article id="zh" class="locale-home" data-locale-panel="zh-Hans" lang="zh-Hans" hidden>
-
-        <section class="hero">
-          <div class="hero-copy">
-            <p class="eyebrow">专为带刘海的 MacBook 设计</p>
-            <h1>让物理刘海自然隐入菜单栏。</h1>
-            <p class="lede">BetterNotch 用招牌的渐变效果，把刘海自然融入菜单栏——全天常驻，几乎不占用资源。</p>
-            <div class="hero-cta">
-              <a class="button button-primary" href="support/">开始使用</a>
-              <span class="sysreq">需要 macOS 26 或更高版本</span>
-            </div>
-          </div>
-
-          <div class="hero-demo" role="img" aria-label="菜单栏前后对比：刘海可见，随后被 BetterNotch 隐去">
-            <figure class="menubar-demo">
-              <div class="menubar-frame">
-                <img src="assets/menubar-original.png" alt="原始菜单栏，刘海清晰可见" width="2200" height="500" loading="eager" decoding="async">
-                <span class="demo-notch" aria-hidden="true"></span>
-              </div>
-              <figcaption><span class="state-dot state-original"></span>使用前 — 刘海清晰可见</figcaption>
-            </figure>
-            <div class="demo-arrow" aria-hidden="true">→</div>
-            <figure class="menubar-demo">
-              <div class="menubar-frame">
-                <img src="assets/menubar-gradient.png" alt="应用渐变效果后的菜单栏，刘海已不再可见" width="2200" height="500" loading="eager" decoding="async">
-              </div>
-              <figcaption><span class="state-dot state-gradient"></span>使用后 — 刘海自然隐去</figcaption>
-            </figure>
-          </div>
-        </section>
-
-        <section class="showcase">
-          <h2 class="section-title">一次点击，刘海就这样消失了。</h2>
-          <figure class="showcase-figure">
-            <img src="assets/proof-hero-en.png" alt="BetterNotch 效果总览：带刘海的原始菜单栏、纯黑外观，以及招牌的渐变效果" width="2880" height="1800" loading="lazy" decoding="async">
-          </figure>
-        </section>
-
-        <section class="effects" aria-labelledby="effects-title-zh">
-          <h2 id="effects-title-zh" class="section-title">三种外观，逐屏设置</h2>
-          <div class="effect-grid">
-            <article class="effect-card">
-              <figure class="effect-thumb">
-                <img src="assets/menubar-original.png" alt="原始菜单栏，刘海清晰可见" width="2200" height="500" loading="lazy" decoding="async">
-              </figure>
-              <h3>原始</h3>
-              <p>保持系统原样。随时可以为任意一块显示器关闭效果。</p>
-            </article>
-            <article class="effect-card effect-card-featured">
-              <figure class="effect-thumb">
-                <img src="assets/menubar-gradient.png" alt="应用渐变效果的菜单栏" width="2200" height="500" loading="lazy" decoding="async">
-              </figure>
-              <h3>渐变 <span class="badge">招牌</span></h3>
-              <p>刘海自然融入完整菜单栏，仿佛从未存在过。</p>
-            </article>
-            <article class="effect-card">
-              <figure class="effect-thumb effect-thumb-solid" aria-hidden="true">
-                <span class="solid-bar"></span>
-              </figure>
-              <h3>纯黑</h3>
-              <p>偏好完整黑色菜单栏？一键切换，干净利落。</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="app-shot" aria-labelledby="app-title-zh">
-          <div class="app-copy">
-            <h2 id="app-title-zh" class="section-title">一个小巧、从不打扰你的应用</h2>
-            <ul class="check-list">
-              <li><strong>逐屏设置</strong>——内建显示器和每块外接显示器都可以独立选择效果。</li>
-              <li><strong>轻量运行</strong>——静态效果在后台安静运行，登录后自动恢复。</li>
-              <li><strong>默认私密</strong>——设置只保存在本机。无账号、无分析、无跟踪。</li>
-            </ul>
-          </div>
-          <figure class="app-figure">
-            <img src="assets/app-controls-zh.png" alt="BetterNotch 应用界面，显示原始、渐变、纯黑三种样式与渐变强度控制" width="2880" height="1800" loading="lazy" decoding="async">
-          </figure>
-        </section>
-
-        <section id="features" class="feature-grid" aria-label="为什么选择 BetterNotch">
-          <article class="feature-card">
-            <span class="feature-number" aria-hidden="true">01</span>
-            <h3>为刘海而生</h3>
-            <p>专为带物理刘海的 MacBook 设计，而不是通用壁纸工具。</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-number" aria-hidden="true">02</span>
-            <h3>为多显示器而生</h3>
-            <p>内建与外接显示器可分别设置外观，并按各自菜单栏高度渲染。</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-number" aria-hidden="true">03</span>
-            <h3>全天常驻</h3>
-            <p>轻量后台效果，一次设置即可，每次登录后自动恢复。</p>
-          </article>
-        </section>
-
-        <section class="resource-grid" aria-label="页面导航">
-          <a class="card" href="support/">
-            <h3>使用支持</h3>
-            <p>查看系统要求、设置步骤和常见问题解答。</p>
-            <span class="arrow" aria-hidden="true">查看使用支持 →</span>
-          </a>
-          <a class="card" href="privacy/">
-            <h3>隐私政策</h3>
-            <p>了解哪些内容只保存在你的 Mac 上，以及哪些永远不会离开本机。</p>
-            <span class="arrow" aria-hidden="true">阅读隐私政策 →</span>
+            <h3 data-en="Privacy" data-zh="隐私政策">Privacy</h3>
+            <p data-en="See exactly what stays on your Mac — and what never leaves it." data-zh="了解哪些内容只保存在你的 Mac 上，以及哪些永远不会离开本机。">See exactly what stays on your Mac — and what never leaves it.</p>
+            <span class="arrow" aria-hidden="true" data-en="Read the privacy policy →" data-zh="阅读隐私政策 →">Read the privacy policy →</span>
           </a>
         </section>
       </article>

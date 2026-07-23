@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="System requirements, common questions, and troubleshooting steps for BetterNotch.">
-    <meta name="theme-color" content="#080808">
+    <meta name="theme-color" content="#f3eee4">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/support/">
-    <link rel="stylesheet" href="../assets/styles.css?v=20260721-3">
-    <script src="../assets/language.js?v=20260721-4" defer></script>
+    <link rel="stylesheet" href="../assets/styles.css?v=20260723-3">
+    <script src="../assets/language.js?v=20260723-1" defer></script>
     <title>Support — BetterNotch</title>
   </head>
   <body>
@@ -20,7 +20,7 @@
           <a href="../privacy/" data-en="Privacy Policy" data-zh="隐私政策">Privacy Policy</a>
         </nav>
         <details class="language-menu" data-language-menu>
-          <summary>Language <span class="language-chevron" aria-hidden="true"></span></summary>
+          <summary><span data-en="Language" data-zh="语言">Language</span> <span class="language-chevron" aria-hidden="true"></span></summary>
           <div class="language-options" aria-label="Language / 语言">
             <button type="button" data-locale-button="en" aria-pressed="true">English</button>
             <button type="button" data-locale-button="zh-Hans" aria-pressed="false">中文</button>
@@ -29,92 +29,47 @@
       </div>
     </header>
     <main id="main" class="document">
-      <article id="zh" data-locale-panel="zh-Hans" lang="zh-Hans" hidden>
+      <article aria-labelledby="support-title">
         <header class="document-header">
-          <p class="eyebrow">使用帮助与问题反馈</p>
-          <h1>使用支持</h1>
-          <p class="lede">BetterNotch 支持 macOS 26 或更高版本，核心用途是让物理刘海自然隐入菜单栏。渐变是主打效果，纯黑是替代样式，并支持为每块显示器独立设置。</p>
+          <p class="eyebrow" data-en="Help and issue reporting" data-zh="使用帮助与问题反馈">Help and issue reporting</p>
+          <h1 id="support-title" data-en="Support" data-zh="使用支持">Support</h1>
+          <p class="lede" data-en="BetterNotch requires macOS 26 or later. Its primary purpose is to let the physical notch disappear into the menu bar. Gradient is the signature effect, Solid Black is the alternative, and each display can be configured independently." data-zh="BetterNotch 支持 macOS 26 或更高版本，核心用途是让物理刘海自然隐入菜单栏。渐变是主打效果，纯黑是替代样式，并支持为每块显示器独立设置。">BetterNotch requires macOS 26 or later. Its primary purpose is to let the physical notch disappear into the menu bar. Gradient is the signature effect, Solid Black is the alternative, and each display can be configured independently.</p>
         </header>
 
-        <section class="document-section" aria-labelledby="before-starting-zh">
-          <h2 id="before-starting-zh">开始使用前</h2>
-          <p>前往“系统设置 → 菜单栏”，关闭“显示菜单栏背景”。如果该选项保持开启，系统菜单栏底板会影响 BetterNotch 的视觉效果。</p>
+        <section class="document-section" aria-labelledby="before-starting">
+          <h2 id="before-starting" data-en="Before you begin" data-zh="开始使用前">Before you begin</h2>
+          <p data-en="Open System Settings → Menu Bar and turn off “Show menu bar background.” If this option remains enabled, the system menu bar backdrop will interfere with BetterNotch’s visual effect." data-zh="前往“系统设置 → 菜单栏”，关闭“显示菜单栏背景”。如果该选项保持开启，系统菜单栏底板会影响 BetterNotch 的视觉效果。">Open System Settings → Menu Bar and turn off “Show menu bar background.” If this option remains enabled, the system menu bar backdrop will interfere with BetterNotch’s visual effect.</p>
         </section>
 
-        <section class="document-section" aria-labelledby="effect-missing-zh">
-          <h2 id="effect-missing-zh">如果效果没有出现</h2>
+        <section class="document-section" aria-labelledby="effect-missing">
+          <h2 id="effect-missing" data-en="If the effect does not appear" data-zh="如果效果没有出现">If the effect does not appear</h2>
           <ol>
-            <li>确认已经启用桌面效果。</li>
-            <li>选择“渐变”或“纯黑”。“原始壁纸”表示该显示器不应用效果。</li>
-            <li>如果连接了多块显示器，请确认当前设置的是目标显示器。</li>
-            <li>尝试切换一次效果，或者关闭并重新启用桌面效果。</li>
-            <li>如果问题仍然存在，请退出并重新打开 BetterNotch。</li>
+            <li data-en="Make sure Desktop Effect is enabled." data-zh="确认已经启用桌面效果。">Make sure Desktop Effect is enabled.</li>
+            <li data-en="Choose Gradient or Solid Black. Original Wallpaper means no effect is applied to that display." data-zh="选择“渐变”或“纯黑”。“原始壁纸”表示该显示器不应用效果。">Choose Gradient or Solid Black. Original Wallpaper means no effect is applied to that display.</li>
+            <li data-en="If you use multiple displays, confirm that you are configuring the intended display." data-zh="如果连接了多块显示器，请确认当前设置的是目标显示器。">If you use multiple displays, confirm that you are configuring the intended display.</li>
+            <li data-en="Switch to another effect once, or turn Desktop Effect off and back on." data-zh="尝试切换一次效果，或者关闭并重新启用桌面效果。">Switch to another effect once, or turn Desktop Effect off and back on.</li>
+            <li data-en="If the problem continues, quit and reopen BetterNotch." data-zh="如果问题仍然存在，请退出并重新打开 BetterNotch。">If the problem continues, quit and reopen BetterNotch.</li>
           </ol>
         </section>
 
-        <section class="document-section" aria-labelledby="launch-at-login-zh">
-          <h2 id="launch-at-login-zh">登录时启动</h2>
-          <p>“登录时启动”开关位于 BetterNotch 设置中。</p>
-          <p>如果 macOS 提示需要批准，请选择“打开登录项设置”，在系统设置中完成授权，然后返回 BetterNotch。App 会自动刷新当前状态。</p>
+        <section class="document-section" aria-labelledby="launch-at-login">
+          <h2 id="launch-at-login" data-en="Launch at Login" data-zh="登录时启动">Launch at Login</h2>
+          <p data-en="The Launch at Login switch is in BetterNotch Settings." data-zh="“登录时启动”开关位于 BetterNotch 设置中。">The Launch at Login switch is in BetterNotch Settings.</p>
+          <p data-en="If macOS says approval is required, select “Open Login Items Settings,” approve BetterNotch in System Settings, then return to the app. BetterNotch will refresh the current status automatically." data-zh="如果 macOS 提示需要批准，请选择“打开登录项设置”，在系统设置中完成授权，然后返回 BetterNotch。App 会自动刷新当前状态。">If macOS says approval is required, select “Open Login Items Settings,” approve BetterNotch in System Settings, then return to the app. BetterNotch will refresh the current status automatically.</p>
         </section>
 
-        <section class="document-section" aria-labelledby="contact-support-zh">
-          <h2 id="contact-support-zh">联系支持</h2>
-          <p>如果问题仍未解决，请发送邮件至 <a href="mailto:longbuild@icloud.com">longbuild@icloud.com</a>，并尽量提供：</p>
+        <section class="document-section" aria-labelledby="contact-support">
+          <h2 id="contact-support" data-en="Contact support" data-zh="联系支持">Contact support</h2>
+          <p><span data-en="If the issue is still unresolved, email " data-zh="如果问题仍未解决，请发送邮件至 ">If the issue is still unresolved, email </span><a href="mailto:longbuild@icloud.com">longbuild@icloud.com</a><span data-en=" and include as much of the following as possible:" data-zh="，并尽量提供："> and include as much of the following as possible:</span></p>
           <ul>
-            <li>Mac 型号和 macOS 版本</li>
-            <li>当前选择的效果</li>
-            <li>内建及外接显示器配置</li>
-            <li>问题出现前的操作步骤</li>
-            <li>必要时附上截图，并先遮盖个人信息</li>
+            <li data-en="Your Mac model and macOS version" data-zh="Mac 型号和 macOS 版本">Your Mac model and macOS version</li>
+            <li data-en="The currently selected effect" data-zh="当前选择的效果">The currently selected effect</li>
+            <li data-en="Your built-in and external display configuration" data-zh="内建及外接显示器配置">Your built-in and external display configuration</li>
+            <li data-en="The steps you took before the problem appeared" data-zh="问题出现前的操作步骤">The steps you took before the problem appeared</li>
+            <li data-en="A screenshot if needed, with personal information redacted first" data-zh="必要时附上截图，并先遮盖个人信息">A screenshot if needed, with personal information redacted first</li>
           </ul>
           <div class="contact-box">
-            <p>我们会尽力协助你定位问题。</p>
-          </div>
-        </section>
-      </article>
-
-      <article id="en" lang="en" data-locale-panel="en" aria-labelledby="support-title-en">
-        <header class="document-header">
-          <p class="eyebrow">Help and issue reporting</p>
-          <h1 id="support-title-en">Support</h1>
-          <p class="lede">BetterNotch requires macOS 26 or later. Its primary purpose is to let the physical notch disappear into the menu bar. Gradient is the signature effect, Solid Black is the alternative, and each display can be configured independently.</p>
-        </header>
-
-        <section class="document-section" aria-labelledby="before-starting-en">
-          <h2 id="before-starting-en">Before you begin</h2>
-          <p>Open System Settings → Menu Bar and turn off “Show menu bar background.” If this option remains enabled, the system menu bar backdrop will interfere with BetterNotch’s visual effect.</p>
-        </section>
-
-        <section class="document-section" aria-labelledby="effect-missing-en">
-          <h2 id="effect-missing-en">If the effect does not appear</h2>
-          <ol>
-            <li>Make sure Desktop Effect is enabled.</li>
-            <li>Choose Gradient or Solid Black. Original Wallpaper means no effect is applied to that display.</li>
-            <li>If you use multiple displays, confirm that you are configuring the intended display.</li>
-            <li>Switch to another effect once, or turn Desktop Effect off and back on.</li>
-            <li>If the problem continues, quit and reopen BetterNotch.</li>
-          </ol>
-        </section>
-
-        <section class="document-section" aria-labelledby="launch-at-login-en">
-          <h2 id="launch-at-login-en">Launch at Login</h2>
-          <p>The Launch at Login switch is in BetterNotch Settings.</p>
-          <p>If macOS says approval is required, select “Open Login Items Settings,” approve BetterNotch in System Settings, then return to the app. BetterNotch will refresh the current status automatically.</p>
-        </section>
-
-        <section class="document-section" aria-labelledby="contact-support-en">
-          <h2 id="contact-support-en">Contact support</h2>
-          <p>If the issue is still unresolved, email <a href="mailto:longbuild@icloud.com">longbuild@icloud.com</a> and include as much of the following as possible:</p>
-          <ul>
-            <li>Your Mac model and macOS version</li>
-            <li>The currently selected effect</li>
-            <li>Your built-in and external display configuration</li>
-            <li>The steps you took before the problem appeared</li>
-            <li>A screenshot if needed, with personal information redacted first</li>
-          </ul>
-          <div class="contact-box">
-            <p>We will do our best to help you identify the cause.</p>
+            <p data-en="We will do our best to help you identify the cause." data-zh="我们会尽力协助你定位问题。">We will do our best to help you identify the cause.</p>
           </div>
         </section>
       </article>

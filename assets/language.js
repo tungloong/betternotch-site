@@ -2,12 +2,12 @@
   const storageKey = "betternotch.language";
   const supportedLanguages = new Set(["en", "zh-Hans"]);
   const root = document.documentElement;
-  const panels = document.querySelectorAll("[data-locale-panel]");
-  const selects = document.querySelectorAll("[data-locale-select]");
-  const legacyButtons = document.querySelectorAll("[data-locale-button]");
+  const languageButtons = document.querySelectorAll("[data-locale-button]");
   const menus = document.querySelectorAll("[data-language-menu]");
   const textItems = document.querySelectorAll("[data-en][data-zh]");
   const ariaItems = document.querySelectorAll("[data-aria-en][data-aria-zh]");
+  const altItems = document.querySelectorAll("[data-alt-en][data-alt-zh]");
+  const sourceItems = document.querySelectorAll("[data-src-en][data-src-zh]");
 
   function storedLanguage() {
     try {
@@ -30,15 +30,7 @@
     if (!supportedLanguages.has(language)) language = "en";
     const isEnglish = language === "en";
 
-    panels.forEach((panel) => {
-      panel.hidden = panel.dataset.localePanel !== language;
-    });
-
-    selects.forEach((select) => {
-      select.value = language;
-    });
-
-    legacyButtons.forEach((button) => {
+    languageButtons.forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.localeButton === language));
     });
 
@@ -50,16 +42,21 @@
       item.setAttribute("aria-label", isEnglish ? item.dataset.ariaEn : item.dataset.ariaZh);
     });
 
+    altItems.forEach((item) => {
+      item.setAttribute("alt", isEnglish ? item.dataset.altEn : item.dataset.altZh);
+    });
+
+    sourceItems.forEach((item) => {
+      const source = isEnglish ? item.dataset.srcEn : item.dataset.srcZh;
+      if (item.getAttribute("src") !== source) item.setAttribute("src", source);
+    });
+
     root.lang = language;
     document.title = isEnglish ? root.dataset.titleEn : root.dataset.titleZh;
     if (shouldRemember) rememberLanguage(language);
   }
 
-  selects.forEach((select) => {
-    select.addEventListener("change", () => setLanguage(select.value));
-  });
-
-  legacyButtons.forEach((button) => {
+  languageButtons.forEach((button) => {
     button.addEventListener("click", () => {
       setLanguage(button.dataset.localeButton);
       button.closest("[data-language-menu]")?.removeAttribute("open");

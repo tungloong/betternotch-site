@@ -9,7 +9,7 @@
   --card: #faf7f0;
   --ink: #211d17;
   --muted: #6e675a;
-  --faint: #9a917f;
+  --faint: #71695b;
   --line: rgba(33, 29, 23, 0.14);
   --line-strong: rgba(33, 29, 23, 0.22);
   --accent: #a05c1f;
@@ -88,7 +88,7 @@ a:focus-visible {
 
 /* ---------- 布局容器 ---------- */
 .site-header,
-main > article > section,
+.locale-home > section,
 .site-footer {
   width: min(calc(100% - 40px), var(--max-width));
   margin-inline: auto;
@@ -122,6 +122,7 @@ main > article > section,
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.02em;
+  text-decoration: none;
 }
 
 .header-actions {
@@ -426,18 +427,18 @@ h1 {
   object-fit: cover;
 }
 
-.effect-thumb-solid {
-  display: grid;
-  place-items: center;
-  background: linear-gradient(180deg, #efe9dc, #e6ddcb);
-  border: 1px solid var(--line);
+.effect-card-copy-only {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.solid-bar {
-  width: 82%;
-  height: 22%;
-  border-radius: 4px;
-  background: #141210;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 8px 20px rgba(33, 29, 23, 0.28);
+.effect-card-copy-only .effect-mode-label {
+  margin: 0 0 24px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .effect-card h3 {
@@ -602,7 +603,7 @@ h1 {
 
 /* ---------- 文档页（support / privacy，保持原有结构） ---------- */
 .document {
-  max-width: 760px;
+  width: min(calc(100% - 40px), 760px);
   margin-inline: auto;
   padding: 60px 0 100px;
 }
