@@ -326,19 +326,6 @@ h1 {
   width: 100%;
 }
 
-/* 在“使用前”图上补一个刘海标记，强化前后对比 */
-.demo-notch {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 11%;
-  height: 40%;
-  transform: translateX(-50%);
-  background: #000;
-  border-radius: 0 0 9px 9px;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.10), 0 5px 12px rgba(0, 0, 0, 0.45);
-}
-
 .menubar-demo figcaption {
   display: flex;
   align-items: center;
