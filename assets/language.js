@@ -53,6 +53,9 @@
 
     root.lang = language;
     document.title = isEnglish ? root.dataset.titleEn : root.dataset.titleZh;
+    window.dispatchEvent(new CustomEvent("betternotch:languagechange", {
+      detail: { language },
+    }));
     if (shouldRemember) rememberLanguage(language);
   }
 
