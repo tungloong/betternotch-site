@@ -13,6 +13,9 @@ const pages = [
 const approvedActionPins = {
   checkout: "3d3c42e5aac5ba805825da76410c181273ba90b1", // v7.0.1
   setupNode: "820762786026740c76f36085b0efc47a31fe5020", // v7.0.0
+  configurePages: "45bfe0192ca1faeb007ade9deae92b16b8254a0d", // v6.0.0
+  uploadPagesArtifact: "fc324d3547104276b827a68afc52ff2a11cc49c9", // v5.0.0
+  deployPages: "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128", // v5.0.0
 };
 const appStoreUrl = "https://apps.apple.com/app/id6791836457?mt=12";
 const approvedShareImage = "assets/og-betternotch-1.0-en.png";
@@ -211,6 +214,28 @@ requireMatch(workflow, new RegExp(`actions/checkout@${approvedActionPins.checkou
 requireMatch(workflow, new RegExp(`actions/setup-node@${approvedActionPins.setupNode} # v7\\.0\\.0`), ".github/workflows/site-checks.yml: setup-node must be pinned to reviewed v7.0.0 commit");
 requireMatch(workflow, /node-version: 24/, ".github/workflows/site-checks.yml: Node 24 runtime is missing");
 requireMatch(workflow, /package-manager-cache: false/, ".github/workflows/site-checks.yml: dependency-free workflow must disable package-manager caching");
+requireMatch(workflow, /run: node scripts\/build-site\.mjs/, ".github/workflows/site-checks.yml: allowlisted site build must be validated in CI");
+
+const deployWorkflow = await readFile(path.join(repoDir, ".github/workflows/deploy-pages.yml"), "utf8");
+for (const [action, pin, version] of [
+  ["actions/checkout", approvedActionPins.checkout, "v7.0.1"],
+  ["actions/setup-node", approvedActionPins.setupNode, "v7.0.0"],
+  ["actions/configure-pages", approvedActionPins.configurePages, "v6.0.0"],
+  ["actions/upload-pages-artifact", approvedActionPins.uploadPagesArtifact, "v5.0.0"],
+  ["actions/deploy-pages", approvedActionPins.deployPages, "v5.0.0"],
+]) {
+  requireMatch(deployWorkflow, new RegExp(`${action}@${pin} # ${version.replaceAll(".", "\\.")}`), `.github/workflows/deploy-pages.yml: ${action} pin mismatch`);
+}
+requireMatch(deployWorkflow, /run: node scripts\/check-site\.mjs/, ".github/workflows/deploy-pages.yml: release contract must run before packaging");
+requireMatch(deployWorkflow, /run: node scripts\/build-site\.mjs/, ".github/workflows/deploy-pages.yml: allowlisted site build is missing");
+requireMatch(deployWorkflow, /path: _site/, ".github/workflows/deploy-pages.yml: Pages artifact path mismatch");
+requireMatch(deployWorkflow, /build:[\s\S]*?permissions:[\s\S]*?contents: read[\s\S]*?pages: read/, ".github/workflows/deploy-pages.yml: build job must use read-only repository and Pages permissions");
+requireMatch(deployWorkflow, /pages: write/, ".github/workflows/deploy-pages.yml: Pages write permission is missing");
+requireMatch(deployWorkflow, /id-token: write/, ".github/workflows/deploy-pages.yml: OIDC permission is missing");
+
+await assertFile("scripts/build-site.mjs");
+const gitignore = await readFile(path.join(repoDir, ".gitignore"), "utf8");
+requireMatch(gitignore, /^_site\/$/m, ".gitignore: generated Pages artifact must remain untracked");
 
 for (const relativePath of publicImageNames) await assertFile(relativePath);
 

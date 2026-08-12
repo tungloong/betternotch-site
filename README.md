@@ -12,6 +12,7 @@ The app repository must not carry a second deployable copy of the website. Produ
 - `assets/`: shared styles, behavior, and site media
 - `scripts/check-site.mjs`: zero-dependency release contract checks
 - `scripts/check-public-links.mjs`: retrying production URL and redirect checks
+- `scripts/build-site.mjs`: deterministic deployment allowlist and `_site` builder
 - `scripts/generate-image-derivatives.sh`: deterministic AVIF regeneration
 
 ## Visual asset status
@@ -53,6 +54,15 @@ valid site change.
 CI uses Node 24 and commit-pinned official GitHub Actions. When updating an
 action, review the upstream release, replace the full commit SHA and version
 comment together, then run the static contract before pushing.
+
+GitHub Pages deploys from the `_site` artifact built by
+`scripts/build-site.mjs`, not directly from the repository root. That allowlist
+keeps source captures, superseded graphics, documentation, and validation
+scripts out of the public site while preserving every runtime dependency.
+The allowlist rejects symlinks, and CI rebuilds it before every deploy. The
+build job is read-only; only the isolated deployment job receives Pages write
+and OIDC permissions. The production link check also verifies that representative
+source-only and superseded files remain unavailable over HTTP.
 
 The HTML starts in a static `no-js` state. A tiny head script switches to the
 interactive state before first paint; if scripting is unavailable, inert

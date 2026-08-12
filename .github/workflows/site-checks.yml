@@ -19,3 +19,5 @@ jobs:
           package-manager-cache: false
       - name: Validate static release contract
         run: node scripts/check-site.mjs
+      - name: Build allowlisted static site
+        run: node scripts/build-site.mjs

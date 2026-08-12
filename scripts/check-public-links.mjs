@@ -60,6 +60,24 @@ const checks = [
     url: "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
     contentType: "text/html",
   },
+  {
+    label: "source-only release checker stays private",
+    url: new URL("scripts/check-site.mjs", siteBase).href,
+    expectedStatus: 404,
+    contentType: "text/html",
+  },
+  {
+    label: "repository documentation stays private",
+    url: new URL("README.md", siteBase).href,
+    expectedStatus: 404,
+    contentType: "text/html",
+  },
+  {
+    label: "superseded app control capture stays private",
+    url: new URL("assets/app-controls-en.png", siteBase).href,
+    expectedStatus: 404,
+    contentType: "text/html",
+  },
 ];
 
 const attempts = 4;
@@ -83,7 +101,8 @@ async function fetchWithRetry(check) {
         signal: AbortSignal.timeout(timeoutMilliseconds),
       });
 
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const expectedStatus = check.expectedStatus ?? 200;
+      if (response.status !== expectedStatus) throw new Error(`expected HTTP ${expectedStatus}, received ${response.status}`);
       const contentType = response.headers.get("content-type") ?? "";
       if (!contentType.toLowerCase().includes(check.contentType)) {
         throw new Error(`expected ${check.contentType}, received ${contentType || "no content type"}`);
