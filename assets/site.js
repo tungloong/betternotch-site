@@ -8,6 +8,7 @@
   const effectIndex = document.querySelector("[data-effect-index]");
   const notchLabel = document.querySelector("[data-notch-label]");
   const effectStage = document.querySelector("#effect-stage");
+  const effectTabs = document.querySelector(".effect-tabs");
 
   if (!body || effectButtons.length === 0) return;
 
@@ -17,7 +18,10 @@
   });
   effectButtons.forEach((button) => {
     button.disabled = false;
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-controls", "effect-stage");
   });
+  effectTabs?.setAttribute("role", "tablist");
   effectStage?.setAttribute("role", "tabpanel");
 
   const effects = [

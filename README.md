@@ -50,6 +50,10 @@ The static contract runs on every push and pull request. Keep the
 network-dependent check manual so a transient external outage cannot block a
 valid site change.
 
+CI uses Node 24 and commit-pinned official GitHub Actions. When updating an
+action, review the upstream release, replace the full commit SHA and version
+comment together, then run the static contract before pushing.
+
 The HTML starts in a static `no-js` state. A tiny head script switches to the
 interactive state before first paint; if scripting is unavailable, inert
 controls stay hidden and the English content, bilingual status notice, real

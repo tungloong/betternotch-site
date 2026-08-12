@@ -10,6 +10,10 @@ const pages = [
   { file: "support/index.html", canonical: "https://tungloong.github.io/betternotch-site/support/" },
   { file: "privacy/index.html", canonical: "https://tungloong.github.io/betternotch-site/privacy/" },
 ];
+const approvedActionPins = {
+  checkout: "3d3c42e5aac5ba805825da76410c181273ba90b1", // v7.0.1
+  setupNode: "820762786026740c76f36085b0efc47a31fe5020", // v7.0.0
+};
 const appStoreUrl = "https://apps.apple.com/app/id6791836457?mt=12";
 const approvedShareImage = "assets/og-betternotch-1.0-en.png";
 const supportEmail = "longbuild@icloud.com";
@@ -78,6 +82,7 @@ for (const page of pages) {
     "og:description",
     "og:url",
     "og:image",
+    "og:image:type",
     "og:image:width",
     "og:image:height",
     "og:image:alt",
@@ -85,7 +90,7 @@ for (const page of pages) {
     requireMatch(source, new RegExp(`<meta property="${property.replace(":", "\\:")}"`), `${page.file}: missing ${property}`);
   }
 
-  for (const property of ["twitter:card", "twitter:title", "twitter:description", "twitter:image"]) {
+  for (const property of ["twitter:card", "twitter:title", "twitter:description", "twitter:image", "twitter:image:alt"]) {
     requireMatch(source, new RegExp(`<meta name="${property.replace(":", "\\:")}"`), `${page.file}: missing ${property}`);
   }
 
@@ -140,6 +145,10 @@ requireMatch(home, /class="notch-control"[^>]*data-effect-cycle[^>]*disabled/, "
 requireMatch(home, /class="no-js-only static-preview-copy"/, "index.html: no-JavaScript static preview explanation is missing");
 requireMatch(home, /data-backdrop-button="warm"[^>]*disabled/, "index.html: backdrop controls must be inert before JavaScript initializes");
 requireMatch(home, /data-effect-button="gradient"[^>]*disabled/, "index.html: effect controls must be inert before JavaScript initializes");
+requireMatch(home, /site\.js\?v=20260812-3/, "index.html: stale site script cache key");
+if (/class="effect-tabs"[^>]*role="tablist"/.test(home) || /data-effect-button="[^"]+"[^>]*role="tab"/.test(home)) {
+  fail("index.html: interactive tab semantics must not be present before JavaScript initializes");
+}
 
 const languageScript = await readFile(path.join(repoDir, "assets/language.js"), "utf8");
 requireMatch(languageScript, /classList\.remove\("no-js"\)/, "assets/language.js: no-JavaScript class is not removed on initialization");
@@ -149,6 +158,9 @@ requireMatch(languageScript, /button\.disabled = false/, "assets/language.js: la
 const siteScript = await readFile(path.join(repoDir, "assets/site.js"), "utf8");
 requireMatch(siteScript, /cycleButton\.disabled = false/, "assets/site.js: notch control is not enabled after initialization");
 requireMatch(siteScript, /effectStage\?\.setAttribute\("role", "tabpanel"\)/, "assets/site.js: interactive tabpanel semantics are not enabled after initialization");
+requireMatch(siteScript, /effectTabs\?\.setAttribute\("role", "tablist"\)/, "assets/site.js: interactive tablist semantics are not enabled after initialization");
+requireMatch(siteScript, /button\.setAttribute\("role", "tab"\)/, "assets/site.js: interactive tab semantics are not enabled after initialization");
+requireMatch(siteScript, /button\.setAttribute\("aria-controls", "effect-stage"\)/, "assets/site.js: effect tabs do not reference the interactive panel");
 
 const styles = await readFile(path.join(repoDir, "assets/styles.css"), "utf8");
 for (const requirement of [
@@ -193,6 +205,12 @@ requireMatch(robots, /Sitemap: https:\/\/tungloong\.github\.io\/betternotch-site
 
 const sitemap = await readFile(path.join(repoDir, "sitemap.xml"), "utf8");
 for (const page of pages) requireMatch(sitemap, new RegExp(`<loc>${page.canonical.replaceAll("/", "\\/")}<\\/loc>`), `sitemap.xml: missing ${page.canonical}`);
+
+const workflow = await readFile(path.join(repoDir, ".github/workflows/site-checks.yml"), "utf8");
+requireMatch(workflow, new RegExp(`actions/checkout@${approvedActionPins.checkout} # v7\\.0\\.1`), ".github/workflows/site-checks.yml: checkout must be pinned to reviewed v7.0.1 commit");
+requireMatch(workflow, new RegExp(`actions/setup-node@${approvedActionPins.setupNode} # v7\\.0\\.0`), ".github/workflows/site-checks.yml: setup-node must be pinned to reviewed v7.0.0 commit");
+requireMatch(workflow, /node-version: 24/, ".github/workflows/site-checks.yml: Node 24 runtime is missing");
+requireMatch(workflow, /package-manager-cache: false/, ".github/workflows/site-checks.yml: dependency-free workflow must disable package-manager caching");
 
 for (const relativePath of publicImageNames) await assertFile(relativePath);
 

@@ -27,6 +27,23 @@ const checks = [
     contentType: "image/png",
   },
   {
+    label: "responsive AVIF capture",
+    url: new URL("assets/menubar-gradient-528.avif", siteBase).href,
+    contentType: "image/avif",
+  },
+  {
+    label: "sitemap",
+    url: new URL("sitemap.xml", siteBase).href,
+    contentType: "application/xml",
+    bodyIncludes: "https://tungloong.github.io/betternotch-site/privacy/",
+  },
+  {
+    label: "robots policy",
+    url: new URL("robots.txt", siteBase).href,
+    contentType: "text/plain",
+    bodyIncludes: "Sitemap: https://tungloong.github.io/betternotch-site/sitemap.xml",
+  },
+  {
     label: "neutral App Store URL",
     url: `https://apps.apple.com/app/id${appId}?mt=12`,
     contentType: "text/html",
@@ -60,7 +77,7 @@ async function fetchWithRetry(check) {
       const response = await fetch(check.url, {
         headers: {
           "user-agent": "BetterNotch-site-link-check/1.0",
-          accept: check.contentType === "image/png" ? "image/png" : "text/html,application/xhtml+xml",
+          accept: check.contentType.startsWith("image/") ? check.contentType : "text/html,application/xhtml+xml,application/xml,text/plain",
         },
         redirect: "follow",
         signal: AbortSignal.timeout(timeoutMilliseconds),
