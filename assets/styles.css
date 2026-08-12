@@ -1179,6 +1179,48 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
   font-size: 19px;
 }
 
+.document-nav {
+  margin: 34px 0 8px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.document-nav p {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 680;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.document-nav ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.document-nav li + li {
+  margin-top: 0;
+}
+
+.document-nav a {
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration-color: transparent;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+.document-nav a:hover {
+  color: var(--ink);
+  text-decoration-color: currentColor;
+}
+
 .document-section {
   padding: 54px 0 28px;
   border-bottom: 1px solid var(--line);
@@ -1698,6 +1740,7 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
   }
 
   .document-release,
+  .document-nav,
   .contact-box,
   .version-note {
     padding-inline: 18px;
@@ -1744,6 +1787,7 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
   .resource-rail,
   .download-rail,
   .document-release,
+  .document-nav,
   .contact-box,
   .no-js-notice {
     border-color: var(--line-strong);
@@ -1779,6 +1823,114 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
 
   .style-ledger span {
     color: #c4c8d1;
+  }
+}
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  :root {
+    color-scheme: light;
+    --page: #fff;
+    --paper: #fff;
+    --ink: #000;
+    --muted: #333;
+    --faint: #555;
+    --line: rgba(0, 0, 0, 0.28);
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000;
+    font-size: 10.5pt;
+  }
+
+  .site-header,
+  .skip-link,
+  .no-js-notice,
+  .document-nav {
+    display: none !important;
+  }
+
+  .document,
+  .site-footer {
+    width: 100%;
+    max-width: none;
+  }
+
+  .document {
+    padding: 0;
+  }
+
+  .document-header {
+    padding-bottom: 22pt;
+  }
+
+  .document h1 {
+    font-size: 34pt;
+  }
+
+  .document h2 {
+    font-size: 21pt;
+  }
+
+  .document .lede {
+    font-size: 12pt;
+  }
+
+  .document-section {
+    padding: 24pt 0 14pt;
+  }
+
+  .document-release,
+  .version-note,
+  .contact-box {
+    break-inside: avoid;
+    border-color: var(--line);
+    background: #fff !important;
+    box-shadow: none;
+  }
+
+  .document-release {
+    grid-template-columns: 1fr;
+  }
+
+  .document .button {
+    justify-self: start;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #000;
+    box-shadow: none;
+  }
+
+  .document h1,
+  .document h2,
+  .document h3 {
+    break-after: avoid-page;
+  }
+
+  .document p,
+  .document li {
+    color: #222;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .document a[href^="http"]::after,
+  .document a[href^="mailto:"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8.5pt;
+    overflow-wrap: anywhere;
+  }
+
+  .site-footer {
+    margin-top: 24pt;
+    padding: 12pt 0 0;
   }
 }
 

@@ -72,7 +72,7 @@ for (const page of pages) {
   requireMatch(source, /<script>document\.documentElement\.className="js"<\/script>/, `${page.file}: missing early JavaScript-ready class switch`);
   requireMatch(source, /<aside class="no-js-notice"[^>]*hidden[\s\S]*?JavaScript is off\.[\s\S]*?JavaScript 已关闭。[\s\S]*?<\/aside>/, `${page.file}: incomplete bilingual no-JavaScript notice`);
   requireMatch(source, /data-locale-button="en"[^>]*disabled/, `${page.file}: language control must be inert before JavaScript initializes`);
-  requireMatch(source, /styles\.css\?v=20260812-4/, `${page.file}: stale stylesheet cache key`);
+  requireMatch(source, /styles\.css\?v=20260812-5/, `${page.file}: stale stylesheet cache key`);
   requireMatch(source, /language\.js\?v=20260812-2/, `${page.file}: stale language script cache key`);
   requireMatch(source, new RegExp(`<link rel="canonical" href="${page.canonical.replaceAll("/", "\\/")}">`), `${page.file}: canonical URL mismatch`);
 
@@ -106,6 +106,13 @@ for (const page of pages) {
     const left = count(source, new RegExp(`\\b${pair[0]}=`, "g"));
     const right = count(source, new RegExp(`\\b${pair[1]}=`, "g"));
     if (left !== right) fail(`${page.file}: unpaired ${pair[0]}/${pair[1]} attributes (${left}/${right})`);
+  }
+
+  const ids = [...source.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+  const uniqueIds = new Set(ids);
+  if (uniqueIds.size !== ids.length) fail(`${page.file}: duplicate HTML id`);
+  for (const match of source.matchAll(/\bhref="#([^"]+)"/g)) {
+    if (!uniqueIds.has(match[1])) fail(`${page.file}: broken same-page anchor #${match[1]}`);
   }
 
   for (const match of source.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
@@ -149,6 +156,9 @@ requireMatch(home, /class="no-js-only static-preview-copy"/, "index.html: no-Jav
 requireMatch(home, /data-backdrop-button="warm"[^>]*disabled/, "index.html: backdrop controls must be inert before JavaScript initializes");
 requireMatch(home, /data-effect-button="gradient"[^>]*disabled/, "index.html: effect controls must be inert before JavaScript initializes");
 requireMatch(home, /site\.js\?v=20260812-3/, "index.html: stale site script cache key");
+requireMatch(home, /lets you choose a style for the built-in display and each external display/, "index.html: precise per-display style wording is missing");
+requireMatch(home, /data-en="Per-display styles" data-zh="逐屏样式"/, "index.html: precise per-display feature heading is missing");
+if (/independent controls for (?:every|each) display/.test(home)) fail("index.html: per-display controls wording overstates the released configuration model");
 if (/class="effect-tabs"[^>]*role="tablist"/.test(home) || /data-effect-button="[^"]+"[^>]*role="tab"/.test(home)) {
   fail("index.html: interactive tab semantics must not be present before JavaScript initializes");
 }
@@ -174,6 +184,7 @@ for (const requirement of [
   [/\.no-js \.notch-control/, "no-JavaScript inert control styling"],
   [/\.button:hover,[\s\S]*?transform: none;/, "reduced-motion transform removal"],
 ]) requireMatch(styles, requirement[0], `assets/styles.css: missing ${requirement[1]}`);
+requireMatch(styles, /@media print[\s\S]*?\.document-nav[\s\S]*?display: none !important;/, "assets/styles.css: print layout is missing");
 
 const jsonLdMatch = home.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
 if (!jsonLdMatch) {
@@ -195,12 +206,18 @@ requireMatch(support, /id="available-version"/, "support/index.html: released-ve
 requireMatch(support, new RegExp(appStoreUrl.replace(/[?]/g, "\\?")), "support/index.html: official App Store URL is missing");
 requireMatch(support, /Liquid Glass and the new Studio interface are shown on the homepage as a preview of the next update\./, "support/index.html: current/future release boundary is missing");
 requireMatch(support, new RegExp(`href="mailto:${supportEmail}"`), "support/index.html: support email link mismatch");
+requireMatch(support, /class="document-nav"[\s\S]*?href="#available-version"[\s\S]*?href="#contact-support"/, "support/index.html: support task navigation is incomplete");
+requireMatch(support, /style selection for the built-in display and each external display/, "support/index.html: precise per-display style wording is missing");
+if (/independent controls for (?:every|each) display/.test(support)) fail("support/index.html: per-display controls wording overstates the released configuration model");
 
 const privacy = await readFile(path.join(repoDir, "privacy/index.html"), "utf8");
 requireMatch(privacy, /Effective August 12, 2026/, "privacy/index.html: effective date mismatch");
 requireMatch(privacy, /github-general-privacy-statement/, "privacy/index.html: GitHub Pages disclosure link is missing");
 requireMatch(privacy, /BetterNotch does not add analytics, advertising, tracking pixels, or third-party scripts to the site\./, "privacy/index.html: website tracking disclosure is missing");
 requireMatch(privacy, new RegExp(`href="mailto:${supportEmail}"`), "privacy/index.html: privacy email link mismatch");
+requireMatch(privacy, /class="document-nav"[\s\S]*?href="#collection"[\s\S]*?href="#contact"/, "privacy/index.html: policy navigation is incomplete");
+requireMatch(privacy, /The selected style and effect parameters/, "privacy/index.html: cross-version effect parameter disclosure is missing");
+requireMatch(privacy, /Style selection for the built-in display and each external display/, "privacy/index.html: precise local per-display disclosure is missing");
 
 const robots = await readFile(path.join(repoDir, "robots.txt"), "utf8");
 requireMatch(robots, /User-agent: \*\nAllow: \/\n/, "robots.txt: crawl policy mismatch");
