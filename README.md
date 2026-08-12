@@ -11,6 +11,7 @@ The app repository must not carry a second deployable copy of the website. Produ
 - `privacy/index.html`: privacy policy
 - `assets/`: shared styles, behavior, and site media
 - `scripts/check-site.mjs`: zero-dependency release contract checks
+- `scripts/check-public-links.mjs`: retrying production URL and redirect checks
 - `scripts/generate-image-derivatives.sh`: deterministic AVIF regeneration
 
 ## Visual asset status
@@ -37,6 +38,17 @@ Run the zero-dependency release checks before each deploy:
 ```sh
 node scripts/check-site.mjs
 ```
+
+Check the deployed Marketing, Support, Privacy, social-image, App Store, and
+GitHub privacy links with retries:
+
+```sh
+node scripts/check-public-links.mjs
+```
+
+The static contract runs on every push and pull request. Keep the
+network-dependent check manual so a transient external outage cannot block a
+valid site change.
 
 The HTML starts in a static `no-js` state. A tiny head script switches to the
 interactive state before first paint; if scripting is unavailable, inert

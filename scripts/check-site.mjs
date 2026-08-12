@@ -12,6 +12,7 @@ const pages = [
 ];
 const appStoreUrl = "https://apps.apple.com/app/id6791836457?mt=12";
 const approvedShareImage = "assets/og-betternotch-1.0-en.png";
+const supportEmail = "longbuild@icloud.com";
 const publicImageNames = new Set([
   "assets/betternotch-icon-128.png",
   "assets/betternotch-icon-128.avif",
@@ -178,11 +179,13 @@ const support = await readFile(path.join(repoDir, "support/index.html"), "utf8")
 requireMatch(support, /id="available-version"/, "support/index.html: released-version section is missing");
 requireMatch(support, new RegExp(appStoreUrl.replace(/[?]/g, "\\?")), "support/index.html: official App Store URL is missing");
 requireMatch(support, /Liquid Glass and the new Studio interface are shown on the homepage as a preview of the next update\./, "support/index.html: current/future release boundary is missing");
+requireMatch(support, new RegExp(`href="mailto:${supportEmail}"`), "support/index.html: support email link mismatch");
 
 const privacy = await readFile(path.join(repoDir, "privacy/index.html"), "utf8");
 requireMatch(privacy, /Effective August 12, 2026/, "privacy/index.html: effective date mismatch");
 requireMatch(privacy, /github-general-privacy-statement/, "privacy/index.html: GitHub Pages disclosure link is missing");
 requireMatch(privacy, /BetterNotch does not add analytics, advertising, tracking pixels, or third-party scripts to the site\./, "privacy/index.html: website tracking disclosure is missing");
+requireMatch(privacy, new RegExp(`href="mailto:${supportEmail}"`), "privacy/index.html: privacy email link mismatch");
 
 const robots = await readFile(path.join(repoDir, "robots.txt"), "utf8");
 requireMatch(robots, /User-agent: \*\nAllow: \/\n/, "robots.txt: crawl policy mismatch");
