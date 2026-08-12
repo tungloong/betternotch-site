@@ -202,6 +202,12 @@ body[data-effect="solid-black"] .notch-control__wings {
   gap: 11px;
 }
 
+.brand picture {
+  display: block;
+  width: 34px;
+  height: 34px;
+}
+
 .brand-icon {
   width: 34px;
   height: 34px;
@@ -480,6 +486,7 @@ h1,
   box-shadow: 0 22px 50px rgba(17, 18, 22, 0.24);
 }
 
+.hero-capture__frame picture,
 .hero-capture__frame img {
   display: block;
   width: 100%;
@@ -812,9 +819,13 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
   margin: 0;
 }
 
+.capture-rail picture,
 .capture-rail img {
   display: block;
   width: 100%;
+}
+
+.capture-rail img {
   border: 1px solid var(--line-strong);
   border-radius: 12px;
   background: #020203;

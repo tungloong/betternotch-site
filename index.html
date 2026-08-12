@@ -23,7 +23,7 @@
     <meta name="twitter:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/">
     <link rel="icon" href="assets/betternotch-icon-128.png" type="image/png">
-    <link rel="stylesheet" href="assets/styles.css?v=20260812-2">
+    <link rel="stylesheet" href="assets/styles.css?v=20260812-3">
     <script src="assets/language.js?v=20260812-1" defer></script>
     <script src="assets/site.js?v=20260812-1" defer></script>
     <script type="application/ld+json">
@@ -63,7 +63,10 @@
 
     <header class="site-header">
       <a class="brand" href="./" aria-label="BetterNotch home" data-aria-en="BetterNotch home" data-aria-zh="BetterNotch 首页">
-        <img class="brand-icon" src="assets/betternotch-icon-128.png" alt="" width="34" height="34" decoding="async">
+        <picture>
+          <source srcset="assets/betternotch-icon-128.avif" type="image/avif">
+          <img class="brand-icon" src="assets/betternotch-icon-128.png" alt="" width="34" height="34" decoding="async">
+        </picture>
         <span class="wordmark">BetterNotch</span>
       </a>
 
@@ -103,7 +106,10 @@
 
           <figure class="hero-capture">
             <div class="hero-capture__frame">
-              <img src="assets/menubar-gradient-web.png" alt="Real menu bar capture with BetterNotch Gradient applied" data-alt-en="Real menu bar capture with BetterNotch Gradient applied" data-alt-zh="应用 BetterNotch 渐变效果的真实菜单栏截图" width="1320" height="300" loading="eager" decoding="async">
+              <picture>
+                <source srcset="assets/menubar-gradient-330.avif 330w, assets/menubar-gradient-396.avif 396w, assets/menubar-gradient-528.avif 528w" sizes="(max-width: 760px) calc(100vw - 76px), (max-width: 1040px) calc(100vw - 144px), 500px" type="image/avif">
+                <img src="assets/menubar-gradient-web.png" alt="Real menu bar capture with BetterNotch Gradient applied" data-alt-en="Real menu bar capture with BetterNotch Gradient applied" data-alt-zh="应用 BetterNotch 渐变效果的真实菜单栏截图" width="1320" height="300" loading="eager" fetchpriority="high" decoding="async">
+              </picture>
             </div>
             <figcaption>
               <span class="capture-dot" aria-hidden="true"></span>
@@ -163,15 +169,24 @@
 
           <div class="capture-rail">
             <figure>
-              <img src="assets/menubar-original-web.png" alt="Original menu bar with the physical notch visible" data-alt-en="Original menu bar with the physical notch visible" data-alt-zh="物理刘海清晰可见的原始菜单栏" width="1320" height="300" loading="lazy" decoding="async">
+              <picture>
+                <source srcset="assets/menubar-original-330.avif 330w, assets/menubar-original-396.avif 396w, assets/menubar-original-528.avif 528w" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1287px) 27vw, 353px" type="image/avif">
+                <img src="assets/menubar-original-web.png" alt="Original menu bar with the physical notch visible" data-alt-en="Original menu bar with the physical notch visible" data-alt-zh="物理刘海清晰可见的原始菜单栏" width="1320" height="300" loading="lazy" decoding="async">
+              </picture>
               <figcaption><span data-en="Original" data-zh="原始">Original</span><small data-en="The system appearance" data-zh="系统原始外观">The system appearance</small></figcaption>
             </figure>
             <figure class="capture-rail__featured">
-              <img src="assets/menubar-gradient-web.png" alt="Menu bar with BetterNotch Gradient applied" data-alt-en="Menu bar with BetterNotch Gradient applied" data-alt-zh="应用 BetterNotch 渐变效果的菜单栏" width="1320" height="300" loading="lazy" decoding="async">
+              <picture>
+                <source srcset="assets/menubar-gradient-330.avif 330w, assets/menubar-gradient-396.avif 396w, assets/menubar-gradient-528.avif 528w" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1309px) 38vw, 498px" type="image/avif">
+                <img src="assets/menubar-gradient-web.png" alt="Menu bar with BetterNotch Gradient applied" data-alt-en="Menu bar with BetterNotch Gradient applied" data-alt-zh="应用 BetterNotch 渐变效果的菜单栏" width="1320" height="300" loading="lazy" decoding="async">
+              </picture>
               <figcaption><span data-en="Gradient" data-zh="渐变">Gradient</span><small data-en="The signature effect" data-zh="主打效果">The signature effect</small></figcaption>
             </figure>
             <figure>
-              <img src="assets/menubar-solid-black-web.png" alt="Menu bar with BetterNotch Solid Black applied" data-alt-en="Menu bar with BetterNotch Solid Black applied" data-alt-zh="应用 BetterNotch 纯黑效果的菜单栏" width="1320" height="300" loading="lazy" decoding="async">
+              <picture>
+                <source srcset="assets/menubar-solid-black-330.avif 330w, assets/menubar-solid-black-396.avif 396w, assets/menubar-solid-black-528.avif 528w" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1287px) 27vw, 353px" type="image/avif">
+                <img src="assets/menubar-solid-black-web.png" alt="Menu bar with BetterNotch Solid Black applied" data-alt-en="Menu bar with BetterNotch Solid Black applied" data-alt-zh="应用 BetterNotch 纯黑效果的菜单栏" width="1320" height="300" loading="lazy" decoding="async">
+              </picture>
               <figcaption><span data-en="Solid Black" data-zh="纯黑">Solid Black</span><small data-en="A uniform alternative" data-zh="完整统一的替代样式">A uniform alternative</small></figcaption>
             </figure>
           </div>
