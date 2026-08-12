@@ -72,8 +72,8 @@ for (const page of pages) {
   requireMatch(source, /<script>document\.documentElement\.className="js"<\/script>/, `${page.file}: missing early JavaScript-ready class switch`);
   requireMatch(source, /<aside class="no-js-notice"[^>]*hidden[\s\S]*?JavaScript is off\.[\s\S]*?JavaScript 已关闭。[\s\S]*?<\/aside>/, `${page.file}: incomplete bilingual no-JavaScript notice`);
   requireMatch(source, /data-locale-button="en"[^>]*disabled/, `${page.file}: language control must be inert before JavaScript initializes`);
-  requireMatch(source, /styles\.css\?v=20260812-5/, `${page.file}: stale stylesheet cache key`);
-  requireMatch(source, /language\.js\?v=20260812-2/, `${page.file}: stale language script cache key`);
+  requireMatch(source, /styles\.css\?v=20260812-6/, `${page.file}: stale stylesheet cache key`);
+  requireMatch(source, /language\.js\?v=20260812-3/, `${page.file}: stale language script cache key`);
   requireMatch(source, new RegExp(`<link rel="canonical" href="${page.canonical.replaceAll("/", "\\/")}">`), `${page.file}: canonical URL mismatch`);
 
   for (const property of [
@@ -167,6 +167,9 @@ const languageScript = await readFile(path.join(repoDir, "assets/language.js"), 
 requireMatch(languageScript, /classList\.remove\("no-js"\)/, "assets/language.js: no-JavaScript class is not removed on initialization");
 requireMatch(languageScript, /classList\.add\("js"\)/, "assets/language.js: JavaScript-ready class is not added on initialization");
 requireMatch(languageScript, /button\.disabled = false/, "assets/language.js: language controls are not enabled after initialization");
+requireMatch(languageScript, /summary\?\.addEventListener\("keydown"[\s\S]*?\["ArrowDown", "ArrowUp"\]/, "assets/language.js: language menu trigger is missing arrow-key access");
+requireMatch(languageScript, /\["ArrowDown", "ArrowRight"\][\s\S]*?\["ArrowUp", "ArrowLeft"\][\s\S]*?event\.key === "Home"[\s\S]*?event\.key === "End"/, "assets/language.js: language options are missing directional keyboard navigation");
+requireMatch(languageScript, /menu\.addEventListener\("focusout"[\s\S]*?!menu\.contains\(event\.relatedTarget\)[\s\S]*?removeAttribute\("open"\)/, "assets/language.js: language menu must close when keyboard focus leaves");
 
 const siteScript = await readFile(path.join(repoDir, "assets/site.js"), "utf8");
 requireMatch(siteScript, /cycleButton\.disabled = false/, "assets/site.js: notch control is not enabled after initialization");
@@ -185,6 +188,13 @@ for (const requirement of [
   [/\.button:hover,[\s\S]*?transform: none;/, "reduced-motion transform removal"],
 ]) requireMatch(styles, requirement[0], `assets/styles.css: missing ${requirement[1]}`);
 requireMatch(styles, /@media print[\s\S]*?\.document-nav[\s\S]*?display: none !important;/, "assets/styles.css: print layout is missing");
+requireMatch(styles, /\.site-nav a \{[\s\S]*?min-height: 44px;/, "assets/styles.css: main navigation touch targets are too small");
+requireMatch(styles, /\.backdrop-swatch \{[\s\S]*?width: 44px;[\s\S]*?height: 44px;/, "assets/styles.css: backdrop touch targets are too small");
+requireMatch(styles, /\.document-nav a \{[\s\S]*?min-height: 44px;/, "assets/styles.css: document navigation touch targets are too small");
+
+requireMatch(languageScript, /menu\?\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: language selection must restore focus to its trigger");
+requireMatch(languageScript, /const shouldRestoreFocus = menu\.contains\(document\.activeElement\);[\s\S]*?if \(shouldRestoreFocus\) menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: outside clicks must not leave focus inside a closed menu");
+requireMatch(languageScript, /if \(menu\.contains\(document\.activeElement\)\)[\s\S]*?menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: Escape must not leave focus inside a closed menu");
 
 const jsonLdMatch = home.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
 if (!jsonLdMatch) {

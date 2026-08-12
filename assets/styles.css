@@ -89,6 +89,9 @@ summary:focus-visible {
   z-index: 200;
   top: -100px;
   left: 12px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   padding: 9px 13px;
   border-radius: 9px;
   background: var(--ink);
@@ -182,7 +185,7 @@ summary:focus-visible {
   top: 0;
   left: 50%;
   width: 230px;
-  height: 40px;
+  height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -241,6 +244,10 @@ body[data-effect="solid-black"] .notch-control__wings {
   box-shadow: 0 10px 30px rgba(15, 18, 26, 0.32);
 }
 
+.notch-control:focus-visible {
+  outline-offset: -4px;
+}
+
 .site-header,
 .hero,
 .effect-studio,
@@ -268,6 +275,9 @@ body[data-effect="solid-black"] .notch-control__wings {
 
 .brand,
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   text-decoration: none;
 }
 
@@ -311,6 +321,9 @@ body[data-effect="solid-black"] .notch-control__wings {
 }
 
 .site-nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--muted);
   text-decoration: none;
   transition: color 160ms ease;
@@ -333,6 +346,8 @@ body[data-effect="solid-black"] .notch-control__wings {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 4px 0;
   list-style: none;
   cursor: pointer;
@@ -380,7 +395,7 @@ body[data-effect="solid-black"] .notch-control__wings {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 38px;
+  min-height: 44px;
   padding: 7px 9px;
   border: 0;
   border-radius: 7px;
@@ -394,7 +409,11 @@ body[data-effect="solid-black"] .notch-control__wings {
 .language-options button:focus-visible {
   background: var(--paper-soft);
   color: var(--ink);
-  outline: none;
+}
+
+.language-options button:focus-visible {
+  outline: 3px solid rgba(61, 120, 242, 0.68);
+  outline-offset: -2px;
 }
 
 .language-options button[aria-pressed="true"] {
@@ -664,13 +683,24 @@ h1,
 }
 
 .backdrop-swatch {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.backdrop-swatch::before {
+  content: "";
   width: 30px;
   height: 19px;
-  padding: 0;
   border: 1px solid rgba(17, 18, 22, 0.18);
   border-radius: 6px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
-  cursor: pointer;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
@@ -681,23 +711,23 @@ h1,
   cursor: default;
 }
 
-.backdrop-swatch:hover {
+.backdrop-swatch:hover::before {
   transform: translateY(-1px);
 }
 
-.backdrop-swatch[aria-pressed="true"] {
+.backdrop-swatch[aria-pressed="true"]::before {
   box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--blue);
 }
 
-.backdrop-swatch-warm {
+.backdrop-swatch-warm::before {
   background: linear-gradient(100deg, #ef9f5e, #e37b86 36%, #9c71c6 64%, #4c79e6);
 }
 
-.backdrop-swatch-midnight {
+.backdrop-swatch-midnight::before {
   background: radial-gradient(circle at 28% 0%, #3c4e7a, #1e2742 48%, #0a0e1c);
 }
 
-.backdrop-swatch-mist {
+.backdrop-swatch-mist::before {
   background: linear-gradient(135deg, #fff0ce, #e8f0f7 48%, #b8ebd6);
 }
 
@@ -840,6 +870,11 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
 
 .effect-tabs button:last-child {
   border-right: 0;
+}
+
+.effect-tabs button:focus-visible {
+  z-index: 1;
+  outline-offset: -5px;
 }
 
 .effect-tabs button::before {
@@ -1210,6 +1245,9 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
 }
 
 .document-nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--muted);
   font-size: 14px;
   text-decoration-color: transparent;
@@ -1336,6 +1374,12 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
 
 .site-footer p {
   margin: 0;
+}
+
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .site-footer p:first-child {
@@ -1763,7 +1807,7 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
 
   .button:hover,
   .button:active,
-  .backdrop-swatch:hover,
+  .backdrop-swatch:hover::before,
   .resource-rail > a:hover .resource-chevron {
     transform: none;
   }
@@ -1806,7 +1850,7 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
     background: var(--ink);
   }
 
-  .backdrop-swatch[aria-pressed="true"] {
+  .backdrop-swatch[aria-pressed="true"]::before {
     box-shadow: 0 0 0 2px var(--paper), 0 0 0 5px var(--ink);
   }
 

@@ -16,6 +16,50 @@
     button.disabled = false;
   });
 
+  function focusLanguageButton(menu, index) {
+    const buttons = Array.from(menu.querySelectorAll("[data-locale-button]"));
+    if (buttons.length === 0) return;
+    buttons[(index + buttons.length) % buttons.length].focus();
+  }
+
+  menus.forEach((menu) => {
+    const summary = menu.querySelector("summary");
+
+    summary?.addEventListener("keydown", (event) => {
+      if (!["ArrowDown", "ArrowUp"].includes(event.key)) return;
+      event.preventDefault();
+      menu.setAttribute("open", "");
+      focusLanguageButton(menu, event.key === "ArrowDown" ? 0 : -1);
+    });
+
+    menu.addEventListener("keydown", (event) => {
+      const button = event.target.closest?.("[data-locale-button]");
+      if (!button) return;
+      const buttons = Array.from(menu.querySelectorAll("[data-locale-button]"));
+      const index = buttons.indexOf(button);
+
+      if (["ArrowDown", "ArrowRight"].includes(event.key)) {
+        event.preventDefault();
+        focusLanguageButton(menu, index + 1);
+      } else if (["ArrowUp", "ArrowLeft"].includes(event.key)) {
+        event.preventDefault();
+        focusLanguageButton(menu, index - 1);
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        focusLanguageButton(menu, 0);
+      } else if (event.key === "End") {
+        event.preventDefault();
+        focusLanguageButton(menu, -1);
+      }
+    });
+
+    menu.addEventListener("focusout", (event) => {
+      if (event.relatedTarget && !menu.contains(event.relatedTarget)) {
+        menu.removeAttribute("open");
+      }
+    });
+  });
+
   function storedLanguage() {
     try {
       const language = localStorage.getItem(storageKey);
@@ -69,19 +113,30 @@
   languageButtons.forEach((button) => {
     button.addEventListener("click", () => {
       setLanguage(button.dataset.localeButton);
-      button.closest("[data-language-menu]")?.removeAttribute("open");
+      const menu = button.closest("[data-language-menu]");
+      menu?.removeAttribute("open");
+      menu?.querySelector("summary")?.focus();
     });
   });
 
   document.addEventListener("click", (event) => {
     menus.forEach((menu) => {
-      if (!menu.contains(event.target)) menu.removeAttribute("open");
+      if (menu.contains(event.target)) return;
+      const shouldRestoreFocus = menu.contains(document.activeElement);
+      menu.removeAttribute("open");
+      if (shouldRestoreFocus) menu.querySelector("summary")?.focus();
     });
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      menus.forEach((menu) => menu.removeAttribute("open"));
+      menus.forEach((menu) => {
+        if (!menu.hasAttribute("open")) return;
+        menu.removeAttribute("open");
+        if (menu.contains(document.activeElement)) {
+          menu.querySelector("summary")?.focus();
+        }
+      });
     }
   });
 
