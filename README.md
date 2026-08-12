@@ -14,3 +14,8 @@ The app repository must not carry a second deployable copy of the website. Produ
 ## Visual asset status
 
 Store screenshots, promotional graphics, and previews remain unapproved until the product owner explicitly accepts a replacement set. Existing site imagery must not be treated as approval evidence for App Store assets.
+
+`assets/og-betternotch-1.0-en.png` is a deterministic 1200×630 derivative of
+the product-owner-approved `BetterNotchAssets/Design/AppStore/en-US/01.png`
+listed in `approved-screenshots.txt`. Its use as website social metadata does
+not approve any new or replacement App Store screenshot.

@@ -1,13 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-title-en="Support — BetterNotch" data-title-zh="使用支持 — BetterNotch">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="System requirements, common questions, and troubleshooting steps for BetterNotch.">
     <meta name="theme-color" content="#f7f8fa">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BetterNotch">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="zh_CN">
+    <meta property="og:title" content="Support — BetterNotch">
+    <meta property="og:description" content="System requirements, setup, troubleshooting, and contact information for BetterNotch.">
+    <meta property="og:url" content="https://tungloong.github.io/betternotch-site/support/">
+    <meta property="og:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="BetterNotch 1.0 showing Original, Gradient, and Solid Black menu bar effects">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Support — BetterNotch">
+    <meta name="twitter:description" content="System requirements, setup, troubleshooting, and contact information for BetterNotch.">
+    <meta name="twitter:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/support/">
     <link rel="icon" href="../assets/betternotch-icon-128.png" type="image/png">
-    <link rel="stylesheet" href="../assets/styles.css?v=20260812-1">
+    <link rel="stylesheet" href="../assets/styles.css?v=20260812-2">
     <script src="../assets/language.js?v=20260812-1" defer></script>
     <title>Support — BetterNotch</title>
   </head>
@@ -22,7 +37,7 @@
         </nav>
         <details class="language-menu" data-language-menu>
           <summary><span data-en="Language" data-zh="语言">Language</span> <span class="language-chevron" aria-hidden="true"></span></summary>
-          <div class="language-options" aria-label="Language / 语言">
+          <div class="language-options" role="group" aria-label="Language / 语言">
             <button type="button" data-locale-button="en" aria-pressed="true">English</button>
             <button type="button" data-locale-button="zh-Hans" aria-pressed="false">中文</button>
           </div>
@@ -34,8 +49,17 @@
         <header class="document-header">
           <p class="eyebrow" data-en="Help and issue reporting" data-zh="使用帮助与问题反馈">Help and issue reporting</p>
           <h1 id="support-title" data-en="Support" data-zh="使用支持">Support</h1>
-          <p class="lede" data-en="BetterNotch requires macOS 26 or later. Its primary purpose is to let the physical notch disappear into the menu bar. Gradient is the signature effect, Solid Black is the alternative, and each display can be configured independently." data-zh="BetterNotch 支持 macOS 26 或更高版本，核心用途是让物理刘海自然隐入菜单栏。渐变是主打效果，纯黑是替代样式，并支持为每块显示器独立设置。">BetterNotch requires macOS 26 or later. Its primary purpose is to let the physical notch disappear into the menu bar. Gradient is the signature effect, Solid Black is the alternative, and each display can be configured independently.</p>
+          <p class="lede" data-en="BetterNotch requires macOS 26 or later. App Store version 1.0 includes Original, Gradient, Solid Black, and independent controls for each display. Liquid Glass and the new Studio interface are shown on the homepage as a preview of the next update." data-zh="BetterNotch 支持 macOS 26 或更高版本。App Store 1.0 版包含原始、渐变、纯黑与逐屏设置；官网首页展示的液态玻璃和新版 Studio 界面属于下一次更新预览。">BetterNotch requires macOS 26 or later. App Store version 1.0 includes Original, Gradient, Solid Black, and independent controls for each display. Liquid Glass and the new Studio interface are shown on the homepage as a preview of the next update.</p>
         </header>
+
+        <section class="document-release" aria-labelledby="available-version">
+          <div>
+            <p class="release-kicker" data-en="Available now" data-zh="现已提供">Available now</p>
+            <h2 id="available-version" data-en="Version 1.0 on the Mac App Store" data-zh="Mac App Store 1.0 版">Version 1.0 on the Mac App Store</h2>
+            <p data-en="If the controls in your app differ from the homepage preview, follow the instructions for version 1.0 below." data-zh="如果你 App 中的控制界面与首页预览不同，请按照下方的 1.0 版说明操作。">If the controls in your app differ from the homepage preview, follow the instructions for version 1.0 below.</p>
+          </div>
+          <a class="button button-primary" href="https://apps.apple.com/app/id6791836457?mt=12" data-app-store-link data-en="View on the Mac App Store" data-zh="前往 Mac App Store">View on the Mac App Store</a>
+        </section>
 
         <section class="document-section" aria-labelledby="before-starting">
           <h2 id="before-starting" data-en="Before you begin" data-zh="开始使用前">Before you begin</h2>
@@ -46,11 +70,15 @@
           <h2 id="effect-missing" data-en="If the effect does not appear" data-zh="如果效果没有出现">If the effect does not appear</h2>
           <ol>
             <li data-en="Make sure Desktop Effect is enabled." data-zh="确认已经启用桌面效果。">Make sure Desktop Effect is enabled.</li>
-            <li data-en="Choose Gradient or Solid Black. Original means no effect is applied to that display." data-zh="选择“渐变”或“纯黑”。“原始”表示该显示器不应用效果。">Choose Gradient or Solid Black. Original means no effect is applied to that display.</li>
+            <li data-en="Choose Gradient or Solid Black in version 1.0. If your app already offers Liquid Glass, you can choose it as well. Original means no effect is applied to that display." data-zh="在 1.0 版中选择“渐变”或“纯黑”；如果你的 App 已提供“液态玻璃”，也可以选择它。“原始”表示该显示器不应用效果。">Choose Gradient or Solid Black in version 1.0. If your app already offers Liquid Glass, you can choose it as well. Original means no effect is applied to that display.</li>
             <li data-en="If you use multiple displays, confirm that you are configuring the intended display." data-zh="如果连接了多块显示器，请确认当前设置的是目标显示器。">If you use multiple displays, confirm that you are configuring the intended display.</li>
             <li data-en="Switch to another effect once, or turn Desktop Effect off and back on." data-zh="尝试切换一次效果，或者关闭并重新启用桌面效果。">Switch to another effect once, or turn Desktop Effect off and back on.</li>
             <li data-en="If the problem continues, quit and reopen BetterNotch." data-zh="如果问题仍然存在，请退出并重新打开 BetterNotch。">If the problem continues, quit and reopen BetterNotch.</li>
           </ol>
+          <div class="version-note">
+            <strong data-en="Using Liquid Glass?" data-zh="正在使用液态玻璃？">Using Liquid Glass?</strong>
+            <p data-en="After connecting or disconnecting a display, BetterNotch may briefly come to the foreground while macOS rebuilds the glass, then return focus to the app you were using. This is expected. If the glass does not recover, switch to another style and back once, then quit and reopen BetterNotch." data-zh="连接或断开显示器后，BetterNotch 可能会短暂切到前台，以便 macOS 重建玻璃效果，随后会把焦点还给你原先使用的 App。这属于预期行为。如果玻璃效果没有恢复，请切换到其他样式后再切回一次，然后退出并重新打开 BetterNotch。">After connecting or disconnecting a display, BetterNotch may briefly come to the foreground while macOS rebuilds the glass, then return focus to the app you were using. This is expected. If the glass does not recover, switch to another style and back once, then quit and reopen BetterNotch.</p>
+          </div>
         </section>
 
         <section class="document-section" aria-labelledby="launch-at-login">
