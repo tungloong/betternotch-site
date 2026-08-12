@@ -100,6 +100,81 @@ summary:focus-visible {
   top: 12px;
 }
 
+.no-js-only {
+  display: none;
+}
+
+.no-js .js-only,
+.no-js .language-menu,
+.no-js .notch-control,
+.no-js .backdrop-picker,
+.no-js .effect-tabs {
+  display: none;
+}
+
+.no-js .no-js-only {
+  display: block;
+}
+
+.no-js-notice {
+  display: none;
+  border-radius: var(--radius-sm);
+}
+
+.no-js .no-js-notice {
+  display: block !important;
+  width: min(calc(100% - 48px), var(--max-width));
+  margin: 28px auto 0;
+  padding: 18px 20px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.no-js-notice p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.no-js-notice p + p {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.no-js-notice strong {
+  color: var(--ink);
+}
+
+.static-preview-copy {
+  max-width: 630px;
+  margin: 18px auto 0;
+}
+
+.static-preview-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.static-preview-copy p + p {
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+.no-js .effect-studio {
+  padding-top: 88px;
+}
+
+.no-js .studio-shell {
+  box-shadow: var(--shadow-soft);
+}
+
+.no-js .effect-readout {
+  min-height: 0;
+}
+
 /* The page notch is a real control: clicking it advances the effect reel. */
 .notch-control {
   position: fixed;
@@ -597,6 +672,13 @@ h1,
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
   cursor: pointer;
   transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.backdrop-swatch:disabled,
+.effect-tabs button:disabled,
+.notch-control:disabled,
+.language-options button:disabled {
+  cursor: default;
 }
 
 .backdrop-swatch:hover {
@@ -1265,6 +1347,10 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
     width: min(calc(100% - 32px), var(--max-width));
   }
 
+  .no-js .no-js-notice {
+    width: min(calc(100% - 32px), var(--max-width));
+  }
+
   .notch-control {
     width: 150px;
   }
@@ -1550,6 +1636,74 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
   }
 }
 
+@media (max-width: 360px) {
+  .site-header {
+    gap: 12px 14px;
+  }
+
+  .site-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    white-space: normal;
+  }
+
+  .site-nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 4px;
+  }
+
+  .site-nav a:nth-child(even) {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .hero {
+    padding-top: 40px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 13.5vw, 43px);
+    line-height: 1.02;
+  }
+
+  .hero-capture {
+    padding: 30px 18px;
+  }
+
+  .section-heading h2,
+  .studio-story h2 {
+    font-size: 36px;
+  }
+
+  .effect-stage {
+    padding-inline: 8px;
+  }
+
+  .effect-tabs button {
+    padding-inline: 12px;
+  }
+
+  .studio-story {
+    padding-inline: 18px;
+  }
+
+  .document h1 {
+    font-size: 46px;
+  }
+
+  .document-release,
+  .contact-box,
+  .version-note {
+    padding-inline: 18px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1563,6 +1717,13 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
   }
+
+  .button:hover,
+  .button:active,
+  .backdrop-swatch:hover,
+  .resource-rail > a:hover .resource-chevron {
+    transform: none;
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -1571,5 +1732,81 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
     --faint: #555a64;
     --line: rgba(17, 18, 22, 0.34);
     --line-strong: rgba(17, 18, 22, 0.56);
+  }
+
+  body {
+    background: var(--page);
+  }
+
+  .language-options,
+  .hero-capture,
+  .studio-shell,
+  .resource-rail,
+  .download-rail,
+  .document-release,
+  .contact-box,
+  .no-js-notice {
+    border-color: var(--line-strong);
+    background: var(--paper);
+    box-shadow: none;
+  }
+
+  .button-secondary,
+  .effect-tabs,
+  .effect-tabs button[aria-selected="true"] {
+    background: var(--paper);
+  }
+
+  .effect-tabs button[aria-selected="true"]::before {
+    height: 4px;
+    background: var(--ink);
+  }
+
+  .backdrop-swatch[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px var(--paper), 0 0 0 5px var(--ink);
+  }
+
+  .studio-story {
+    border: 2px solid #fff;
+    background: #050506;
+    box-shadow: none;
+  }
+
+  .studio-story__copy p,
+  .style-ledger small {
+    color: #d6d9e0;
+  }
+
+  .style-ledger span {
+    color: #c4c8d1;
+  }
+}
+
+@media (forced-colors: active) {
+  .notch-control__shape,
+  .effect-canvas__notch {
+    forced-color-adjust: none;
+  }
+
+  .notch-control__shape,
+  .effect-canvas__notch {
+    background: CanvasText;
+  }
+
+  .effect-tabs button[aria-selected="true"],
+  .backdrop-swatch[aria-pressed="true"] {
+    outline: 3px solid Highlight;
+    outline-offset: -4px;
+  }
+
+  .button,
+  .language-options,
+  .studio-shell,
+  .resource-rail,
+  .download-rail,
+  .document-release,
+  .contact-box,
+  .no-js-notice {
+    border: 1px solid CanvasText;
   }
 }

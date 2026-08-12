@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-title-en="BetterNotch — Let the physical notch disappear into the menu bar" data-title-zh="BetterNotch — 让物理刘海自然隐入菜单栏">
+<html class="no-js" lang="en" data-title-en="BetterNotch — Let the physical notch disappear into the menu bar" data-title-zh="BetterNotch — 让物理刘海自然隐入菜单栏">
   <head>
     <meta charset="utf-8">
+    <script>document.documentElement.className="js"</script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="BetterNotch lets the physical notch disappear into the menu bar. Download version 1.0 for macOS 26 or later, and preview the next update.">
     <meta name="theme-color" content="#f7f8fa">
@@ -23,9 +24,9 @@
     <meta name="twitter:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/">
     <link rel="icon" href="assets/betternotch-icon-128.png" type="image/png">
-    <link rel="stylesheet" href="assets/styles.css?v=20260812-3">
-    <script src="assets/language.js?v=20260812-1" defer></script>
-    <script src="assets/site.js?v=20260812-1" defer></script>
+    <link rel="stylesheet" href="assets/styles.css?v=20260812-4">
+    <script src="assets/language.js?v=20260812-2" defer></script>
+    <script src="assets/site.js?v=20260812-2" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -55,7 +56,7 @@
   <body class="home-page" data-effect="gradient" data-backdrop="warm">
     <a class="skip-link" href="#main" data-en="Skip to main content" data-zh="跳到主要内容">Skip to main content</a>
 
-    <button class="notch-control" type="button" data-effect-cycle>
+    <button class="notch-control" type="button" data-effect-cycle disabled>
       <span class="notch-control__wings" aria-hidden="true"></span>
       <span class="notch-control__shape" aria-hidden="true"></span>
       <span class="sr-only" data-notch-label>Cycle effect style</span>
@@ -81,12 +82,17 @@
         <details class="language-menu" data-language-menu>
           <summary><span data-en="Language" data-zh="语言">Language</span><span class="language-chevron" aria-hidden="true"></span></summary>
           <div class="language-options" role="group" aria-label="Language / 语言">
-            <button type="button" data-locale-button="en" aria-pressed="true">English</button>
-            <button type="button" data-locale-button="zh-Hans" aria-pressed="false">中文</button>
+            <button type="button" data-locale-button="en" aria-pressed="true" disabled>English</button>
+            <button type="button" data-locale-button="zh-Hans" aria-pressed="false" disabled>中文</button>
           </div>
         </details>
       </div>
     </header>
+
+    <aside class="no-js-notice" aria-label="JavaScript status" hidden>
+      <p lang="en"><strong>JavaScript is off.</strong> The English content and every download, Support, and Privacy link remain available. Enable JavaScript only for language switching and the interactive effect preview.</p>
+      <p lang="zh-Hans"><strong>JavaScript 已关闭。</strong>英文内容、下载、支持与隐私链接仍可使用；仅语言切换和交互式效果预览需要 JavaScript。</p>
+    </aside>
 
     <main id="main">
       <article class="locale-home" aria-labelledby="home-title">
@@ -122,17 +128,22 @@
           <header class="section-heading section-heading-centered">
             <span class="release-kicker" data-en="Next update preview" data-zh="下一次更新预览">Next update preview</span>
             <h2 id="effects-title" data-en="One menu bar. Four ways to see it." data-zh="一条菜单栏，四种观看方式。">One menu bar. Four ways to see it.</h2>
-            <p data-en="Preview the in-development Liquid Glass effect and Studio reel. Choose a style, then tap the notch above to move through the reel." data-zh="预览开发中的液态玻璃效果与 Studio 转盘。选择一种样式，或点击页面顶部的刘海切换。">Preview the in-development Liquid Glass effect and Studio reel. Choose a style, then tap the notch above to move through the reel.</p>
+            <p class="js-only" data-en="Preview the in-development Liquid Glass effect and Studio reel. Choose a style, then tap the notch above to move through the reel." data-zh="预览开发中的液态玻璃效果与 Studio 转盘。选择一种样式，或点击页面顶部的刘海切换。">Preview the in-development Liquid Glass effect and Studio reel. Choose a style, then tap the notch above to move through the reel.</p>
+            <div class="no-js-only static-preview-copy">
+              <p lang="en">The static Gradient study below shows the default preview. The real menu bar captures that follow remain available.</p>
+              <p lang="zh-Hans">下方静态展示默认的渐变预览；后续真实菜单栏截图仍可正常查看。</p>
+            </div>
           </header>
 
           <div class="studio-shell">
-            <div class="effect-stage" id="effect-stage" role="tabpanel" aria-live="polite">
+            <div class="effect-stage" id="effect-stage" aria-live="polite">
               <div class="effect-stage__toolbar">
-                <span data-en="In-development interactive preview" data-zh="开发中交互预览">In-development interactive preview</span>
+                <span class="js-only" data-en="In-development interactive preview" data-zh="开发中交互预览">In-development interactive preview</span>
+                <span class="no-js-only">Static preview / 静态预览</span>
                 <div class="backdrop-picker" role="group" aria-label="Preview backdrop" data-aria-en="Preview backdrop" data-aria-zh="预览底色">
-                  <button class="backdrop-swatch backdrop-swatch-warm" type="button" data-backdrop-button="warm" aria-pressed="true"><span class="sr-only" data-en="Warm backdrop" data-zh="暖色底色">Warm backdrop</span></button>
-                  <button class="backdrop-swatch backdrop-swatch-midnight" type="button" data-backdrop-button="midnight" aria-pressed="false"><span class="sr-only" data-en="Midnight backdrop" data-zh="深色底色">Midnight backdrop</span></button>
-                  <button class="backdrop-swatch backdrop-swatch-mist" type="button" data-backdrop-button="mist" aria-pressed="false"><span class="sr-only" data-en="Mist backdrop" data-zh="浅色底色">Mist backdrop</span></button>
+                  <button class="backdrop-swatch backdrop-swatch-warm" type="button" data-backdrop-button="warm" aria-pressed="true" disabled><span class="sr-only" data-en="Warm backdrop" data-zh="暖色底色">Warm backdrop</span></button>
+                  <button class="backdrop-swatch backdrop-swatch-midnight" type="button" data-backdrop-button="midnight" aria-pressed="false" disabled><span class="sr-only" data-en="Midnight backdrop" data-zh="深色底色">Midnight backdrop</span></button>
+                  <button class="backdrop-swatch backdrop-swatch-mist" type="button" data-backdrop-button="mist" aria-pressed="false" disabled><span class="sr-only" data-en="Mist backdrop" data-zh="浅色底色">Mist backdrop</span></button>
                 </div>
               </div>
 
@@ -153,10 +164,10 @@
             </div>
 
             <div class="effect-tabs" role="tablist" aria-label="Effect styles" data-aria-en="Effect styles" data-aria-zh="效果样式">
-              <button id="effect-tab-original" type="button" role="tab" aria-controls="effect-stage" aria-selected="false" tabindex="-1" data-effect-button="original"><span data-en="Original" data-zh="原始">Original</span><small data-en="No effect" data-zh="关闭效果">No effect</small></button>
-              <button id="effect-tab-gradient" type="button" role="tab" aria-controls="effect-stage" aria-selected="true" tabindex="0" data-effect-button="gradient"><span data-en="Gradient" data-zh="渐变">Gradient</span><small data-en="Signature" data-zh="主打效果">Signature</small></button>
-              <button id="effect-tab-liquid-glass" type="button" role="tab" aria-controls="effect-stage" aria-selected="false" tabindex="-1" data-effect-button="liquid-glass"><span data-en="Liquid Glass" data-zh="液态玻璃">Liquid Glass</span><small data-en="Glass and ink" data-zh="玻璃与墨迹">Glass and ink</small></button>
-              <button id="effect-tab-solid-black" type="button" role="tab" aria-controls="effect-stage" aria-selected="false" tabindex="-1" data-effect-button="solid-black"><span data-en="Solid Black" data-zh="纯黑">Solid Black</span><small data-en="Uniform black" data-zh="完整纯黑">Uniform black</small></button>
+              <button id="effect-tab-original" type="button" role="tab" aria-controls="effect-stage" aria-selected="false" tabindex="-1" data-effect-button="original" disabled><span data-en="Original" data-zh="原始">Original</span><small data-en="No effect" data-zh="关闭效果">No effect</small></button>
+              <button id="effect-tab-gradient" type="button" role="tab" aria-controls="effect-stage" aria-selected="true" tabindex="0" data-effect-button="gradient" disabled><span data-en="Gradient" data-zh="渐变">Gradient</span><small data-en="Signature" data-zh="主打效果">Signature</small></button>
+              <button id="effect-tab-liquid-glass" type="button" role="tab" aria-controls="effect-stage" aria-selected="false" tabindex="-1" data-effect-button="liquid-glass" disabled><span data-en="Liquid Glass" data-zh="液态玻璃">Liquid Glass</span><small data-en="Glass and ink" data-zh="玻璃与墨迹">Glass and ink</small></button>
+              <button id="effect-tab-solid-black" type="button" role="tab" aria-controls="effect-stage" aria-selected="false" tabindex="-1" data-effect-button="solid-black" disabled><span data-en="Solid Black" data-zh="纯黑">Solid Black</span><small data-en="Uniform black" data-zh="完整纯黑">Uniform black</small></button>
             </div>
           </div>
         </section>

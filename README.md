@@ -37,3 +37,8 @@ Run the zero-dependency release checks before each deploy:
 ```sh
 node scripts/check-site.mjs
 ```
+
+The HTML starts in a static `no-js` state. A tiny head script switches to the
+interactive state before first paint; if scripting is unavailable, inert
+controls stay hidden and the English content, bilingual status notice, real
+captures, download, Support, and Privacy links remain usable.

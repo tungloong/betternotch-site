@@ -60,6 +60,12 @@ for (const page of pages) {
   requireMatch(source, /<meta name="description" content="[^"]+">/, `${page.file}: missing meta description`);
   requireMatch(source, /<a class="skip-link" href="#main"/, `${page.file}: missing skip link`);
   requireMatch(source, /<main id="main"/, `${page.file}: missing main landmark`);
+  requireMatch(source, /<html class="no-js"/, `${page.file}: missing no-JavaScript baseline class`);
+  requireMatch(source, /<script>document\.documentElement\.className="js"<\/script>/, `${page.file}: missing early JavaScript-ready class switch`);
+  requireMatch(source, /<aside class="no-js-notice"[^>]*hidden[\s\S]*?JavaScript is off\.[\s\S]*?JavaScript 已关闭。[\s\S]*?<\/aside>/, `${page.file}: incomplete bilingual no-JavaScript notice`);
+  requireMatch(source, /data-locale-button="en"[^>]*disabled/, `${page.file}: language control must be inert before JavaScript initializes`);
+  requireMatch(source, /styles\.css\?v=20260812-4/, `${page.file}: stale stylesheet cache key`);
+  requireMatch(source, /language\.js\?v=20260812-2/, `${page.file}: stale language script cache key`);
   requireMatch(source, new RegExp(`<link rel="canonical" href="${page.canonical.replaceAll("/", "\\/")}">`), `${page.file}: canonical URL mismatch`);
 
   for (const property of [
@@ -129,6 +135,29 @@ const home = await readFile(path.join(repoDir, "index.html"), "utf8");
 requireMatch(home, new RegExp(appStoreUrl.replace(/[?]/g, "\\?")), "index.html: official App Store URL is missing");
 requireMatch(home, /Next update preview/, "index.html: release boundary marker is missing");
 requireMatch(home, /<picture>[\s\S]*?type="image\/avif"[\s\S]*?srcset="assets\/menubar-gradient-330\.avif 330w, assets\/menubar-gradient-396\.avif 396w, assets\/menubar-gradient-528\.avif 528w"/, "index.html: responsive AVIF hero source is missing");
+requireMatch(home, /class="notch-control"[^>]*data-effect-cycle[^>]*disabled/, "index.html: notch control must be inert before JavaScript initializes");
+requireMatch(home, /class="no-js-only static-preview-copy"/, "index.html: no-JavaScript static preview explanation is missing");
+requireMatch(home, /data-backdrop-button="warm"[^>]*disabled/, "index.html: backdrop controls must be inert before JavaScript initializes");
+requireMatch(home, /data-effect-button="gradient"[^>]*disabled/, "index.html: effect controls must be inert before JavaScript initializes");
+
+const languageScript = await readFile(path.join(repoDir, "assets/language.js"), "utf8");
+requireMatch(languageScript, /classList\.remove\("no-js"\)/, "assets/language.js: no-JavaScript class is not removed on initialization");
+requireMatch(languageScript, /classList\.add\("js"\)/, "assets/language.js: JavaScript-ready class is not added on initialization");
+requireMatch(languageScript, /button\.disabled = false/, "assets/language.js: language controls are not enabled after initialization");
+
+const siteScript = await readFile(path.join(repoDir, "assets/site.js"), "utf8");
+requireMatch(siteScript, /cycleButton\.disabled = false/, "assets/site.js: notch control is not enabled after initialization");
+requireMatch(siteScript, /effectStage\?\.setAttribute\("role", "tabpanel"\)/, "assets/site.js: interactive tabpanel semantics are not enabled after initialization");
+
+const styles = await readFile(path.join(repoDir, "assets/styles.css"), "utf8");
+for (const requirement of [
+  [/@media \(max-width: 360px\)/, "320px resilience breakpoint"],
+  [/@media \(prefers-reduced-motion: reduce\)/, "reduced-motion support"],
+  [/@media \(prefers-contrast: more\)/, "higher-contrast support"],
+  [/@media \(forced-colors: active\)/, "forced-colors support"],
+  [/\.no-js \.notch-control/, "no-JavaScript inert control styling"],
+  [/\.button:hover,[\s\S]*?transform: none;/, "reduced-motion transform removal"],
+]) requireMatch(styles, requirement[0], `assets/styles.css: missing ${requirement[1]}`);
 
 const jsonLdMatch = home.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
 if (!jsonLdMatch) {

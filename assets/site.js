@@ -11,6 +11,15 @@
 
   if (!body || effectButtons.length === 0) return;
 
+  if (cycleButton) cycleButton.disabled = false;
+  backdropButtons.forEach((button) => {
+    button.disabled = false;
+  });
+  effectButtons.forEach((button) => {
+    button.disabled = false;
+  });
+  effectStage?.setAttribute("role", "tabpanel");
+
   const effects = [
     {
       id: "original",

@@ -1,13 +1,20 @@
 (() => {
+  const root = document.documentElement;
+  root.classList.remove("no-js");
+  root.classList.add("js");
+
   const storageKey = "betternotch.language";
   const supportedLanguages = new Set(["en", "zh-Hans"]);
-  const root = document.documentElement;
   const languageButtons = document.querySelectorAll("[data-locale-button]");
   const menus = document.querySelectorAll("[data-language-menu]");
   const textItems = document.querySelectorAll("[data-en][data-zh]");
   const ariaItems = document.querySelectorAll("[data-aria-en][data-aria-zh]");
   const altItems = document.querySelectorAll("[data-alt-en][data-alt-zh]");
   const sourceItems = document.querySelectorAll("[data-src-en][data-src-zh]");
+
+  languageButtons.forEach((button) => {
+    button.disabled = false;
+  });
 
   function storedLanguage() {
     try {
