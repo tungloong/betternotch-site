@@ -72,7 +72,7 @@ for (const page of pages) {
   requireMatch(source, /<script>document\.documentElement\.className="js"<\/script>/, `${page.file}: missing early JavaScript-ready class switch`);
   requireMatch(source, /<aside class="no-js-notice"[^>]*hidden[\s\S]*?JavaScript is off\.[\s\S]*?JavaScript 已关闭。[\s\S]*?<\/aside>/, `${page.file}: incomplete bilingual no-JavaScript notice`);
   requireMatch(source, /data-locale-button="en"[^>]*disabled/, `${page.file}: language control must be inert before JavaScript initializes`);
-  requireMatch(source, /styles\.css\?v=20260813-2/, `${page.file}: stale stylesheet cache key`);
+  requireMatch(source, /styles\.css\?v=20260813-3/, `${page.file}: stale stylesheet cache key`);
   requireMatch(source, /language\.js\?v=20260812-3/, `${page.file}: stale language script cache key`);
   requireMatch(source, new RegExp(`<link rel="canonical" href="${page.canonical.replaceAll("/", "\\/")}">`), `${page.file}: canonical URL mismatch`);
 
@@ -200,9 +200,14 @@ requireMatch(styles, /body\[data-effect="liquid-glass"\] \.notch-control__wings 
 requireMatch(styles, /body\[data-effect="solid-black"\] \.notch-control__wings \{[\s\S]*?width: 100%;/, "assets/styles.css: fixed Solid Black study must align to the page width");
 requireMatch(styles, /\.effect-canvas__notch \{[\s\S]*?width: var\(--effect-notch-width\);[\s\S]*?height: var\(--effect-band-height\);/, "assets/styles.css: hardware notch must use the shared visual geometry tokens");
 requireMatch(styles, /body\[data-effect="gradient"\] \.effect-canvas__bar \{[\s\S]*?#020203 40%,[\s\S]*?#020203 60%,/, "assets/styles.css: Gradient plateau must stay aligned with the physical notch");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__rim \{[\s\S]*?mask-image: linear-gradient/, "assets/styles.css: Liquid Glass rim must remain inverse-masked by the ink profile");
+requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__rim \{[\s\S]*?bottom: 0;[\s\S]*?height: 2px;/, "assets/styles.css: Liquid Glass must keep one continuous bottom rim");
+if (/body\[data-effect="liquid-glass"\] \.effect-canvas__rim \{[\s\S]*?mask-image:/.test(styles)) fail("assets/styles.css: Liquid Glass rim must not break around the centre ink profile");
+requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__bar \{[\s\S]*?inset: 1px;[\s\S]*?border-radius: 14px;/, "assets/styles.css: Liquid Glass ink must stay inside the continuous glass rim");
 requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__effect \{[\s\S]*?border-radius: 16px;[\s\S]*?corner-shape: squircle;/, "assets/styles.css: Liquid Glass must use a continuous Apple-style corner shape");
 requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__effect \{[\s\S]*?height: calc\(var\(--effect-band-height\) - 6px\);/, "assets/styles.css: inset glass and hardware notch must share a bottom edge");
+requireMatch(styles, /body\[data-effect="gradient"\] \.effect-canvas__notch,\s*body\[data-effect="liquid-glass"\] \.effect-canvas__notch \{[\s\S]*?opacity: 0;[\s\S]*?box-shadow: none;/, "assets/styles.css: composited effects must not redraw the hardware silhouette");
+requireMatch(styles, /body\[data-effect="gradient"\] \.notch-control__wings::before,\s*body\[data-effect="liquid-glass"\] \.notch-control__wings::before \{[\s\S]*?width: calc\(var\(--notch-shape-half-width\) \+ var\(--notch-shape-half-width\) \+ 16px\);[\s\S]*?background: #050506;/, "assets/styles.css: fixed effect study must fill the centre seam behind the hardware silhouette");
+requireMatch(styles, /body\[data-effect="gradient"\] \.notch-control__shape,\s*body\[data-effect="liquid-glass"\] \.notch-control__shape \{[\s\S]*?opacity: 0;[\s\S]*?box-shadow: none;/, "assets/styles.css: fixed composited effects must not redraw the hardware silhouette");
 requireMatch(styles, /@media \(max-width: 760px\)[\s\S]*?\.effect-canvas \{[\s\S]*?--effect-band-height: 50px;/, "assets/styles.css: mobile effect geometry must scale as one continuous band");
 if (/\.effect-canvas__bar,\s*\n\s*\.effect-canvas__notch\s*\{\s*\n\s*height:/.test(styles)) fail("assets/styles.css: visual band and hardware notch heights must not diverge");
 

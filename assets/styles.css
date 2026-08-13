@@ -197,6 +197,7 @@ summary:focus-visible {
 
 .notch-control__shape {
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 50%;
   width: 154px;
@@ -206,15 +207,18 @@ summary:focus-visible {
   border-radius: 0 0 16px 16px;
   corner-shape: squircle;
   background: #050506;
+  opacity: 1;
   box-shadow: 0 9px 24px rgba(15, 18, 26, 0.2);
   transform: translateX(-50%);
-  transition: width 280ms ease, box-shadow 280ms ease;
+  transition: width 280ms ease, box-shadow 280ms ease, opacity 160ms ease;
+  pointer-events: none;
 }
 
 .notch-control__wings {
   --liquid-glass-filter: blur(0px);
   --liquid-glass-radius: 16px;
   position: absolute;
+  z-index: 2;
   top: 0;
   left: 50%;
   width: 100%;
@@ -225,6 +229,25 @@ summary:focus-visible {
   opacity: 0;
   transform: translateX(-50%);
   transition: opacity 280ms ease, width 280ms ease, background 280ms ease;
+}
+
+/*
+ * The visual studies already contain an opaque centre plateau. Fill the area
+ * behind the hardware silhouette as well, so its rounded lower corners cannot
+ * reveal a transparent slit when the two layers are composited.
+ */
+body[data-effect="gradient"] .notch-control__wings::before,
+body[data-effect="liquid-glass"] .notch-control__wings::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 1px;
+  bottom: 1px;
+  left: 50%;
+  width: calc(var(--notch-shape-half-width) + var(--notch-shape-half-width) + 16px);
+  background: #050506;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 body[data-effect="gradient"] .notch-control__wings {
@@ -294,6 +317,7 @@ body[data-effect="solid-black"] .notch-control__wings {
 body[data-effect="gradient"] .notch-control__shape,
 body[data-effect="liquid-glass"] .notch-control__shape {
   border-color: transparent;
+  opacity: 0;
   box-shadow: none;
 }
 
@@ -852,8 +876,10 @@ body[data-backdrop="mist"] .effect-canvas__wallpaper {
   border-radius: 0 0 16px 16px;
   corner-shape: squircle;
   background: #020203;
+  opacity: 1;
   transform: translateX(-50%);
-  transition: width 280ms ease, border-radius 280ms ease, box-shadow 280ms ease;
+  transition: width 280ms ease, border-radius 280ms ease, box-shadow 280ms ease, opacity 160ms ease;
+  pointer-events: none;
 }
 
 .effect-canvas__rim {
@@ -926,6 +952,8 @@ body[data-effect="liquid-glass"] .effect-canvas__effect {
 
 body[data-effect="liquid-glass"] .effect-canvas__bar {
   /* Mirrors LiquidGlassGradientProfile's current piecewise defaults. */
+  inset: 1px;
+  border-radius: 14px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 42%, rgba(0, 0, 0, 0.055)),
     linear-gradient(90deg,
@@ -970,36 +998,6 @@ body[data-effect="liquid-glass"] .effect-canvas__rim {
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(255, 255, 255, 0.55) 72%, rgba(255, 255, 255, 0)),
     linear-gradient(180deg, rgba(111, 166, 255, 0.14), rgba(255, 188, 119, 0.12));
-  mask-image: linear-gradient(90deg,
-    #000 0%,
-    #000 7.5%,
-    rgba(0, 0, 0, 0.98) 20%,
-    rgba(0, 0, 0, 0.9) 25.246%,
-    rgba(0, 0, 0, 0.45) 30.16%,
-    rgba(0, 0, 0, 0.09) 34.997%,
-    rgba(0, 0, 0, 0) 38.366%,
-    rgba(0, 0, 0, 0) 61.634%,
-    rgba(0, 0, 0, 0.09) 65.003%,
-    rgba(0, 0, 0, 0.45) 69.84%,
-    rgba(0, 0, 0, 0.9) 74.754%,
-    rgba(0, 0, 0, 0.98) 80%,
-    #000 92.5%,
-    #000 100%);
-  -webkit-mask-image: linear-gradient(90deg,
-    #000 0%,
-    #000 7.5%,
-    rgba(0, 0, 0, 0.98) 20%,
-    rgba(0, 0, 0, 0.9) 25.246%,
-    rgba(0, 0, 0, 0.45) 30.16%,
-    rgba(0, 0, 0, 0.09) 34.997%,
-    rgba(0, 0, 0, 0) 38.366%,
-    rgba(0, 0, 0, 0) 61.634%,
-    rgba(0, 0, 0, 0.09) 65.003%,
-    rgba(0, 0, 0, 0.45) 69.84%,
-    rgba(0, 0, 0, 0.9) 74.754%,
-    rgba(0, 0, 0, 0.98) 80%,
-    #000 92.5%,
-    #000 100%);
 }
 
 body[data-effect="solid-black"] .effect-canvas__bar {
@@ -1011,13 +1009,17 @@ body[data-effect="solid-black"] .effect-canvas__notch {
   box-shadow: 0 0 0 1px #020203;
 }
 
+/*
+ * Gradient and Liquid Glass already paint the physical centre in their ink
+ * profiles. Drawing the hardware silhouette above them creates a second lower
+ * edge and exposes black tabs around its rounded corners. Keep that silhouette
+ * only for Original; the two composited effects must read as one continuous
+ * surface.
+ */
 body[data-effect="gradient"] .effect-canvas__notch,
 body[data-effect="liquid-glass"] .effect-canvas__notch {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.32);
-}
-
-body[data-effect="liquid-glass"] .effect-canvas__notch {
-  z-index: 5;
+  opacity: 0;
+  box-shadow: none;
 }
 
 .effect-readout {
