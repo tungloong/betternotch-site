@@ -23,6 +23,79 @@
   --shadow-lift: 0 2px 4px rgba(15, 18, 26, 0.06), 0 30px 80px rgba(15, 18, 26, 0.14);
   --display: "Iowan Old Style", "New York", ui-serif, Georgia, "Songti SC", serif;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  /*
+   * Web ports of the app's full-width profiles. Both are one horizontal layer:
+   * transparent edge -> opaque physical-notch plateau -> transparent edge.
+   * The 44%–56% interval is EffectStylePreview's real default geometry.
+   */
+  --notch-gradient-profile: linear-gradient(90deg,
+    rgba(2, 2, 3, 0) 0%,
+    rgba(2, 2, 3, 0.002) 2.75%,
+    rgba(2, 2, 3, 0.016) 5.5%,
+    rgba(2, 2, 3, 0.049) 8.25%,
+    rgba(2, 2, 3, 0.104) 11%,
+    rgba(2, 2, 3, 0.18) 13.75%,
+    rgba(2, 2, 3, 0.275) 16.5%,
+    rgba(2, 2, 3, 0.384) 19.25%,
+    rgba(2, 2, 3, 0.5) 22%,
+    rgba(2, 2, 3, 0.616) 24.75%,
+    rgba(2, 2, 3, 0.725) 27.5%,
+    rgba(2, 2, 3, 0.82) 30.25%,
+    rgba(2, 2, 3, 0.896) 33%,
+    rgba(2, 2, 3, 0.951) 35.75%,
+    rgba(2, 2, 3, 0.984) 38.5%,
+    rgba(2, 2, 3, 0.998) 41.25%,
+    #020203 44%,
+    #020203 56%,
+    rgba(2, 2, 3, 0.998) 58.75%,
+    rgba(2, 2, 3, 0.984) 61.5%,
+    rgba(2, 2, 3, 0.951) 64.25%,
+    rgba(2, 2, 3, 0.896) 67%,
+    rgba(2, 2, 3, 0.82) 69.75%,
+    rgba(2, 2, 3, 0.725) 72.5%,
+    rgba(2, 2, 3, 0.616) 75.25%,
+    rgba(2, 2, 3, 0.5) 78%,
+    rgba(2, 2, 3, 0.384) 80.75%,
+    rgba(2, 2, 3, 0.275) 83.5%,
+    rgba(2, 2, 3, 0.18) 86.25%,
+    rgba(2, 2, 3, 0.104) 89%,
+    rgba(2, 2, 3, 0.049) 91.75%,
+    rgba(2, 2, 3, 0.016) 94.5%,
+    rgba(2, 2, 3, 0.002) 97.25%,
+    rgba(2, 2, 3, 0) 100%);
+  --liquid-glass-ink-profile: linear-gradient(90deg,
+    rgba(2, 2, 3, 0) 0%,
+    rgba(2, 2, 3, 0) 11%,
+    rgba(2, 2, 3, 0.003) 13.75%,
+    rgba(2, 2, 3, 0.008) 16.5%,
+    rgba(2, 2, 3, 0.019) 19.25%,
+    rgba(2, 2, 3, 0.036) 22%,
+    rgba(2, 2, 3, 0.061) 24.75%,
+    rgba(2, 2, 3, 0.096) 27.5%,
+    rgba(2, 2, 3, 0.1) 27.764%,
+    rgba(2, 2, 3, 0.307) 30.25%,
+    rgba(2, 2, 3, 0.535) 33%,
+    rgba(2, 2, 3, 0.55) 33.176%,
+    rgba(2, 2, 3, 0.748) 35.75%,
+    rgba(2, 2, 3, 0.91) 38.5%,
+    rgba(2, 2, 3, 0.994) 41.25%,
+    #020203 42.196%,
+    #020203 57.804%,
+    rgba(2, 2, 3, 0.994) 58.75%,
+    rgba(2, 2, 3, 0.91) 61.5%,
+    rgba(2, 2, 3, 0.748) 64.25%,
+    rgba(2, 2, 3, 0.55) 66.824%,
+    rgba(2, 2, 3, 0.535) 67%,
+    rgba(2, 2, 3, 0.307) 69.75%,
+    rgba(2, 2, 3, 0.1) 72.236%,
+    rgba(2, 2, 3, 0.096) 72.5%,
+    rgba(2, 2, 3, 0.061) 75.25%,
+    rgba(2, 2, 3, 0.036) 78%,
+    rgba(2, 2, 3, 0.019) 80.75%,
+    rgba(2, 2, 3, 0.008) 83.5%,
+    rgba(2, 2, 3, 0.003) 86.25%,
+    rgba(2, 2, 3, 0) 89%,
+    rgba(2, 2, 3, 0) 100%);
 }
 
 * {
@@ -180,7 +253,6 @@ summary:focus-visible {
 
 /* The page notch is a real control: clicking it advances the effect reel. */
 .notch-control {
-  --notch-shape-half-width: 77px;
   position: fixed;
   z-index: 120;
   top: 0;
@@ -231,48 +303,10 @@ summary:focus-visible {
   transition: opacity 280ms ease, width 280ms ease, background 280ms ease;
 }
 
-/*
- * The visual studies already contain an opaque centre plateau. Fill the area
- * behind the hardware silhouette as well, so its rounded lower corners cannot
- * reveal a transparent slit when the two layers are composited.
- */
-body[data-effect="gradient"] .notch-control__wings::before,
-body[data-effect="liquid-glass"] .notch-control__wings::before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  top: 1px;
-  bottom: 1px;
-  left: 50%;
-  width: calc(var(--notch-shape-half-width) + var(--notch-shape-half-width) + 16px);
-  background: #050506;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
 body[data-effect="gradient"] .notch-control__wings {
   opacity: 1;
-  background:
-    linear-gradient(90deg,
-      rgba(5, 5, 6, 0) 0%,
-      rgba(5, 5, 6, 0.016) 12.5%,
-      rgba(5, 5, 6, 0.104) 25%,
-      rgba(5, 5, 6, 0.275) 37.5%,
-      rgba(5, 5, 6, 0.5) 50%,
-      rgba(5, 5, 6, 0.725) 62.5%,
-      rgba(5, 5, 6, 0.897) 75%,
-      rgba(5, 5, 6, 0.984) 87.5%,
-      #050506 100%) left / calc(50% - var(--notch-shape-half-width)) 100% no-repeat,
-    linear-gradient(90deg,
-      #050506 0%,
-      rgba(5, 5, 6, 0.984) 12.5%,
-      rgba(5, 5, 6, 0.897) 25%,
-      rgba(5, 5, 6, 0.725) 37.5%,
-      rgba(5, 5, 6, 0.5) 50%,
-      rgba(5, 5, 6, 0.275) 62.5%,
-      rgba(5, 5, 6, 0.104) 75%,
-      rgba(5, 5, 6, 0.016) 87.5%,
-      rgba(5, 5, 6, 0) 100%) right / calc(50% - var(--notch-shape-half-width)) 100% no-repeat;
+  background: var(--notch-gradient-profile) no-repeat;
+  background-size: 100% 100%;
 }
 
 body[data-effect="liquid-glass"] .notch-control__wings {
@@ -280,24 +314,9 @@ body[data-effect="liquid-glass"] .notch-control__wings {
   border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 16px;
   background:
+    var(--liquid-glass-ink-profile) 0 0 / 100% 100% no-repeat,
     linear-gradient(155deg, rgba(255, 255, 255, 0.11), transparent 22%, transparent 74%, rgba(163, 195, 255, 0.07)) 0 0 / 100% 100% no-repeat,
-    linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 46%, rgba(0, 0, 0, 0.045)) 0 0 / 100% 100% no-repeat,
-    linear-gradient(90deg,
-      rgba(5, 5, 6, 0) 0%,
-      rgba(5, 5, 6, 0.02) 20%,
-      rgba(5, 5, 6, 0.08) 40%,
-      rgba(5, 5, 6, 0.24) 59%,
-      rgba(5, 5, 6, 0.55) 78%,
-      rgba(5, 5, 6, 0.9) 91%,
-      #050506 100%) left / calc(50% - var(--notch-shape-half-width)) 100% no-repeat,
-    linear-gradient(90deg,
-      #050506 0%,
-      rgba(5, 5, 6, 0.9) 9%,
-      rgba(5, 5, 6, 0.55) 22%,
-      rgba(5, 5, 6, 0.24) 41%,
-      rgba(5, 5, 6, 0.08) 60%,
-      rgba(5, 5, 6, 0.02) 80%,
-      rgba(5, 5, 6, 0) 100%) right / calc(50% - var(--notch-shape-half-width)) 100% no-repeat;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 46%, rgba(0, 0, 0, 0.045)) 0 0 / 100% 100% no-repeat;
   box-shadow:
     inset 0 1px rgba(255, 255, 255, 0.21),
     inset 0 -1px rgba(255, 255, 255, 0.34),
@@ -892,42 +911,9 @@ body[data-effect="original"] .effect-canvas__bar {
 }
 
 body[data-effect="gradient"] .effect-canvas__bar {
-  /* Current App default: 16 samples of smootherstep into a 40%–60% plateau. */
-  background: linear-gradient(90deg,
-    rgba(2, 2, 3, 0) 0%,
-    rgba(2, 2, 3, 0.002) 2.5%,
-    rgba(2, 2, 3, 0.016) 5%,
-    rgba(2, 2, 3, 0.049) 7.5%,
-    rgba(2, 2, 3, 0.104) 10%,
-    rgba(2, 2, 3, 0.18) 12.5%,
-    rgba(2, 2, 3, 0.275) 15%,
-    rgba(2, 2, 3, 0.384) 17.5%,
-    rgba(2, 2, 3, 0.5) 20%,
-    rgba(2, 2, 3, 0.616) 22.5%,
-    rgba(2, 2, 3, 0.725) 25%,
-    rgba(2, 2, 3, 0.82) 27.5%,
-    rgba(2, 2, 3, 0.896) 30%,
-    rgba(2, 2, 3, 0.951) 32.5%,
-    rgba(2, 2, 3, 0.984) 35%,
-    rgba(2, 2, 3, 0.998) 37.5%,
-    #020203 40%,
-    #020203 60%,
-    rgba(2, 2, 3, 0.998) 62.5%,
-    rgba(2, 2, 3, 0.984) 65%,
-    rgba(2, 2, 3, 0.951) 67.5%,
-    rgba(2, 2, 3, 0.896) 70%,
-    rgba(2, 2, 3, 0.82) 72.5%,
-    rgba(2, 2, 3, 0.725) 75%,
-    rgba(2, 2, 3, 0.616) 77.5%,
-    rgba(2, 2, 3, 0.5) 80%,
-    rgba(2, 2, 3, 0.384) 82.5%,
-    rgba(2, 2, 3, 0.275) 85%,
-    rgba(2, 2, 3, 0.18) 87.5%,
-    rgba(2, 2, 3, 0.104) 90%,
-    rgba(2, 2, 3, 0.049) 92.5%,
-    rgba(2, 2, 3, 0.016) 95%,
-    rgba(2, 2, 3, 0.002) 97.5%,
-    rgba(2, 2, 3, 0) 100%);
+  /* EffectConfiguration.default: spread 0.5, softness 1, notch 44%–56%. */
+  background: var(--notch-gradient-profile) no-repeat;
+  background-size: 100% 100%;
 }
 
 body[data-effect="liquid-glass"] .effect-canvas__effect {
@@ -951,42 +937,12 @@ body[data-effect="liquid-glass"] .effect-canvas__effect {
 }
 
 body[data-effect="liquid-glass"] .effect-canvas__bar {
-  /* Mirrors LiquidGlassGradientProfile's current piecewise defaults. */
+  /* The same one-piece ink profile used by the full-width fixed study. */
   inset: 1px;
   border-radius: 14px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 42%, rgba(0, 0, 0, 0.055)),
-    linear-gradient(90deg,
-      rgba(2, 2, 3, 0) 0%,
-      rgba(2, 2, 3, 0) 7.5%,
-      rgba(2, 2, 3, 0.001) 10.006%,
-      rgba(2, 2, 3, 0.003) 12.501%,
-      rgba(2, 2, 3, 0.008) 14.997%,
-      rgba(2, 2, 3, 0.019) 17.504%,
-      rgba(2, 2, 3, 0.036) 20%,
-      rgba(2, 2, 3, 0.061) 22.496%,
-      rgba(2, 2, 3, 0.1) 25.246%,
-      rgba(2, 2, 3, 0.307) 27.499%,
-      rgba(2, 2, 3, 0.55) 30.16%,
-      rgba(2, 2, 3, 0.748) 32.501%,
-      rgba(2, 2, 3, 0.91) 34.997%,
-      rgba(2, 2, 3, 0.994) 37.504%,
-      #020203 38.366%,
-      #020203 61.634%,
-      rgba(2, 2, 3, 0.994) 62.496%,
-      rgba(2, 2, 3, 0.91) 65.003%,
-      rgba(2, 2, 3, 0.748) 67.499%,
-      rgba(2, 2, 3, 0.55) 69.84%,
-      rgba(2, 2, 3, 0.307) 72.501%,
-      rgba(2, 2, 3, 0.1) 74.754%,
-      rgba(2, 2, 3, 0.061) 77.504%,
-      rgba(2, 2, 3, 0.036) 80%,
-      rgba(2, 2, 3, 0.019) 82.496%,
-      rgba(2, 2, 3, 0.008) 85.003%,
-      rgba(2, 2, 3, 0.003) 87.499%,
-      rgba(2, 2, 3, 0.001) 89.994%,
-      rgba(2, 2, 3, 0) 92.501%,
-      rgba(2, 2, 3, 0) 100%);
+    var(--liquid-glass-ink-profile) 0 0 / 100% 100% no-repeat,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 42%, rgba(0, 0, 0, 0.055));
 }
 
 body[data-effect="liquid-glass"] .effect-canvas__rim {
@@ -1639,7 +1595,6 @@ body[data-effect="liquid-glass"] .effect-canvas__notch {
   }
 
   .notch-control {
-    --notch-shape-half-width: 46px;
     width: min(calc(100% - 32px), var(--max-width));
   }
 
