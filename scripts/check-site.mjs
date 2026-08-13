@@ -72,7 +72,7 @@ for (const page of pages) {
   requireMatch(source, /<script>document\.documentElement\.className="js"<\/script>/, `${page.file}: missing early JavaScript-ready class switch`);
   requireMatch(source, /<aside class="no-js-notice"[^>]*hidden[\s\S]*?JavaScript is off\.[\s\S]*?JavaScript 已关闭。[\s\S]*?<\/aside>/, `${page.file}: incomplete bilingual no-JavaScript notice`);
   requireMatch(source, /data-locale-button="en"[^>]*disabled/, `${page.file}: language control must be inert before JavaScript initializes`);
-  requireMatch(source, /styles\.css\?v=20260812-6/, `${page.file}: stale stylesheet cache key`);
+  requireMatch(source, /styles\.css\?v=20260813-1/, `${page.file}: stale stylesheet cache key`);
   requireMatch(source, /language\.js\?v=20260812-3/, `${page.file}: stale language script cache key`);
   requireMatch(source, new RegExp(`<link rel="canonical" href="${page.canonical.replaceAll("/", "\\/")}">`), `${page.file}: canonical URL mismatch`);
 
@@ -156,6 +156,7 @@ requireMatch(home, /class="no-js-only static-preview-copy"/, "index.html: no-Jav
 requireMatch(home, /data-backdrop-button="warm"[^>]*disabled/, "index.html: backdrop controls must be inert before JavaScript initializes");
 requireMatch(home, /data-effect-button="gradient"[^>]*disabled/, "index.html: effect controls must be inert before JavaScript initializes");
 requireMatch(home, /site\.js\?v=20260812-3/, "index.html: stale site script cache key");
+requireMatch(home, /class="effect-canvas__effect"[\s\S]*?class="effect-canvas__bar"[\s\S]*?class="effect-canvas__rim"[\s\S]*?class="effect-canvas__notch"/, "index.html: effect preview layers must separate the visual band from the hardware notch");
 requireMatch(home, /lets you choose a style for the built-in display and each external display/, "index.html: precise per-display style wording is missing");
 requireMatch(home, /data-en="Per-display styles" data-zh="逐屏样式"/, "index.html: precise per-display feature heading is missing");
 if (/independent controls for (?:every|each) display/.test(home)) fail("index.html: per-display controls wording overstates the released configuration model");
@@ -191,6 +192,13 @@ requireMatch(styles, /@media print[\s\S]*?\.document-nav[\s\S]*?display: none !i
 requireMatch(styles, /\.site-nav a \{[\s\S]*?min-height: 44px;/, "assets/styles.css: main navigation touch targets are too small");
 requireMatch(styles, /\.backdrop-swatch \{[\s\S]*?width: 44px;[\s\S]*?height: 44px;/, "assets/styles.css: backdrop touch targets are too small");
 requireMatch(styles, /\.document-nav a \{[\s\S]*?min-height: 44px;/, "assets/styles.css: document navigation touch targets are too small");
+requireMatch(styles, /\.effect-canvas \{[\s\S]*?--effect-band-height: 66px;/, "assets/styles.css: desktop effect geometry token is missing");
+requireMatch(styles, /\.effect-canvas \{[\s\S]*?--effect-notch-width: clamp\(72px, 20%, 236px\);/, "assets/styles.css: measured notch width token is missing");
+requireMatch(styles, /\.effect-canvas__notch \{[\s\S]*?width: var\(--effect-notch-width\);[\s\S]*?height: var\(--effect-band-height\);/, "assets/styles.css: hardware notch must use the shared visual geometry tokens");
+requireMatch(styles, /body\[data-effect="gradient"\] \.effect-canvas__bar \{[\s\S]*?#020203 40%,[\s\S]*?#020203 60%,/, "assets/styles.css: Gradient plateau must stay aligned with the physical notch");
+requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__rim \{[\s\S]*?mask-image: linear-gradient/, "assets/styles.css: Liquid Glass rim must remain inverse-masked by the ink profile");
+requireMatch(styles, /@media \(max-width: 760px\)[\s\S]*?\.effect-canvas \{[\s\S]*?--effect-band-height: 50px;/, "assets/styles.css: mobile effect geometry must scale as one continuous band");
+if (/\.effect-canvas__bar,\s*\n\s*\.effect-canvas__notch\s*\{\s*\n\s*height:/.test(styles)) fail("assets/styles.css: visual band and hardware notch heights must not diverge");
 
 requireMatch(languageScript, /menu\?\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: language selection must restore focus to its trigger");
 requireMatch(languageScript, /const shouldRestoreFocus = menu\.contains\(document\.activeElement\);[\s\S]*?if \(shouldRestoreFocus\) menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: outside clicks must not leave focus inside a closed menu");
