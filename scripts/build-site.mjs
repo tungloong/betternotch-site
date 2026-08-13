@@ -15,6 +15,7 @@ const publicFiles = [
   "assets/betternotch-icon-128.avif",
   "assets/betternotch-icon-128.png",
   "assets/language.js",
+  "assets/liquid-glass.js",
   "assets/menubar-gradient-330.avif",
   "assets/menubar-gradient-396.avif",
   "assets/menubar-gradient-528.avif",

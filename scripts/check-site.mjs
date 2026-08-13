@@ -72,7 +72,7 @@ for (const page of pages) {
   requireMatch(source, /<script>document\.documentElement\.className="js"<\/script>/, `${page.file}: missing early JavaScript-ready class switch`);
   requireMatch(source, /<aside class="no-js-notice"[^>]*hidden[\s\S]*?JavaScript is off\.[\s\S]*?JavaScript 已关闭。[\s\S]*?<\/aside>/, `${page.file}: incomplete bilingual no-JavaScript notice`);
   requireMatch(source, /data-locale-button="en"[^>]*disabled/, `${page.file}: language control must be inert before JavaScript initializes`);
-  requireMatch(source, /styles\.css\?v=20260813-1/, `${page.file}: stale stylesheet cache key`);
+  requireMatch(source, /styles\.css\?v=20260813-2/, `${page.file}: stale stylesheet cache key`);
   requireMatch(source, /language\.js\?v=20260812-3/, `${page.file}: stale language script cache key`);
   requireMatch(source, new RegExp(`<link rel="canonical" href="${page.canonical.replaceAll("/", "\\/")}">`), `${page.file}: canonical URL mismatch`);
 
@@ -156,6 +156,7 @@ requireMatch(home, /class="no-js-only static-preview-copy"/, "index.html: no-Jav
 requireMatch(home, /data-backdrop-button="warm"[^>]*disabled/, "index.html: backdrop controls must be inert before JavaScript initializes");
 requireMatch(home, /data-effect-button="gradient"[^>]*disabled/, "index.html: effect controls must be inert before JavaScript initializes");
 requireMatch(home, /site\.js\?v=20260812-3/, "index.html: stale site script cache key");
+requireMatch(home, /liquid-glass\.js\?v=20260813-1/, "index.html: Liquid Glass optics enhancer is missing");
 requireMatch(home, /class="effect-canvas__effect"[\s\S]*?class="effect-canvas__bar"[\s\S]*?class="effect-canvas__rim"[\s\S]*?class="effect-canvas__notch"/, "index.html: effect preview layers must separate the visual band from the hardware notch");
 requireMatch(home, /lets you choose a style for the built-in display and each external display/, "index.html: precise per-display style wording is missing");
 requireMatch(home, /data-en="Per-display styles" data-zh="逐屏样式"/, "index.html: precise per-display feature heading is missing");
@@ -194,9 +195,14 @@ requireMatch(styles, /\.backdrop-swatch \{[\s\S]*?width: 44px;[\s\S]*?height: 44
 requireMatch(styles, /\.document-nav a \{[\s\S]*?min-height: 44px;/, "assets/styles.css: document navigation touch targets are too small");
 requireMatch(styles, /\.effect-canvas \{[\s\S]*?--effect-band-height: 66px;/, "assets/styles.css: desktop effect geometry token is missing");
 requireMatch(styles, /\.effect-canvas \{[\s\S]*?--effect-notch-width: clamp\(72px, 20%, 236px\);/, "assets/styles.css: measured notch width token is missing");
+requireMatch(styles, /\.notch-control \{[\s\S]*?width: min\(calc\(100% - 48px\), var\(--max-width\)\);/, "assets/styles.css: fixed effect study must align to the page width");
+requireMatch(styles, /body\[data-effect="liquid-glass"\] \.notch-control__wings \{[\s\S]*?border-radius: 16px;/, "assets/styles.css: fixed Liquid Glass study must round all four corners");
+requireMatch(styles, /body\[data-effect="solid-black"\] \.notch-control__wings \{[\s\S]*?width: 100%;/, "assets/styles.css: fixed Solid Black study must align to the page width");
 requireMatch(styles, /\.effect-canvas__notch \{[\s\S]*?width: var\(--effect-notch-width\);[\s\S]*?height: var\(--effect-band-height\);/, "assets/styles.css: hardware notch must use the shared visual geometry tokens");
 requireMatch(styles, /body\[data-effect="gradient"\] \.effect-canvas__bar \{[\s\S]*?#020203 40%,[\s\S]*?#020203 60%,/, "assets/styles.css: Gradient plateau must stay aligned with the physical notch");
 requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__rim \{[\s\S]*?mask-image: linear-gradient/, "assets/styles.css: Liquid Glass rim must remain inverse-masked by the ink profile");
+requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__effect \{[\s\S]*?border-radius: 16px;[\s\S]*?corner-shape: squircle;/, "assets/styles.css: Liquid Glass must use a continuous Apple-style corner shape");
+requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__effect \{[\s\S]*?height: calc\(var\(--effect-band-height\) - 6px\);/, "assets/styles.css: inset glass and hardware notch must share a bottom edge");
 requireMatch(styles, /@media \(max-width: 760px\)[\s\S]*?\.effect-canvas \{[\s\S]*?--effect-band-height: 50px;/, "assets/styles.css: mobile effect geometry must scale as one continuous band");
 if (/\.effect-canvas__bar,\s*\n\s*\.effect-canvas__notch\s*\{\s*\n\s*height:/.test(styles)) fail("assets/styles.css: visual band and hardware notch heights must not diverge");
 
@@ -269,6 +275,11 @@ requireMatch(deployWorkflow, /pages: write/, ".github/workflows/deploy-pages.yml
 requireMatch(deployWorkflow, /id-token: write/, ".github/workflows/deploy-pages.yml: OIDC permission is missing");
 
 await assertFile("scripts/build-site.mjs");
+await assertFile("assets/liquid-glass.js");
+const liquidGlassScript = await readFile(path.join(repoDir, "assets/liquid-glass.js"), "utf8");
+requireMatch(liquidGlassScript, /function continuousRectDistance\(/, "assets/liquid-glass.js: continuous-corner distance field is missing");
+requireMatch(liquidGlassScript, /feDisplacementMap/, "assets/liquid-glass.js: optical displacement stage is missing");
+requireMatch(liquidGlassScript, /ResizeObserver/, "assets/liquid-glass.js: responsive optical map regeneration is missing");
 const gitignore = await readFile(path.join(repoDir, ".gitignore"), "utf8");
 requireMatch(gitignore, /^_site\/$/m, ".gitignore: generated Pages artifact must remain untracked");
 

@@ -10,6 +10,7 @@ The app repository must not carry a second deployable copy of the website. Produ
 - `support/index.html`: setup and troubleshooting
 - `privacy/index.html`: privacy policy
 - `assets/`: shared styles, behavior, and site media
+- `assets/liquid-glass.js`: zero-dependency SDF refraction and specular-map enhancement for Chromium, with a CSS material fallback elsewhere
 - `scripts/check-site.mjs`: zero-dependency release contract checks
 - `scripts/check-public-links.mjs`: retrying production URL and redirect checks
 - `scripts/build-site.mjs`: deterministic deployment allowlist and `_site` builder
