@@ -7,7 +7,7 @@ const checks = [
     label: "homepage",
     url: siteBase,
     contentType: "text/html",
-    bodyIncludes: "BetterNotch",
+    bodyIncludes: 'class="promo-stack"',
   },
   {
     label: "Support URL",
@@ -23,13 +23,28 @@ const checks = [
   },
   {
     label: "social preview image",
-    url: new URL("assets/og-betternotch-1.0-en.png", siteBase).href,
+    url: new URL("assets/og-betternotch-2.0.png", siteBase).href,
     contentType: "image/png",
   },
   {
     label: "responsive AVIF capture",
-    url: new URL("assets/menubar-gradient-528.avif", siteBase).href,
+    url: new URL("assets/menubar-gradient-1392.avif", siteBase).href,
     contentType: "image/avif",
+  },
+  {
+    label: "full-size gradient PNG",
+    url: new URL("assets/menubar-gradient.png", siteBase).href,
+    contentType: "image/png",
+  },
+  {
+    label: "three-look promo capture",
+    url: new URL("assets/promo-glass-ink.jpg", siteBase).href,
+    contentType: "image/jpeg",
+  },
+  {
+    label: "multi-display promo capture",
+    url: new URL("assets/promo-external.jpg", siteBase).href,
+    contentType: "image/jpeg",
   },
   {
     label: "sitemap",
@@ -67,14 +82,38 @@ const checks = [
     contentType: "text/html",
   },
   {
+    label: "capture preparation script stays private",
+    url: new URL("scripts/prepare-2.0-captures.swift", siteBase).href,
+    expectedStatus: 404,
+    contentType: "text/html",
+  },
+  {
     label: "repository documentation stays private",
     url: new URL("README.md", siteBase).href,
     expectedStatus: 404,
     contentType: "text/html",
   },
   {
+    label: "local preview artifacts stay private",
+    url: new URL(".preview/step4-qa.md", siteBase).href,
+    expectedStatus: 404,
+    contentType: "text/html",
+  },
+  {
+    label: "historical 1.0 OG stays unpublished",
+    url: new URL("assets/og-betternotch-1.0-en.png", siteBase).href,
+    expectedStatus: 404,
+    contentType: "text/html",
+  },
+  {
     label: "superseded app control capture stays private",
     url: new URL("assets/app-controls-en.png", siteBase).href,
+    expectedStatus: 404,
+    contentType: "text/html",
+  },
+  {
+    label: "removed simulated glass script stays private",
+    url: new URL("assets/liquid-glass.js", siteBase).href,
     expectedStatus: 404,
     contentType: "text/html",
   },
@@ -85,6 +124,52 @@ const timeoutMilliseconds = 20_000;
 
 function delay(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+function lintChecks() {
+  const failures = [];
+  const labels = new Set();
+
+  for (const check of checks) {
+    if (!check.label) failures.push("a check is missing a label");
+    if (labels.has(check.label)) failures.push(`duplicate check label: ${check.label}`);
+    labels.add(check.label);
+    try {
+      const url = new URL(check.url);
+      if (check.label === "social preview image" && !url.pathname.endsWith("/assets/og-betternotch-2.0.png")) {
+        failures.push("social preview image must point at og-betternotch-2.0.png");
+      }
+      if (check.label === "responsive AVIF capture" && !url.pathname.endsWith(".avif")) {
+        failures.push("responsive AVIF capture must use an .avif URL");
+      }
+      if (check.expectedStatus === 404 && /og-betternotch-2\.0|menubar-gradient-1392/.test(url.pathname)) {
+        failures.push(`${check.label}: a current public 2.0 asset is marked private`);
+      }
+    } catch (error) {
+      failures.push(`${check.label}: invalid URL (${error.message})`);
+    }
+    if (!check.contentType) failures.push(`${check.label}: missing expected content type`);
+  }
+
+  if (!checks.some((check) => check.label === "historical 1.0 OG stays unpublished")) {
+    failures.push("production 404 list must keep the unpublished 1.0 OG");
+  }
+  if (!checks.some((check) => check.url.includes("README.md") && check.expectedStatus === 404)) {
+    failures.push("production 404 list must keep README unpublished");
+  }
+
+  if (failures.length > 0) {
+    console.error(`Public link check list failed (${failures.length}):`);
+    for (const failure of failures) console.error(`- ${failure}`);
+    process.exit(1);
+  }
+
+  console.log(`Public link check list is well-formed: ${checks.length} endpoints. Production fetch skipped.`);
+}
+
+if (process.argv.includes("--lint")) {
+  lintChecks();
+  process.exit(0);
 }
 
 async function fetchWithRetry(check) {

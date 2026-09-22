@@ -1,163 +1,118 @@
 (() => {
-  const body = document.body;
-  const effectButtons = Array.from(document.querySelectorAll("[data-effect-button]"));
-  const backdropButtons = Array.from(document.querySelectorAll("[data-backdrop-button]"));
-  const cycleButton = document.querySelector("[data-effect-cycle]");
-  const effectTitle = document.querySelector("[data-effect-title]");
-  const effectSummary = document.querySelector("[data-effect-summary]");
-  const effectIndex = document.querySelector("[data-effect-index]");
-  const notchLabel = document.querySelector("[data-notch-label]");
-  const effectStage = document.querySelector("#effect-stage");
-  const effectTabs = document.querySelector(".effect-tabs");
+  const notchRoot = document.querySelector("[data-page-notch]");
+  const promoScenes = Array.from(document.querySelectorAll("[data-promo-scene]"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let notchFrame = 0;
 
-  if (!body || effectButtons.length === 0) return;
-
-  if (cycleButton) cycleButton.disabled = false;
-  backdropButtons.forEach((button) => {
-    button.disabled = false;
-  });
-  effectButtons.forEach((button) => {
-    button.disabled = false;
-    button.setAttribute("role", "tab");
-    button.setAttribute("aria-controls", "effect-stage");
-  });
-  effectTabs?.setAttribute("role", "tablist");
-  effectStage?.setAttribute("role", "tabpanel");
-
-  const effects = [
-    {
-      id: "original",
-      en: {
-        title: "Original",
-        summary: "Keep the system’s original menu bar appearance, with no BetterNotch effect applied.",
-      },
-      zh: {
-        title: "原始",
-        summary: "保留系统原本的菜单栏外观，不为这块显示器应用 BetterNotch 效果。",
-      },
-    },
-    {
-      id: "gradient",
-      en: {
-        title: "Gradient",
-        summary: "The physical notch dissolves naturally into both sides of the menu bar.",
-      },
-      zh: {
-        title: "渐变",
-        summary: "让物理刘海自然融入菜单栏两侧。",
-      },
-    },
-    {
-      id: "liquid-glass",
-      en: {
-        title: "Liquid Glass",
-        summary: "Highlights and ink shape a layered, glass-like finish around the menu bar.",
-      },
-      zh: {
-        title: "液态玻璃",
-        summary: "用高光与墨迹在菜单栏周围勾勒出富有层次的玻璃质感。",
-      },
-    },
-    {
-      id: "solid-black",
-      en: {
-        title: "Solid Black",
-        summary: "Unify the entire menu bar in a clean, consistent black.",
-      },
-      zh: {
-        title: "纯黑",
-        summary: "用干净、统一的纯黑覆盖整条菜单栏。",
-      },
-    },
-  ];
-
-  function localeKey() {
-    return document.documentElement.lang === "zh-Hans" ? "zh" : "en";
+  function setSceneScales() {
+    promoScenes.forEach((scene) => {
+      scene.style.setProperty("--scene-scale", String(scene.clientWidth / 2880));
+    });
   }
 
-  function currentEffectIndex() {
-    const index = effects.findIndex((effect) => effect.id === body.dataset.effect);
-    return index >= 0 ? index : 1;
-  }
-
-  function updateReadout() {
-    const index = currentEffectIndex();
-    const effect = effects[index];
-    const locale = localeKey();
-    const nextEffect = effects[(index + 1) % effects.length];
-
-    if (effectTitle) effectTitle.textContent = effect[locale].title;
-    if (effectSummary) effectSummary.textContent = effect[locale].summary;
-    if (effectIndex) effectIndex.textContent = `${String(index + 1).padStart(2, "0")} / 04`;
-
-    const stageLabel = locale === "zh"
-      ? `${effect.zh.title}效果演示：${effect.zh.summary}`
-      : `${effect.en.title} effect study: ${effect.en.summary}`;
-    effectStage?.setAttribute("aria-label", stageLabel);
-
-    if (notchLabel) {
-      notchLabel.textContent = locale === "zh"
-        ? `当前样式：${effect.zh.title}。点击切换到${nextEffect.zh.title}。`
-        : `Current style: ${effect.en.title}. Activate to switch to ${nextEffect.en.title}.`;
+  function setNotchProgress() {
+    if (notchRoot) {
+      const scrolling = document.scrollingElement || document.documentElement;
+      const max = Math.max(0, scrolling.scrollHeight - scrolling.clientHeight);
+      const p = max <= 0 ? 0 : Math.min(1, Math.max(0, scrolling.scrollTop / max));
+      notchRoot.style.setProperty("--notch-p", String(p));
     }
   }
 
-  function setEffect(effectId, { focus = false } = {}) {
-    const effect = effects.find((item) => item.id === effectId) ?? effects[1];
-    body.dataset.effect = effect.id;
-
-    effectButtons.forEach((button) => {
-      const isSelected = button.dataset.effectButton === effect.id;
-      button.setAttribute("aria-selected", String(isSelected));
-      button.tabIndex = isSelected ? 0 : -1;
-      if (isSelected) {
-        effectStage?.setAttribute("aria-labelledby", button.id);
-        if (focus) button.focus();
-      }
+  function requestNotchProgress() {
+    if (!notchRoot) return;
+    if (notchFrame) return;
+    notchFrame = window.requestAnimationFrame(() => {
+      notchFrame = 0;
+      setNotchProgress();
     });
-
-    updateReadout();
   }
 
-  function moveEffect(offset, shouldFocus = false) {
-    const index = currentEffectIndex();
-    const nextIndex = (index + offset + effects.length) % effects.length;
-    setEffect(effects[nextIndex].id, { focus: shouldFocus });
+  if (notchRoot) {
+    setNotchProgress();
+    window.addEventListener("scroll", requestNotchProgress, { passive: true });
+    window.addEventListener("resize", requestNotchProgress);
+    window.addEventListener("pageshow", setNotchProgress);
+    window.addEventListener("load", requestNotchProgress);
+    window.addEventListener("betternotch:languagechange", requestNotchProgress);
+    document.querySelectorAll("img").forEach((image) => {
+      if (!image.complete) image.addEventListener("load", requestNotchProgress, { once: true });
+    });
+    if (typeof ResizeObserver === "function") {
+      const observer = new ResizeObserver(requestNotchProgress);
+      observer.observe(document.documentElement);
+      if (document.body) observer.observe(document.body);
+    }
+    reduceMotion.addEventListener?.("change", setNotchProgress);
   }
 
-  effectButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setEffect(button.dataset.effectButton);
-    });
+  setSceneScales();
+  window.addEventListener("resize", setSceneScales);
+  if (typeof ResizeObserver === "function") {
+    const sceneObserver = new ResizeObserver(setSceneScales);
+    promoScenes.forEach((scene) => sceneObserver.observe(scene));
+  }
 
-    button.addEventListener("keydown", (event) => {
-      if (["ArrowRight", "ArrowDown"].includes(event.key)) {
-        event.preventDefault();
-        moveEffect(1, true);
-      } else if (["ArrowLeft", "ArrowUp"].includes(event.key)) {
-        event.preventDefault();
-        moveEffect(-1, true);
-      } else if (event.key === "Home") {
-        event.preventDefault();
-        setEffect(effects[0].id, { focus: true });
-      } else if (event.key === "End") {
-        event.preventDefault();
-        setEffect(effects.at(-1).id, { focus: true });
-      }
+  const dialog = document.querySelector("[data-zoom-dialog]");
+  const zoomImage = dialog?.querySelector("[data-zoom-image]");
+  const zoomScroller = dialog?.querySelector(".zoom-dialog__scroller");
+  if (!dialog || !zoomImage || typeof dialog.showModal !== "function") return;
+  let zoomTrigger = null;
+
+  function localeIsEnglish() {
+    return document.documentElement.lang !== "zh-Hans";
+  }
+
+  function fullSizeFor(link) {
+    const href = link.getAttribute("href");
+    const width = Number(link.dataset.fullWidth) || 1200;
+    const height = localeIsEnglish()
+      ? Number(link.dataset.fullHeightEn || link.dataset.fullHeight) || 630
+      : Number(link.dataset.fullHeightZh || link.dataset.fullHeight) || 630;
+    return { href, width, height };
+  }
+
+  function resetZoomScroller() {
+    if (!zoomScroller) return;
+    zoomScroller.scrollLeft = 0;
+    zoomScroller.scrollTop = 0;
+  }
+
+  function openZoom(link) {
+    const { href, width, height } = fullSizeFor(link);
+    if (!href) return;
+    const triggerImage = link.querySelector("img") || link.closest("figure")?.querySelector("img");
+    zoomImage.src = href;
+    zoomImage.width = width;
+    zoomImage.height = height;
+    zoomImage.alt = triggerImage?.getAttribute("alt") || "";
+    dialog.dataset.kind = width / height > 2.2 ? "strip" : "window";
+    zoomTrigger = link;
+    resetZoomScroller();
+    if (!dialog.open) dialog.showModal();
+    resetZoomScroller();
+    requestAnimationFrame(resetZoomScroller);
+    if (!zoomImage.complete) {
+      zoomImage.addEventListener("load", resetZoomScroller, { once: true });
+    }
+  }
+
+  dialog.addEventListener("close", () => {
+    const trigger = zoomTrigger;
+    zoomTrigger = null;
+    resetZoomScroller();
+    trigger?.focus();
+  });
+
+  document.querySelectorAll("[data-fullsize]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+      openZoom(link);
     });
   });
 
-  cycleButton?.addEventListener("click", () => moveEffect(1));
-
-  backdropButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      body.dataset.backdrop = button.dataset.backdropButton;
-      backdropButtons.forEach((item) => {
-        item.setAttribute("aria-pressed", String(item === button));
-      });
-    });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
   });
-
-  window.addEventListener("betternotch:languagechange", updateReadout);
-  setEffect(body.dataset.effect || "gradient");
 })();

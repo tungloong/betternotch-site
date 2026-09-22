@@ -1,0 +1,97 @@
+/* App Store hero-r7 and glass-r9, scoped for the website.
+   Hardware is HTML/CSS; every screen is an approved real capture. */
+.home-page .hero { padding-bottom: 36px; }
+.promo-stack { padding-bottom: 88px; }
+.stack-legend {
+  display: flex; flex-wrap: wrap; gap: 12px 28px;
+  width: min(calc(100% - 48px), 1120px); margin: 0 auto 12px;
+  color: var(--muted); font-size: 13px;
+}
+.promo-scene {
+  --scene-scale: calc(100cqw / 2880px);
+  container-type: inline-size; position: relative; width: 100%;
+  overflow: hidden; isolation: isolate;
+}
+.promo-artboard {
+  position: absolute; left: 0; top: 0; width: 2880px;
+  transform: scale(var(--scene-scale)); transform-origin: top left;
+}
+.stack-scene { aspect-ratio: 2880 / 1040; }
+.stack-artboard { height: 1040px; }
+.stack-device {
+  position: absolute; margin: 0; width: 2800px; height: 850px;
+  overflow: hidden; border-top-left-radius: 143px;
+}
+.stack-original { left: 650px; top: 80px; z-index: 1; }
+.stack-gradient { left: 500px; top: 320px; z-index: 2; }
+.stack-glass-ink { left: 350px; top: 560px; z-index: 3; }
+.promo-mac {
+  position: absolute; width: 3564px; height: 2368px; padding: 8px;
+  border-radius: 130px; transform: scale(1.10); transform-origin: top left;
+  background: linear-gradient(125deg,#cdd0d2 0%,#777e84 8%,#b0b5b9 26%,#6e7479 65%,#c5c8cb 100%);
+  box-shadow: inset 0 0 0 1px #f3f4f5, inset 0 0 0 3px #a9adb0, inset 0 0 0 5px #5c6368;
+}
+.promo-mac-bezel {
+  width: 3548px; height: 2352px; padding: 64px; border-radius: 122px;
+  background: #08090b; box-shadow: inset 0 0 0 2px #171a1d, inset 0 2px 3px #62676a;
+}
+.promo-mac-screen { position: relative; width: 3420px; height: 2224px; overflow: hidden; border-radius: 58px; background: #000; }
+.promo-mac-screen img { display: block; position: absolute; width: 2320px; height: 820px; max-width: none; }
+.promo-notch { position: absolute; left: 1502px; top: 0; width: 416px; height: 75px; border-radius: 0 0 18px 18px; background: #000; }
+
+.promo-displays { margin: 0 auto 104px; }
+.displays-scene { aspect-ratio: 2880 / 1800; max-width: 1680px; margin: auto; }
+.display-hardware { position: relative; width: 100%; aspect-ratio: 2880 / 1800; overflow: hidden; }
+.displays-artboard { height: 1800px; }
+.display-device {
+  position: absolute; overflow: hidden;
+  background: linear-gradient(125deg,#e0e2e4,#8c9399 18%,#b9bfc3 46%,#686e73 76%,#ced2d4);
+}
+.display-studio {
+  left: 2620px; top: 840px; width: 2592px; height: 1458px;
+  border-radius: 17px; background: #08090b;
+  transform-origin: top left; transform: rotate(215deg);
+  box-shadow: 0 22px 60px #15252325;
+}
+.display-studio-bezel {
+  position: relative; width: 100%; height: 100%; padding: 32px;
+  background: #08090b; border-radius: 20px; box-shadow: inset 0 0 0 2px #202326;
+}
+.display-studio-screen { overflow: hidden; width: 100%; height: 100%; background: #000; }
+.display-studio-screen img, .display-mac-screen img, .display-ipad-screen img { display: block; width: 100%; height: auto; }
+.display-camera {
+  position: absolute; left: 50%; top: 10px; width: 12px; height: 12px; border-radius: 50%;
+  background: radial-gradient(circle at 42% 40%,#182229,#0a1016 50%,#111519 65%,#030405); box-shadow: 0 0 0 3px #0e1114;
+}
+.display-macbook {
+  left: -1348px; top: 1410px; width: 2448px; height: 1627px; padding: 5.5px; border-radius: 89px;
+  transform-origin: top right; transform: rotate(35deg);
+  box-shadow: inset 0 0 0 1px #dce0e2, inset 0 0 0 2px #81898e, 0 -10px 50px #09182235, 0 20px 45px #10202935;
+}
+.display-mac-bezel { width: 100%; height: 100%; padding: 44px; border-radius: 83.5px; background: #08090b; box-shadow: inset 0 0 0 1.5px #292e33, inset 0 2px 3px #62676a; }
+.display-mac-screen { position: relative; width: 100%; height: 100%; border-radius: 39.8px; overflow: hidden; background: #000; }
+.display-notch { position: absolute; left: 43.9181%; top: 0; width: 12.1637%; height: 51.5px; border-radius: 0 0 12.4px 12.4px; background: #000; }
+.display-ipad {
+  left: 290px; top: 1140px; width: 2160px; height: 1562px; padding: 6px; border-radius: 101px;
+  transform-origin: top right; transform: rotate(-55deg);
+  box-shadow: inset 0 0 0 1px #f2f4f5, inset 0 0 0 2px #7f898f, 0 -8px 45px #11202730, 0 24px 65px #15252335;
+}
+.display-ipad-bezel { position: relative; width: 100%; height: 100%; padding: 52px; border-radius: 95px; background: #08090b; box-shadow: inset 0 0 0 1px #353b40; }
+.display-ipad-screen { width: 100%; height: 100%; overflow: hidden; border-radius: 43px; background: #19242a; }
+.display-ipad-camera { position: absolute; top: 21px; left: calc(50% - 6px); width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 40% 40%,#182c3e,#05080c 65%,#12171b); }
+.display-zoom-link { position: absolute; inset: 0; width: 2880px; height: 1800px; z-index: 6; pointer-events: none; fill: none; stroke: #768780; stroke-width: 3; opacity: .8; }
+.display-loupe { position: absolute; left: 1140px; top: 1125px; width: 600px; height: 600px; border-radius: 50%; overflow: hidden; z-index: 7; background: var(--page); border: 5px solid #fff; box-shadow: 0 0 0 2px #a9b0a9, 0 18px 52px #182f2824; }
+.display-loupe-scene { position: absolute; left: -1759.8px; top: -2763px; width: 2880px; height: 1800px; transform: scale(2.2); transform-origin: top left; }
+.display-loupe .display-device { box-shadow: inset 0 0 0 1px #dce0e2, inset 0 0 0 2px #81898e; }
+.display-copy { position: absolute; top: 34.72%; left: 4.86%; right: 4.86%; z-index: 8; text-align: center; }
+.display-copy h2 { margin: 0; font-size: 4.72cqw; line-height: 1.18; font-weight: 600; letter-spacing: -.03em; white-space: pre-line; }
+.display-copy p { margin: 3.1cqw 0 0; color: var(--muted); font-size: clamp(14px, 1.53cqw, 26px); line-height: 1.3; }
+@media (max-width: 760px) {
+  .promo-stack { padding-bottom: 48px; }
+  .stack-legend { width: calc(100% - 32px); gap: 8px 16px; font-size: 11px; }
+  .promo-displays { margin-bottom: 64px; }
+  .displays-scene { display: flex; flex-direction: column; gap: 24px; aspect-ratio: auto; }
+  .display-copy { position: static; order: -1; padding: 0 16px; }
+  .display-copy h2 { font-size: clamp(28px, 6vw, 42px); }
+  .display-copy p { margin-top: 16px; font-size: 14px; }
+}

@@ -11,6 +11,8 @@
   const ariaItems = document.querySelectorAll("[data-aria-en][data-aria-zh]");
   const altItems = document.querySelectorAll("[data-alt-en][data-alt-zh]");
   const sourceItems = document.querySelectorAll("[data-src-en][data-src-zh]");
+  const srcsetItems = document.querySelectorAll("[data-srcset-en][data-srcset-zh]");
+  const hrefItems = document.querySelectorAll("[data-href-en][data-href-zh]");
 
   languageButtons.forEach((button) => {
     button.disabled = false;
@@ -77,6 +79,11 @@
     }
   }
 
+  function applyLocalizedAttribute(item, attribute, value) {
+    if (!value) return;
+    if (item.getAttribute(attribute) !== value) item.setAttribute(attribute, value);
+  }
+
   function setLanguage(language, shouldRemember = true) {
     if (!supportedLanguages.has(language)) language = "en";
     const isEnglish = language === "en";
@@ -97,9 +104,16 @@
       item.setAttribute("alt", isEnglish ? item.dataset.altEn : item.dataset.altZh);
     });
 
+    srcsetItems.forEach((item) => {
+      applyLocalizedAttribute(item, "srcset", isEnglish ? item.dataset.srcsetEn : item.dataset.srcsetZh);
+    });
+
     sourceItems.forEach((item) => {
-      const source = isEnglish ? item.dataset.srcEn : item.dataset.srcZh;
-      if (item.getAttribute("src") !== source) item.setAttribute("src", source);
+      applyLocalizedAttribute(item, "src", isEnglish ? item.dataset.srcEn : item.dataset.srcZh);
+    });
+
+    hrefItems.forEach((item) => {
+      applyLocalizedAttribute(item, "href", isEnglish ? item.dataset.hrefEn : item.dataset.hrefZh);
     });
 
     root.lang = language;

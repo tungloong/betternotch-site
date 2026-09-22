@@ -3,8 +3,10 @@
 import { access, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { publicFiles, referencedFiles } from "./build-site.mjs";
 
 const repoDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const outputDir = path.join(repoDir, "_site");
 const pages = [
   { file: "index.html", canonical: "https://tungloong.github.io/betternotch-site/" },
   { file: "support/index.html", canonical: "https://tungloong.github.io/betternotch-site/support/" },
@@ -18,24 +20,51 @@ const approvedActionPins = {
   deployPages: "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128", // v5.0.0
 };
 const appStoreUrl = "https://apps.apple.com/app/id6791836457?mt=12";
-const approvedShareImage = "assets/og-betternotch-1.0-en.png";
+const approvedShareImage = "assets/og-betternotch-2.0.png";
 const supportEmail = "longbuild@icloud.com";
-const publicImageNames = new Set([
-  "assets/betternotch-icon-128.png",
-  "assets/betternotch-icon-128.avif",
-  "assets/menubar-original-web.png",
-  "assets/menubar-original-330.avif",
-  "assets/menubar-original-396.avif",
-  "assets/menubar-original-528.avif",
-  "assets/menubar-gradient-web.png",
-  "assets/menubar-gradient-330.avif",
-  "assets/menubar-gradient-396.avif",
-  "assets/menubar-gradient-528.avif",
-  "assets/menubar-solid-black-web.png",
-  "assets/menubar-solid-black-330.avif",
-  "assets/menubar-solid-black-396.avif",
-  "assets/menubar-solid-black-528.avif",
-  approvedShareImage,
+const privateFiles = [
+  "README.md",
+  "scripts/check-site.mjs",
+  "scripts/check-public-links.mjs",
+  "scripts/build-site.mjs",
+  "scripts/prepare-2.0-captures.swift",
+  "scripts/prepare-promo-captures.swift",
+  "scripts/generate-image-derivatives.sh",
+  "assets/og-betternotch-1.0-en.png",
+];
+const retiredPublicPatterns = [
+  /liquid-glass\.js/,
+  /menubar-original/,
+  /menubar-solid-black/,
+  /og-betternotch-1\.0/,
+  /app-controls-/,
+  /effect-canvas/,
+  /notch-control/,
+  /Next update preview/,
+];
+const bilingualPairs = [
+  ["data-en", "data-zh"],
+  ["data-aria-en", "data-aria-zh"],
+  ["data-alt-en", "data-alt-zh"],
+  ["data-src-en", "data-src-zh"],
+  ["data-srcset-en", "data-srcset-zh"],
+  ["data-href-en", "data-href-zh"],
+  ["data-full-height-en", "data-full-height-zh"],
+];
+const imageBudgets = new Map([
+  ["assets/menubar-gradient-696.avif", 20_000],
+  ["assets/menubar-gradient-928.avif", 32_000],
+  ["assets/menubar-gradient-1392.avif", 50_000],
+  ["assets/menubar-glass-ink-464.avif", 60_000],
+  ["assets/menubar-glass-ink-928.avif", 180_000],
+  ["assets/menubar-glass-ink-1392.avif", 320_000],
+  ["assets/menubar-ink-464.avif", 15_000],
+  ["assets/menubar-ink-928.avif", 32_000],
+  ["assets/menubar-ink-1392.avif", 50_000],
+  [approvedShareImage, 650_000],
+  ["assets/menubar-gradient.png", 2_200_000],
+  ["assets/menubar-glass-ink.png", 2_000_000],
+  ["assets/menubar-ink.png", 1_200_000],
 ]);
 const failures = [];
 
@@ -51,6 +80,10 @@ function requireMatch(text, pattern, message) {
   if (!pattern.test(text)) fail(message);
 }
 
+function forbidMatch(text, pattern, message) {
+  if (pattern.test(text)) fail(message);
+}
+
 async function assertFile(relativePath) {
   try {
     await access(path.join(repoDir, relativePath));
@@ -58,6 +91,18 @@ async function assertFile(relativePath) {
     fail(`Missing file: ${relativePath}`);
   }
 }
+
+function cacheKey(source, fileName) {
+  const match = source.match(new RegExp(`${fileName.replace(".", "\\.")}\\?v=([^"']+)`));
+  return match?.[1] ?? null;
+}
+
+function pngSize(buffer) {
+  if (buffer.length < 24 || buffer.toString("ascii", 1, 4) !== "PNG") return null;
+  return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+}
+
+const allowlist = new Set(publicFiles);
 
 for (const page of pages) {
   const source = await readFile(path.join(repoDir, page.file), "utf8");
@@ -69,12 +114,17 @@ for (const page of pages) {
   requireMatch(source, /<a class="skip-link" href="#main"/, `${page.file}: missing skip link`);
   requireMatch(source, /<main id="main"/, `${page.file}: missing main landmark`);
   requireMatch(source, /<html class="no-js"/, `${page.file}: missing no-JavaScript baseline class`);
-  requireMatch(source, /<script>document\.documentElement\.className="js"<\/script>/, `${page.file}: missing early JavaScript-ready class switch`);
+  requireMatch(source, /document\.documentElement\.className = "js"/, `${page.file}: missing early JavaScript-ready class switch`);
   requireMatch(source, /<aside class="no-js-notice"[^>]*hidden[\s\S]*?JavaScript is off\.[\s\S]*?JavaScript 已关闭。[\s\S]*?<\/aside>/, `${page.file}: incomplete bilingual no-JavaScript notice`);
   requireMatch(source, /data-locale-button="en"[^>]*disabled/, `${page.file}: language control must be inert before JavaScript initializes`);
-  requireMatch(source, /styles\.css\?v=20260813-4/, `${page.file}: stale stylesheet cache key`);
-  requireMatch(source, /language\.js\?v=20260812-3/, `${page.file}: stale language script cache key`);
+  requireMatch(source, /styles\.css\?v=/, `${page.file}: stylesheet cache key is missing`);
+  requireMatch(source, /language\.js\?v=/, `${page.file}: language script cache key is missing`);
   requireMatch(source, new RegExp(`<link rel="canonical" href="${page.canonical.replaceAll("/", "\\/")}">`), `${page.file}: canonical URL mismatch`);
+  requireMatch(source, /og:image" content="https:\/\/tungloong\.github\.io\/betternotch-site\/assets\/og-betternotch-2\.0\.png"/, `${page.file}: OG image URL mismatch`);
+  requireMatch(source, /twitter:image" content="https:\/\/tungloong\.github\.io\/betternotch-site\/assets\/og-betternotch-2\.0\.png"/, `${page.file}: Twitter image URL mismatch`);
+  requireMatch(source, /og:image:width" content="1200"/, `${page.file}: OG width must be 1200`);
+  requireMatch(source, /og:image:height" content="630"/, `${page.file}: OG height must be 630`);
+  requireMatch(source, /og:site_name" content="BetterNotch"/, `${page.file}: OG site name must stay BetterNotch`);
 
   for (const property of [
     "og:type",
@@ -97,12 +147,7 @@ for (const page of pages) {
     requireMatch(source, new RegExp(`<meta name="${property.replace(":", "\\:")}"`), `${page.file}: missing ${property}`);
   }
 
-  for (const pair of [
-    ["data-en", "data-zh"],
-    ["data-aria-en", "data-aria-zh"],
-    ["data-alt-en", "data-alt-zh"],
-    ["data-src-en", "data-src-zh"],
-  ]) {
+  for (const pair of bilingualPairs) {
     const left = count(source, new RegExp(`\\b${pair[0]}=`, "g"));
     const right = count(source, new RegExp(`\\b${pair[1]}=`, "g"));
     if (left !== right) fail(`${page.file}: unpaired ${pair[0]}/${pair[1]} attributes (${left}/${right})`);
@@ -115,54 +160,45 @@ for (const page of pages) {
     if (!uniqueIds.has(match[1])) fail(`${page.file}: broken same-page anchor #${match[1]}`);
   }
 
-  for (const match of source.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
-    const reference = match[1];
-    if (/^(?:https?:|mailto:|#)/.test(reference)) continue;
-    const cleanReference = reference.split(/[?#]/)[0];
-    if (!cleanReference) continue;
-    let targetPath = path.resolve(path.dirname(path.join(repoDir, page.file)), cleanReference);
-    try {
-      const targetStats = await stat(targetPath);
-      if (targetStats.isDirectory()) targetPath = path.join(targetPath, "index.html");
-    } catch {
-      if (cleanReference.endsWith("/")) targetPath = path.join(targetPath, "index.html");
-    }
-    try {
-      await access(targetPath);
-    } catch {
-      fail(`${page.file}: broken internal reference ${reference}`);
-    }
-  }
-
-  for (const match of source.matchAll(/<(?:img|source)\b[^>]*(?:src|srcset)="([^"]+)"[^>]*>/g)) {
-    for (const candidate of match[1].split(",")) {
-      const rawUrl = candidate.trim().split(/\s+/)[0];
-      if (!rawUrl || /^(?:https?:|data:)/.test(rawUrl)) continue;
-      const normalized = path
-        .relative(repoDir, path.resolve(path.dirname(path.join(repoDir, page.file)), rawUrl))
-        .split(path.sep)
-        .join("/");
-      if (!publicImageNames.has(normalized)) fail(`${page.file}: unapproved public image reference ${normalized}`);
-    }
+  for (const pattern of retiredPublicPatterns) {
+    forbidMatch(source, pattern, `${page.file}: retired 1.0/Studio/simulated-glass reference ${pattern}`);
   }
 }
 
 const home = await readFile(path.join(repoDir, "index.html"), "utf8");
+const support = await readFile(path.join(repoDir, "support/index.html"), "utf8");
+const privacy = await readFile(path.join(repoDir, "privacy/index.html"), "utf8");
+const styleKey = cacheKey(home, "styles.css");
+const languageKey = cacheKey(home, "language.js");
+const siteKey = cacheKey(home, "site.js");
+if (!styleKey || !languageKey || !siteKey) fail("index.html: shared asset cache keys are incomplete");
+for (const page of pages) {
+  const source = page.file === "index.html" ? home : page.file.startsWith("support") ? support : privacy;
+  if (cacheKey(source, "styles.css") !== styleKey) fail(`${page.file}: stylesheet cache key must match the homepage`);
+  if (cacheKey(source, "language.js") !== languageKey) fail(`${page.file}: language script cache key must match the homepage`);
+}
+
 requireMatch(home, new RegExp(appStoreUrl.replace(/[?]/g, "\\?")), "index.html: official App Store URL is missing");
-requireMatch(home, /Next update preview/, "index.html: release boundary marker is missing");
-requireMatch(home, /<picture>[\s\S]*?type="image\/avif"[\s\S]*?srcset="assets\/menubar-gradient-330\.avif 330w, assets\/menubar-gradient-396\.avif 396w, assets\/menubar-gradient-528\.avif 528w"/, "index.html: responsive AVIF hero source is missing");
-requireMatch(home, /class="notch-control"[^>]*data-effect-cycle[^>]*disabled/, "index.html: notch control must be inert before JavaScript initializes");
-requireMatch(home, /class="no-js-only static-preview-copy"/, "index.html: no-JavaScript static preview explanation is missing");
-requireMatch(home, /data-backdrop-button="warm"[^>]*disabled/, "index.html: backdrop controls must be inert before JavaScript initializes");
-requireMatch(home, /data-effect-button="gradient"[^>]*disabled/, "index.html: effect controls must be inert before JavaScript initializes");
-requireMatch(home, /site\.js\?v=20260812-3/, "index.html: stale site script cache key");
-requireMatch(home, /liquid-glass\.js\?v=20260813-1/, "index.html: Liquid Glass optics enhancer is missing");
-requireMatch(home, /class="effect-canvas__effect"[\s\S]*?class="effect-canvas__bar"[\s\S]*?class="effect-canvas__rim"[\s\S]*?class="effect-canvas__notch"/, "index.html: effect preview layers must separate the visual band from the hardware notch");
-requireMatch(home, /lets you choose a style for the built-in display and each external display/, "index.html: precise per-display style wording is missing");
-requireMatch(home, /data-en="Per-display styles" data-zh="逐屏样式"/, "index.html: precise per-display feature heading is missing");
-if (/independent controls for (?:every|each) display/.test(home)) fail("index.html: per-display controls wording overstates the released configuration model");
-if (/class="effect-tabs"[^>]*role="tablist"/.test(home) || /data-effect-button="[^"]+"[^>]*role="tab"/.test(home)) {
-  fail("index.html: interactive tab semantics must not be present before JavaScript initializes");
+requireMatch(home, /View on Mac App Store/, "index.html: store button must stay a neutral App Store link");
+requireMatch(home, /macOS 26/, "index.html: macOS 26 requirement is missing");
+requireMatch(home, /class="page-notch"/, "index.html: homepage scroll-driven notch demonstration is missing");
+requireMatch(home, /data-page-notch/, "index.html: homepage demonstration root is missing");
+requireMatch(home, /--notch-p:\s*0/, "index.html: demonstration must start as untreated Default (p=0) without JavaScript");
+forbidMatch(home, /does not change your Mac|不会改动你的 Mac/, "index.html: internal Mac disclaimer must stay removed");
+forbidMatch(home, /betternotch-icon-128\.avif/, "index.html: brand mark must stay the alpha PNG, not an AVIF that drops alpha");
+forbidMatch(home, /data-notch-cycle|data-notch-button|notch-compare|notch-hint/, "index.html: Original/Gradient controls and timed demo UI must stay removed");
+forbidMatch(home, /data-effect-cycle|data-backdrop|class="notch-control"/, "index.html: 1.0 four-state/Studio notch controls must stay removed");
+requireMatch(home, /site\.js\?v=/, "index.html: site script cache key is missing");
+requireMatch(home, /data-src-zh="assets\/window-zh-web\.png"/, "index.html: Chinese main-window source is missing");
+requireMatch(home, /data-href-zh="assets\/window-zh\.png"/, "index.html: Chinese full-size window link is missing");
+forbidMatch(home, /window-zh-\d+\.avif|details-(?:blend|glass)-[a-z]+-\d+\.avif/, "index.html: window and detail panels must stay alpha PNG, not AVIF");
+
+
+requireMatch(home, /class="promo-stack"/, "index.html: three-look composition is missing");
+requireMatch(home, /class="promo-displays"/, "index.html: three-display composition is missing");
+if (count(home, /class="stack-device /g) !== 3) fail("index.html: all three looks must be visible together");
+for (const asset of ["original", "gradient", "glass-ink", "external", "builtin", "sidecar"]) {
+  requireMatch(home, new RegExp(`assets/promo-${asset}\\.jpg`), `index.html: missing approved ${asset} capture`);
 }
 
 const languageScript = await readFile(path.join(repoDir, "assets/language.js"), "utf8");
@@ -172,13 +208,23 @@ requireMatch(languageScript, /button\.disabled = false/, "assets/language.js: la
 requireMatch(languageScript, /summary\?\.addEventListener\("keydown"[\s\S]*?\["ArrowDown", "ArrowUp"\]/, "assets/language.js: language menu trigger is missing arrow-key access");
 requireMatch(languageScript, /\["ArrowDown", "ArrowRight"\][\s\S]*?\["ArrowUp", "ArrowLeft"\][\s\S]*?event\.key === "Home"[\s\S]*?event\.key === "End"/, "assets/language.js: language options are missing directional keyboard navigation");
 requireMatch(languageScript, /menu\.addEventListener\("focusout"[\s\S]*?!menu\.contains\(event\.relatedTarget\)[\s\S]*?removeAttribute\("open"\)/, "assets/language.js: language menu must close when keyboard focus leaves");
+requireMatch(languageScript, /menu\?\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: language selection must restore focus to its trigger");
+requireMatch(languageScript, /const shouldRestoreFocus = menu\.contains\(document\.activeElement\);[\s\S]*?if \(shouldRestoreFocus\) menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: outside clicks must not leave focus inside a closed menu");
+requireMatch(languageScript, /if \(menu\.contains\(document\.activeElement\)\)[\s\S]*?menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: Escape must not leave focus inside a closed menu");
+requireMatch(languageScript, /data-href-en\]\[data-href-zh/, "assets/language.js: locale-specific full-size hrefs are not applied");
 
 const siteScript = await readFile(path.join(repoDir, "assets/site.js"), "utf8");
-requireMatch(siteScript, /cycleButton\.disabled = false/, "assets/site.js: notch control is not enabled after initialization");
-requireMatch(siteScript, /effectStage\?\.setAttribute\("role", "tabpanel"\)/, "assets/site.js: interactive tabpanel semantics are not enabled after initialization");
-requireMatch(siteScript, /effectTabs\?\.setAttribute\("role", "tablist"\)/, "assets/site.js: interactive tablist semantics are not enabled after initialization");
-requireMatch(siteScript, /button\.setAttribute\("role", "tab"\)/, "assets/site.js: interactive tab semantics are not enabled after initialization");
-requireMatch(siteScript, /button\.setAttribute\("aria-controls", "effect-stage"\)/, "assets/site.js: effect tabs do not reference the interactive panel");
+requireMatch(siteScript, /dialog\.showModal/, "assets/site.js: full-size viewer is missing");
+requireMatch(siteScript, /addEventListener\("close"/, "assets/site.js: full-size viewer must restore focus on close");
+requireMatch(siteScript, /function resetZoomScroller[\s\S]*scrollLeft = 0[\s\S]*scrollTop = 0/, "assets/site.js: full-size viewer must reset scroller origin when opening a capture");
+requireMatch(siteScript, /prefers-reduced-motion/, "assets/site.js: page-top demonstration must honor reduced motion");
+requireMatch(siteScript, /scrollHeight/, "assets/site.js: homepage demonstration must follow document scroll progress");
+requireMatch(siteScript, /--notch-p/, "assets/site.js: homepage demonstration must publish --notch-p");
+requireMatch(siteScript, /Math\.min\(1, Math\.max\(0, scrolling\.scrollTop \/ max\)\)/, "assets/site.js: notch progress must be a continuous clamp of scrollTop / max");
+forbidMatch(siteScript, /0\.98|\* 1000/, "assets/site.js: notch progress must not snap at 0.98 or use a p*1000 gate");
+forbidMatch(siteScript, /clearTimeout|data-notch-button|data-notch-cycle/, "assets/site.js: timed Original/Gradient demo and compare controls must stay removed");
+forbidMatch(siteScript, /liquid-glass/, "assets/site.js: simulated glass enhancer must stay removed");
+forbidMatch(siteScript, /data-effect-cycle|effect-canvas|four-state/, "assets/site.js: 1.0 four-state notch cycle must stay removed");
 
 const styles = await readFile(path.join(repoDir, "assets/styles.css"), "utf8");
 for (const requirement of [
@@ -186,40 +232,22 @@ for (const requirement of [
   [/@media \(prefers-reduced-motion: reduce\)/, "reduced-motion support"],
   [/@media \(prefers-contrast: more\)/, "higher-contrast support"],
   [/@media \(forced-colors: active\)/, "forced-colors support"],
-  [/\.no-js \.notch-control/, "no-JavaScript inert control styling"],
+  [/\.no-js \.js-only/, "no-JavaScript inert control styling"],
   [/\.button:hover,[\s\S]*?transform: none;/, "reduced-motion transform removal"],
 ]) requireMatch(styles, requirement[0], `assets/styles.css: missing ${requirement[1]}`);
 requireMatch(styles, /@media print[\s\S]*?\.document-nav[\s\S]*?display: none !important;/, "assets/styles.css: print layout is missing");
 requireMatch(styles, /\.site-nav a \{[\s\S]*?min-height: 44px;/, "assets/styles.css: main navigation touch targets are too small");
-requireMatch(styles, /\.backdrop-swatch \{[\s\S]*?width: 44px;[\s\S]*?height: 44px;/, "assets/styles.css: backdrop touch targets are too small");
 requireMatch(styles, /\.document-nav a \{[\s\S]*?min-height: 44px;/, "assets/styles.css: document navigation touch targets are too small");
-requireMatch(styles, /\.effect-canvas \{[\s\S]*?--effect-band-height: 66px;/, "assets/styles.css: desktop effect geometry token is missing");
-requireMatch(styles, /\.effect-canvas \{[\s\S]*?--effect-notch-width: clamp\(72px, 20%, 236px\);/, "assets/styles.css: measured notch width token is missing");
-requireMatch(styles, /\.notch-control \{[\s\S]*?width: min\(calc\(100% - 48px\), var\(--max-width\)\);/, "assets/styles.css: fixed effect study must align to the page width");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.notch-control__wings \{[\s\S]*?border-radius: 16px;/, "assets/styles.css: fixed Liquid Glass study must round all four corners");
-requireMatch(styles, /body\[data-effect="solid-black"\] \.notch-control__wings \{[\s\S]*?width: 100%;/, "assets/styles.css: fixed Solid Black study must align to the page width");
-requireMatch(styles, /\.effect-canvas__notch \{[\s\S]*?width: var\(--effect-notch-width\);[\s\S]*?height: var\(--effect-band-height\);/, "assets/styles.css: hardware notch must use the shared visual geometry tokens");
-requireMatch(styles, /--notch-gradient-profile: linear-gradient\(90deg,[\s\S]*?#020203 44%,[\s\S]*?#020203 56%,[\s\S]*?rgba\(2, 2, 3, 0\) 100%\);/, "assets/styles.css: Gradient must mirror the app's one-piece 44%–56% profile");
-requireMatch(styles, /--liquid-glass-ink-profile: linear-gradient\(90deg,[\s\S]*?#020203 42\.196%,[\s\S]*?#020203 57\.804%,[\s\S]*?rgba\(2, 2, 3, 0\) 100%\);/, "assets/styles.css: Liquid Glass must mirror the app's one-piece ink profile");
-requireMatch(styles, /body\[data-effect="gradient"\] \.notch-control__wings \{[\s\S]*?background: var\(--notch-gradient-profile\) no-repeat;[\s\S]*?background-size: 100% 100%;/, "assets/styles.css: fixed Gradient study must use one full-width profile layer");
-requireMatch(styles, /body\[data-effect="gradient"\] \.effect-canvas__bar \{[\s\S]*?background: var\(--notch-gradient-profile\) no-repeat;[\s\S]*?background-size: 100% 100%;/, "assets/styles.css: Gradient previews must share the same profile");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.notch-control__wings \{[\s\S]*?var\(--liquid-glass-ink-profile\) 0 0 \/ 100% 100% no-repeat,/, "assets/styles.css: fixed Liquid Glass study must use one full-width ink profile");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__bar \{[\s\S]*?var\(--liquid-glass-ink-profile\) 0 0 \/ 100% 100% no-repeat,/, "assets/styles.css: Liquid Glass previews must share the same ink profile");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__rim \{[\s\S]*?bottom: 0;[\s\S]*?height: 2px;/, "assets/styles.css: Liquid Glass must keep one continuous bottom rim");
-if (/body\[data-effect="liquid-glass"\] \.effect-canvas__rim \{[\s\S]*?mask-image:/.test(styles)) fail("assets/styles.css: Liquid Glass rim must not break around the centre ink profile");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__bar \{[\s\S]*?inset: 1px;[\s\S]*?border-radius: 14px;/, "assets/styles.css: Liquid Glass ink must stay inside the continuous glass rim");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__effect \{[\s\S]*?border-radius: 16px;[\s\S]*?corner-shape: squircle;/, "assets/styles.css: Liquid Glass must use a continuous Apple-style corner shape");
-requireMatch(styles, /body\[data-effect="liquid-glass"\] \.effect-canvas__effect \{[\s\S]*?height: calc\(var\(--effect-band-height\) - 6px\);/, "assets/styles.css: inset glass and hardware notch must share a bottom edge");
-requireMatch(styles, /body\[data-effect="gradient"\] \.effect-canvas__notch,\s*body\[data-effect="liquid-glass"\] \.effect-canvas__notch \{[\s\S]*?opacity: 0;[\s\S]*?box-shadow: none;/, "assets/styles.css: composited effects must not redraw the hardware silhouette");
-requireMatch(styles, /body\[data-effect="gradient"\] \.notch-control__shape,\s*body\[data-effect="liquid-glass"\] \.notch-control__shape \{[\s\S]*?opacity: 0;[\s\S]*?box-shadow: none;/, "assets/styles.css: fixed composited effects must not redraw the hardware silhouette");
-if (/\.notch-control__wings::before/.test(styles)) fail("assets/styles.css: fixed effect study must not contain a centre patch layer");
-if (/calc\(50% - var\(--notch-shape-half-width\)\)/.test(styles)) fail("assets/styles.css: fixed effect study must not split its profile into left and right blocks");
-requireMatch(styles, /@media \(max-width: 760px\)[\s\S]*?\.effect-canvas \{[\s\S]*?--effect-band-height: 50px;/, "assets/styles.css: mobile effect geometry must scale as one continuous band");
-if (/\.effect-canvas__bar,\s*\n\s*\.effect-canvas__notch\s*\{\s*\n\s*height:/.test(styles)) fail("assets/styles.css: visual band and hardware notch heights must not diverge");
-
-requireMatch(languageScript, /menu\?\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: language selection must restore focus to its trigger");
-requireMatch(languageScript, /const shouldRestoreFocus = menu\.contains\(document\.activeElement\);[\s\S]*?if \(shouldRestoreFocus\) menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: outside clicks must not leave focus inside a closed menu");
-requireMatch(languageScript, /if \(menu\.contains\(document\.activeElement\)\)[\s\S]*?menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: Escape must not leave focus inside a closed menu");
+requireMatch(styles, /@media \(max-width: 760px\)[\s\S]*?\.view-large \{[\s\S]*?min-height: 44px;/, "assets/styles.css: mobile full-size control is below 44px");
+requireMatch(styles, /--notch-p/, "assets/styles.css: homepage scroll-driven notch progress token is missing");
+requireMatch(styles, /var\(--notch-w\) \+ \(100vw - var\(--notch-w\)\) \* var\(--notch-p\)/, "assets/styles.css: notch fill must expand continuously from the original notch width");
+requireMatch(styles, /\.page-notch__fill \{[\s\S]*?linear-gradient\(\s*90deg/, "assets/styles.css: notch fill must use a real horizontal gradient, not a solid black rectangle");
+requireMatch(styles, /--notch-wing/, "assets/styles.css: notch fill must expose a continuous fade-wing length");
+requireMatch(styles, /#f4f3ec/, "assets/styles.css: page fill must use the approved App Store artboard color");
+forbidMatch(styles, /notch-p\) \* 1000/, "assets/styles.css: notch fill must not use a p*1000 opacity gate");
+forbidMatch(styles, /--notch-gradient-profile|\.page-notch\[data-notch/, "assets/styles.css: two-state Original/Gradient page-top demonstration must stay removed");
+forbidMatch(styles, /liquid-glass\.js|\.effect-canvas__rim|--liquid-glass-ink-profile/, "assets/styles.css: simulated Liquid Glass study must stay removed");
+forbidMatch(styles, /--display:|--note:/, "assets/styles.css: magazine display/handwritten fonts must stay removed");
 
 const jsonLdMatch = home.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
 if (!jsonLdMatch) {
@@ -228,31 +256,34 @@ if (!jsonLdMatch) {
   try {
     const jsonLd = JSON.parse(jsonLdMatch[1]);
     if (jsonLd["@type"] !== "SoftwareApplication") fail("index.html: JSON-LD type mismatch");
-    if (jsonLd.softwareVersion !== "1.0") fail("index.html: JSON-LD release version mismatch");
+    if (jsonLd.name !== "BetterNotch") fail("index.html: JSON-LD name must stay BetterNotch");
+    if (jsonLd.alternateName !== "BetterNotch: Seamless Menu Bar") fail("index.html: approved App Store name mismatch");
+    if (jsonLd.offers?.price !== "2.99" || jsonLd.offers?.priceCurrency !== "USD") fail("index.html: US App Store price mismatch");
+    if (jsonLd.softwareVersion !== "2.0") fail("index.html: JSON-LD softwareVersion must be 2.0");
     if (jsonLd.downloadUrl !== appStoreUrl) fail("index.html: JSON-LD download URL mismatch");
     if (jsonLd.offers?.url !== appStoreUrl) fail("index.html: JSON-LD offer URL mismatch");
+    if (!String(jsonLd.image || "").endsWith("/assets/og-betternotch-2.0.png")) fail("index.html: JSON-LD image must be the shared 2.0 OG file");
   } catch (error) {
     fail(`index.html: invalid JSON-LD (${error.message})`);
   }
 }
 
-const support = await readFile(path.join(repoDir, "support/index.html"), "utf8");
-requireMatch(support, /id="available-version"/, "support/index.html: released-version section is missing");
-requireMatch(support, new RegExp(appStoreUrl.replace(/[?]/g, "\\?")), "support/index.html: official App Store URL is missing");
-requireMatch(support, /Liquid Glass and the new Studio interface are shown on the homepage as a preview of the next update\./, "support/index.html: current/future release boundary is missing");
+requireMatch(support, /macOS 26/, "support/index.html: macOS 26 requirement is missing");
+requireMatch(support, /Turn on Launch at Login\.|打开“登录时启动”开关。/, "support/index.html: Launch at Login must tell people to turn the Settings switch on");
+requireMatch(support, /Click Settings at the top right of the main window/, "support/index.html: Launch at Login must start from the in-window Settings control");
 requireMatch(support, new RegExp(`href="mailto:${supportEmail}"`), "support/index.html: support email link mismatch");
-requireMatch(support, /class="document-nav"[\s\S]*?href="#available-version"[\s\S]*?href="#contact-support"/, "support/index.html: support task navigation is incomplete");
-requireMatch(support, /style selection for the built-in display and each external display/, "support/index.html: precise per-display style wording is missing");
-if (/independent controls for (?:every|each) display/.test(support)) fail("support/index.html: per-display controls wording overstates the released configuration model");
+requireMatch(support, /class="document-nav"[\s\S]*?href="#before-starting"[\s\S]*?href="#contact-support"/, "support/index.html: support task navigation is incomplete");
+forbidMatch(support, /Studio|available-version|Next update preview/, "support/index.html: retired 1.0/Studio support copy must stay removed");
+forbidMatch(support, /betternotch-icon-128\.avif/, "support/index.html: brand mark must stay the alpha PNG");
 
-const privacy = await readFile(path.join(repoDir, "privacy/index.html"), "utf8");
-requireMatch(privacy, /Effective August 12, 2026/, "privacy/index.html: effective date mismatch");
+requireMatch(privacy, /BetterNotch Mac app does not collect/, "privacy/index.html: collection sentence must name the Mac app");
+requireMatch(privacy, /BetterNotch Mac App 不收集/, "privacy/index.html: Chinese collection sentence must name the Mac App");
 requireMatch(privacy, /github-general-privacy-statement/, "privacy/index.html: GitHub Pages disclosure link is missing");
-requireMatch(privacy, /BetterNotch does not add analytics, advertising, tracking pixels, or third-party scripts to the site\./, "privacy/index.html: website tracking disclosure is missing");
+requireMatch(privacy, /This site does not add analytics, advertising, tracking pixels, or third-party scripts\./, "privacy/index.html: website tracking disclosure is missing");
 requireMatch(privacy, new RegExp(`href="mailto:${supportEmail}"`), "privacy/index.html: privacy email link mismatch");
 requireMatch(privacy, /class="document-nav"[\s\S]*?href="#collection"[\s\S]*?href="#contact"/, "privacy/index.html: policy navigation is incomplete");
-requireMatch(privacy, /The selected style and effect parameters/, "privacy/index.html: cross-version effect parameter disclosure is missing");
-requireMatch(privacy, /Style selection for the built-in display and each external display/, "privacy/index.html: precise local per-display disclosure is missing");
+forbidMatch(privacy, /Studio|welcome storage|preview backdrop/i, "privacy/index.html: retired Studio/welcome storage copy must stay removed");
+forbidMatch(privacy, /betternotch-icon-128\.avif/, "privacy/index.html: brand mark must stay the alpha PNG");
 
 const robots = await readFile(path.join(repoDir, "robots.txt"), "utf8");
 requireMatch(robots, /User-agent: \*\nAllow: \/\n/, "robots.txt: crawl policy mismatch");
@@ -286,36 +317,63 @@ requireMatch(deployWorkflow, /pages: write/, ".github/workflows/deploy-pages.yml
 requireMatch(deployWorkflow, /id-token: write/, ".github/workflows/deploy-pages.yml: OIDC permission is missing");
 
 await assertFile("scripts/build-site.mjs");
-await assertFile("assets/liquid-glass.js");
-const liquidGlassScript = await readFile(path.join(repoDir, "assets/liquid-glass.js"), "utf8");
-requireMatch(liquidGlassScript, /function continuousRectDistance\(/, "assets/liquid-glass.js: continuous-corner distance field is missing");
-requireMatch(liquidGlassScript, /feDisplacementMap/, "assets/liquid-glass.js: optical displacement stage is missing");
-requireMatch(liquidGlassScript, /ResizeObserver/, "assets/liquid-glass.js: responsive optical map regeneration is missing");
+const generateScript = await readFile(path.join(repoDir, "scripts/generate-image-derivatives.sh"), "utf8");
+forbidMatch(generateScript, /betternotch-icon-128\.avif|window-(?:en|zh)-web\.png|details-(?:blend|glass)-/, "scripts/generate-image-derivatives.sh: AVIF must not be generated for alpha icon, window, or detail panels");
 const gitignore = await readFile(path.join(repoDir, ".gitignore"), "utf8");
 requireMatch(gitignore, /^_site\/$/m, ".gitignore: generated Pages artifact must remain untracked");
+requireMatch(gitignore, /^\.preview\/$/m, ".gitignore: local preview artifacts must remain untracked");
 
-for (const relativePath of publicImageNames) await assertFile(relativePath);
+for (const relativePath of privateFiles) {
+  if (allowlist.has(relativePath)) fail(`Private file is on the deployment allowlist: ${relativePath}`);
+}
 
-const imageBudgets = new Map([
-  ["assets/betternotch-icon-128.avif", 5_000],
-  ["assets/menubar-original-330.avif", 15_000],
-  ["assets/menubar-original-396.avif", 20_000],
-  ["assets/menubar-original-528.avif", 30_000],
-  ["assets/menubar-gradient-330.avif", 15_000],
-  ["assets/menubar-gradient-396.avif", 20_000],
-  ["assets/menubar-gradient-528.avif", 30_000],
-  ["assets/menubar-solid-black-330.avif", 15_000],
-  ["assets/menubar-solid-black-396.avif", 20_000],
-  ["assets/menubar-solid-black-528.avif", 30_000],
-  [approvedShareImage, 650_000],
-]);
+const references = await referencedFiles();
+for (const reference of references) {
+  if (reference.endsWith(".html") || reference === "robots.txt" || reference === "sitemap.xml") continue;
+  await assertFile(reference);
+  if (!allowlist.has(reference)) fail(`Page or script displays ${reference}, but it is missing from the deployment allowlist`);
+}
+
+for (const relativePath of publicFiles) await assertFile(relativePath);
+
+try {
+  await access(outputDir);
+  for (const reference of references) {
+    if (!allowlist.has(reference)) continue;
+    try {
+      await access(path.join(outputDir, reference));
+    } catch {
+      fail(`_site is missing referenced public file: ${reference}`);
+    }
+  }
+  for (const relativePath of privateFiles) {
+    try {
+      await access(path.join(outputDir, relativePath));
+      fail(`_site must not publish ${relativePath}`);
+    } catch {
+      // Expected: private paths stay out of the Pages artifact.
+    }
+  }
+} catch {
+  // CI runs the contract before packaging; absence of _site is not a failure.
+}
+
+try {
+  const og = await readFile(path.join(repoDir, approvedShareImage));
+  const size = pngSize(og);
+  if (!size || size.width !== 1200 || size.height !== 630) {
+    fail(`${approvedShareImage}: expected 1200×630 PNG, found ${size ? `${size.width}×${size.height}` : "an invalid file"}`);
+  }
+} catch {
+  fail(`Missing file: ${approvedShareImage}`);
+}
 
 for (const [relativePath, maximumBytes] of imageBudgets) {
   try {
     const fileStats = await stat(path.join(repoDir, relativePath));
     if (fileStats.size > maximumBytes) fail(`${relativePath}: ${fileStats.size} bytes exceeds ${maximumBytes}-byte budget`);
   } catch {
-    // Missing files are reported by assertFile above.
+    fail(`Missing file: ${relativePath}`);
   }
 }
 
@@ -325,4 +383,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Site checks passed: ${pages.length} pages, bilingual parity, metadata, links, release boundaries, approved public imagery, and image budgets.`);
+console.log(`Site checks passed: ${pages.length} pages, bilingual parity, 2.0 metadata, locale assets, allowlist, and image budgets.`);

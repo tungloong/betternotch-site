@@ -2,37 +2,48 @@
 <html class="no-js" lang="en" data-title-en="Privacy Policy — BetterNotch" data-title-zh="隐私政策 — BetterNotch">
   <head>
     <meta charset="utf-8">
-    <script>document.documentElement.className="js"</script>
+    <script>
+      document.documentElement.className = "js";
+      (function () {
+        try {
+          var language = localStorage.getItem("betternotch.language");
+          if (language === "zh-Hans" || language === "en") document.documentElement.lang = language;
+        } catch (error) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="The BetterNotch Privacy Policy explains local settings, system permissions, and data collection.">
-    <meta name="theme-color" content="#f7f8fa">
+    <meta name="description" content="The BetterNotch Privacy Policy explains local settings, system permissions, and the public website.">
+    <meta name="theme-color" content="#f4f3ec">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BetterNotch">
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="zh_CN">
     <meta property="og:title" content="Privacy Policy — BetterNotch">
-    <meta property="og:description" content="BetterNotch collects no data, requires no account, and does not request Screen Recording permission.">
+    <meta property="og:description" content="BetterNotch collects no data, does not read your wallpaper, and does not request Screen Recording permission.">
     <meta property="og:url" content="https://tungloong.github.io/betternotch-site/privacy/">
-    <meta property="og:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
+    <meta property="og:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-2.0.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="BetterNotch 1.0 showing Original, Gradient, and Solid Black menu bar effects">
+    <meta property="og:image:alt" content="BetterNotch icon and name with a Mac menu bar blended into a soft gradient">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Privacy Policy — BetterNotch">
-    <meta name="twitter:description" content="BetterNotch collects no data, requires no account, and does not request Screen Recording permission.">
-    <meta name="twitter:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
-    <meta name="twitter:image:alt" content="BetterNotch 1.0 showing Original, Gradient, and Solid Black menu bar effects">
+    <meta name="twitter:description" content="BetterNotch collects no data, does not read your wallpaper, and does not request Screen Recording permission.">
+    <meta name="twitter:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-2.0.png">
+    <meta name="twitter:image:alt" content="BetterNotch icon and name with a Mac menu bar blended into a soft gradient">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/privacy/">
     <link rel="icon" href="../assets/betternotch-icon-128.png" type="image/png">
-    <link rel="stylesheet" href="../assets/styles.css?v=20260813-4">
-    <script src="../assets/language.js?v=20260812-3" defer></script>
+    <link rel="stylesheet" href="../assets/styles.css?v=20260921-4">
+    <script src="../assets/language.js?v=20260920-6" defer></script>
     <title>Privacy Policy — BetterNotch</title>
   </head>
   <body>
     <a class="skip-link" href="#main" data-en="Skip to main content" data-zh="跳到主要内容">Skip to main content</a>
     <header class="site-header">
-      <a class="wordmark" href="../" aria-label="BetterNotch home" data-aria-en="BetterNotch home" data-aria-zh="BetterNotch 首页">BetterNotch</a>
+      <a class="brand" href="../" aria-label="BetterNotch home" data-aria-en="BetterNotch home" data-aria-zh="BetterNotch 首页">
+        <img class="brand-icon" src="../assets/betternotch-icon-128.png" alt="" width="40" height="40" decoding="async">
+        <span class="wordmark">BetterNotch</span>
+      </a>
       <div class="header-actions">
         <nav class="site-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主要导航">
           <a href="../support/" data-en="Support" data-zh="使用支持">Support</a>
@@ -48,15 +59,15 @@
       </div>
     </header>
     <aside class="no-js-notice" aria-label="JavaScript status" hidden>
-      <p lang="en"><strong>JavaScript is off.</strong> The English content and every download, Support, and Privacy link remain available. Enable JavaScript only for language switching and the interactive effect preview.</p>
-      <p lang="zh-Hans"><strong>JavaScript 已关闭。</strong>英文内容、下载、支持与隐私链接仍可使用；仅语言切换和交互式效果预览需要 JavaScript。</p>
+      <p lang="en"><strong>JavaScript is off.</strong> The English content and every download, Support, and Privacy link remain available. Enable JavaScript only for language switching.</p>
+      <p lang="zh-Hans"><strong>JavaScript 已关闭。</strong>英文内容、下载、支持与隐私链接仍可使用；仅语言切换需要 JavaScript。</p>
     </aside>
     <main id="main" class="document">
       <article aria-labelledby="privacy-title">
         <header class="document-header">
-          <p class="eyebrow" data-en="Effective August 12, 2026" data-zh="生效日期 · 2026 年 8 月 12 日">Effective August 12, 2026</p>
+          <p class="eyebrow" data-en="Updated September 20, 2026" data-zh="更新日期 · 2026 年 9 月 20 日">Updated September 20, 2026</p>
           <h1 id="privacy-title" data-en="Privacy Policy" data-zh="隐私政策">Privacy Policy</h1>
-          <p class="lede" data-en="BetterNotch runs entirely on your Mac. It does not require an account or rely on any online service." data-zh="BetterNotch 完全在你的 Mac 本机运行，不需要账户，也不依赖任何在线服务。">BetterNotch runs entirely on your Mac. It does not require an account or rely on any online service.</p>
+          <p class="lede" data-en="This policy covers the BetterNotch Mac app and this public website. The app keeps your settings on your Mac and does not require an account." data-zh="本政策同时说明 BetterNotch Mac App 与本公开网站。App 把设置保存在你的 Mac 上，不需要账户。">This policy covers the BetterNotch Mac app and this public website. The app keeps your settings on your Mac and does not require an account.</p>
         </header>
 
         <nav class="document-nav" aria-label="On this page" data-aria-en="On this page" data-aria-zh="本页目录">
@@ -65,7 +76,7 @@
             <li><a href="#collection" data-en="Data collection" data-zh="数据收集">Data collection</a></li>
             <li><a href="#local-data" data-en="Local information" data-zh="本地信息">Local information</a></li>
             <li><a href="#permissions" data-en="System permissions" data-zh="系统权限">System permissions</a></li>
-            <li><a href="#services" data-en="Third-party services" data-zh="第三方服务">Third-party services</a></li>
+            <li><a href="#website" data-en="This website" data-zh="本网站">This website</a></li>
             <li><a href="#updates" data-en="Policy updates" data-zh="政策更新">Policy updates</a></li>
             <li><a href="#contact" data-en="Contact" data-zh="联系方式">Contact</a></li>
           </ul>
@@ -73,34 +84,31 @@
 
         <section class="document-section" aria-labelledby="collection">
           <h2 id="collection" data-en="Data collection" data-zh="数据收集">Data collection</h2>
-          <p data-en="BetterNotch does not collect, upload, or transmit personal data, usage data, or diagnostic data." data-zh="BetterNotch 不收集、上传或传输个人数据、使用数据或诊断数据。">BetterNotch does not collect, upload, or transmit personal data, usage data, or diagnostic data.</p>
+          <p data-en="The BetterNotch Mac app does not collect, upload, or transmit personal data, usage data, or diagnostic data." data-zh="BetterNotch Mac App 不收集、上传或传输个人数据、使用数据或诊断数据。">The BetterNotch Mac app does not collect, upload, or transmit personal data, usage data, or diagnostic data.</p>
           <p data-en="The app contains no advertising, analytics tools, or tracking SDKs. It does not create user profiles, sell data, or share data with third parties." data-zh="App 不包含广告、分析工具或追踪 SDK，不会创建用户画像，也不会出售或向第三方共享数据。">The app contains no advertising, analytics tools, or tracking SDKs. It does not create user profiles, sell data, or share data with third parties.</p>
-          <p data-en="The public BetterNotch website stores only your selected language in your browser so the choice persists between pages and visits. The interactive effect and preview-backdrop choices are temporary page state and are not retained after a reload. None of these preferences is sent to the developer." data-zh="BetterNotch 公开网站只会在浏览器本地保存你选择的语言，以便在页面与后续访问间保持该选择。交互式效果与预览底色属于临时页面状态，刷新后不会保留。这些偏好都不会发送给开发者。">The public BetterNotch website stores only your selected language in your browser so the choice persists between pages and visits. The interactive effect and preview-backdrop choices are temporary page state and are not retained after a reload. None of these preferences is sent to the developer.</p>
         </section>
 
         <section class="document-section" aria-labelledby="local-data">
           <h2 id="local-data" data-en="Information stored locally" data-zh="本地保存的信息">Information stored locally</h2>
-          <p data-en="To preserve your preferences, BetterNotch stores the following in the app’s local container:" data-zh="为了保存你的设置，BetterNotch 会在 App 的本地容器中记录：">To preserve your preferences, BetterNotch stores the following in the app’s local container:</p>
+          <p data-en="To remember your preferences, the app stores the following in its local container on your Mac:" data-zh="为了记住你的设置，App 会在本机容器中保存：">To remember your preferences, the app stores the following in its local container on your Mac:</p>
           <ul>
-            <li data-en="Whether Desktop Effect is enabled" data-zh="桌面效果的启用状态">Whether Desktop Effect is enabled</li>
-            <li data-en="The selected style and effect parameters" data-zh="所选样式和效果参数">The selected style and effect parameters</li>
-            <li data-en="Style selection for the built-in display and each external display" data-zh="内建显示器和每块外接显示器的样式选择">Style selection for the built-in display and each external display</li>
-            <li data-en="The locally selected preview backdrop in versions that include the new Studio interface" data-zh="在包含新版 Studio 界面的版本中，本地选择的预览底色">The locally selected preview backdrop in versions that include the new Studio interface</li>
-            <li data-en="Whether the welcome guide has been completed" data-zh="欢迎引导的完成状态">Whether the welcome guide has been completed</li>
+            <li data-en="Per-display appearance and blend choices, including remembered values while Black is selected or blending is paused" data-zh="每块屏幕的外观与融入选择，以及全黑或暂停融入时记住的值">Per-display appearance and blend choices, including remembered values while Black is selected or blending is paused</li>
+            <li data-en="Related detail settings such as blend width, curve, and glass end shapes" data-zh="相关细节，例如融入范围、曲线和玻璃端形">Related detail settings such as blend width, curve, and glass end shapes</li>
+            <li data-en="Whether the app icon is shown in the menu bar, the Dock, or neither" data-zh="App 图标显示在菜单栏、Dock，或均不显示">Whether the app icon is shown in the menu bar, the Dock, or neither</li>
           </ul>
-          <p data-en="These settings remain only on your Mac and are not sent to the developer or any third party. They remain until replaced by newer settings or the app’s local container is deleted." data-zh="这些信息只保存在你的 Mac 上，不会发送给开发者或任何第三方。它们会一直保留，直到被新的设置覆盖或 App 的本地容器被删除。">These settings remain only on your Mac and are not sent to the developer or any third party. They remain until replaced by newer settings or the app’s local container is deleted.</p>
+          <p data-en="Launch at Login is managed by macOS after you turn it on. These app settings remain only on your Mac and are not sent to the developer or any third party. They remain until replaced by newer settings or the app’s local container is deleted." data-zh="“登录时启动”在你开启后由 macOS 管理。上述 App 设置只留在你的 Mac 上，不会发送给开发者或任何第三方。它们会一直保留，直到被新的设置覆盖或 App 的本地容器被删除。">Launch at Login is managed by macOS after you turn it on. These app settings remain only on your Mac and are not sent to the developer or any third party. They remain until replaced by newer settings or the app’s local container is deleted.</p>
         </section>
 
         <section class="document-section" aria-labelledby="permissions">
           <h2 id="permissions" data-en="System permissions" data-zh="系统权限">System permissions</h2>
-          <p data-en="BetterNotch uses public macOS APIs to display the effect at the top of the screen. If you choose to enable Launch at Login, macOS manages that setting." data-zh="BetterNotch 使用 macOS 提供的公开接口显示屏幕顶部效果，并可在你主动开启后由系统管理“登录时启动”。">BetterNotch uses public macOS APIs to display the effect at the top of the screen. If you choose to enable Launch at Login, macOS manages that setting.</p>
+          <p data-en="BetterNotch uses public macOS APIs to draw the menu bar effect from display geometry and your settings. It does not read your wallpaper." data-zh="BetterNotch 使用 macOS 公开接口，根据显示器几何和你的设置绘制菜单栏效果。它不读取你的壁纸。">BetterNotch uses public macOS APIs to draw the menu bar effect from display geometry and your settings. It does not read your wallpaper.</p>
           <p data-en="The app does not request Screen Recording permission and does not read or record the windows or screen content of other apps." data-zh="App 不请求屏幕录制权限，不读取或记录其他 App 的窗口及屏幕内容。">The app does not request Screen Recording permission and does not read or record the windows or screen content of other apps.</p>
         </section>
 
-        <section class="document-section" aria-labelledby="services">
-          <h2 id="services" data-en="Third-party services" data-zh="第三方服务">Third-party services</h2>
-          <p data-en="BetterNotch has no servers, user accounts, third-party data processors, or external network services." data-zh="BetterNotch 没有服务器、用户账户、第三方数据处理方或外部网络服务。">BetterNotch has no servers, user accounts, third-party data processors, or external network services.</p>
-          <p><span data-en="The public website is hosted by GitHub Pages. GitHub logs and stores visitors’ IP addresses for security purposes, whether or not a visitor is signed in. See the " data-zh="公开网站由 GitHub Pages 托管。无论访客是否登录，GitHub 都会出于安全目的记录并保存访客 IP 地址。请参阅 ">The public website is hosted by GitHub Pages. GitHub logs and stores visitors’ IP addresses for security purposes, whether or not a visitor is signed in. See the </span><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" data-en="GitHub General Privacy Statement" data-zh="GitHub 通用隐私声明">GitHub General Privacy Statement</a><span data-en=" for details. BetterNotch does not add analytics, advertising, tracking pixels, or third-party scripts to the site." data-zh="了解详情。BetterNotch 没有在网站中添加分析、广告、追踪像素或第三方脚本。"> for details. BetterNotch does not add analytics, advertising, tracking pixels, or third-party scripts to the site.</span></p>
+        <section class="document-section" aria-labelledby="website">
+          <h2 id="website" data-en="This website" data-zh="本网站">This website</h2>
+          <p data-en="The public BetterNotch website is separate from the Mac app. In your browser it stores only the language you select, so the choice persists between pages and visits. Choosing a look on the homepage is temporary page state and is not kept after a reload. None of these website preferences is sent to the developer." data-zh="BetterNotch 公开网站与 Mac App 分开。网站只会在浏览器本地保存你选择的语言，以便在页面与后续访问间保持该选择。首页上的效果选择属于临时页面状态，刷新后不会保留。这些网站偏好都不会发送给开发者。">The public BetterNotch website is separate from the Mac app. In your browser it stores only the language you select, so the choice persists between pages and visits. Choosing a look on the homepage is temporary page state and is not kept after a reload. None of these website preferences is sent to the developer.</p>
+          <p><span data-en="The public website is hosted by GitHub Pages. GitHub logs and stores visitors’ IP addresses for security purposes, whether or not a visitor is signed in. See the " data-zh="公开网站由 GitHub Pages 托管。无论访客是否登录，GitHub 都会出于安全目的记录并保存访客 IP 地址。请参阅 ">The public website is hosted by GitHub Pages. GitHub logs and stores visitors’ IP addresses for security purposes, whether or not a visitor is signed in. See the </span><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" data-en="GitHub General Privacy Statement" data-zh="GitHub 通用隐私声明">GitHub General Privacy Statement</a><span data-en=" for details. This site does not add analytics, advertising, tracking pixels, or third-party scripts." data-zh="了解详情。本站没有添加分析、广告、追踪像素或第三方脚本。"> for details. This site does not add analytics, advertising, tracking pixels, or third-party scripts.</span></p>
         </section>
 
         <section class="document-section" aria-labelledby="updates">

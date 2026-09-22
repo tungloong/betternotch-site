@@ -33,17 +33,18 @@ generate_avif() {
   fi
 }
 
-for effect_name in original gradient solid-black; do
-  source_file="$assets_dir/menubar-${effect_name}-web.png"
-  generate_avif "$source_file" "$assets_dir/menubar-${effect_name}-330.avif" 330 75
-  generate_avif "$source_file" "$assets_dir/menubar-${effect_name}-396.avif" 396 90
-  generate_avif "$source_file" "$assets_dir/menubar-${effect_name}-528.avif" 528 120
+generate_avif "$assets_dir/menubar-gradient-web.png" "$assets_dir/menubar-gradient-696.avif" 696 144
+generate_avif "$assets_dir/menubar-gradient-web.png" "$assets_dir/menubar-gradient-928.avif" 928 192
+generate_avif "$assets_dir/menubar-gradient-web.png" "$assets_dir/menubar-gradient-1392.avif" 1392 288
+
+for strip_name in glass-ink ink; do
+  source_file="$assets_dir/menubar-${strip_name}-web.png"
+  generate_avif "$source_file" "$assets_dir/menubar-${strip_name}-464.avif" 464 90
+  generate_avif "$source_file" "$assets_dir/menubar-${strip_name}-928.avif" 928 180
+  generate_avif "$source_file" "$assets_dir/menubar-${strip_name}-1392.avif" 1392 270
 done
 
-generate_avif \
-  "$assets_dir/betternotch-icon-128.png" \
-  "$assets_dir/betternotch-icon-128.avif" \
-  128 \
-  128
+# AVIF here is only for opaque menu-bar photos. rgb24 → yuv420p drops alpha, so
+# the 2.0 icon, main window, and detail panels stay PNG.
 
 echo "Generated deterministic AVIF derivatives from committed PNG sources."

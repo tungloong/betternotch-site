@@ -2,37 +2,48 @@
 <html class="no-js" lang="en" data-title-en="Support — BetterNotch" data-title-zh="使用支持 — BetterNotch">
   <head>
     <meta charset="utf-8">
-    <script>document.documentElement.className="js"</script>
+    <script>
+      document.documentElement.className = "js";
+      (function () {
+        try {
+          var language = localStorage.getItem("betternotch.language");
+          if (language === "zh-Hans" || language === "en") document.documentElement.lang = language;
+        } catch (error) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="System requirements, common questions, and troubleshooting steps for BetterNotch.">
-    <meta name="theme-color" content="#f7f8fa">
+    <meta name="description" content="Setup, troubleshooting, and contact for BetterNotch on macOS 26 or later.">
+    <meta name="theme-color" content="#f4f3ec">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BetterNotch">
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="zh_CN">
     <meta property="og:title" content="Support — BetterNotch">
-    <meta property="og:description" content="System requirements, setup, troubleshooting, and contact information for BetterNotch.">
+    <meta property="og:description" content="Setup, troubleshooting, and contact for BetterNotch on macOS 26 or later.">
     <meta property="og:url" content="https://tungloong.github.io/betternotch-site/support/">
-    <meta property="og:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
+    <meta property="og:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-2.0.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="BetterNotch 1.0 showing Original, Gradient, and Solid Black menu bar effects">
+    <meta property="og:image:alt" content="BetterNotch icon and name with a Mac menu bar blended into a soft gradient">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Support — BetterNotch">
-    <meta name="twitter:description" content="System requirements, setup, troubleshooting, and contact information for BetterNotch.">
-    <meta name="twitter:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-1.0-en.png">
-    <meta name="twitter:image:alt" content="BetterNotch 1.0 showing Original, Gradient, and Solid Black menu bar effects">
+    <meta name="twitter:description" content="Setup, troubleshooting, and contact for BetterNotch on macOS 26 or later.">
+    <meta name="twitter:image" content="https://tungloong.github.io/betternotch-site/assets/og-betternotch-2.0.png">
+    <meta name="twitter:image:alt" content="BetterNotch icon and name with a Mac menu bar blended into a soft gradient">
     <link rel="canonical" href="https://tungloong.github.io/betternotch-site/support/">
     <link rel="icon" href="../assets/betternotch-icon-128.png" type="image/png">
-    <link rel="stylesheet" href="../assets/styles.css?v=20260813-4">
-    <script src="../assets/language.js?v=20260812-3" defer></script>
+    <link rel="stylesheet" href="../assets/styles.css?v=20260921-4">
+    <script src="../assets/language.js?v=20260920-6" defer></script>
     <title>Support — BetterNotch</title>
   </head>
   <body>
     <a class="skip-link" href="#main" data-en="Skip to main content" data-zh="跳到主要内容">Skip to main content</a>
     <header class="site-header">
-      <a class="wordmark" href="../" aria-label="BetterNotch home" data-aria-en="BetterNotch home" data-aria-zh="BetterNotch 首页">BetterNotch</a>
+      <a class="brand" href="../" aria-label="BetterNotch home" data-aria-en="BetterNotch home" data-aria-zh="BetterNotch 首页">
+        <img class="brand-icon" src="../assets/betternotch-icon-128.png" alt="" width="40" height="40" decoding="async">
+        <span class="wordmark">BetterNotch</span>
+      </a>
       <div class="header-actions">
         <nav class="site-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主要导航">
           <a href="./" aria-current="page" data-en="Support" data-zh="使用支持">Support</a>
@@ -48,61 +59,84 @@
       </div>
     </header>
     <aside class="no-js-notice" aria-label="JavaScript status" hidden>
-      <p lang="en"><strong>JavaScript is off.</strong> The English content and every download, Support, and Privacy link remain available. Enable JavaScript only for language switching and the interactive effect preview.</p>
-      <p lang="zh-Hans"><strong>JavaScript 已关闭。</strong>英文内容、下载、支持与隐私链接仍可使用；仅语言切换和交互式效果预览需要 JavaScript。</p>
+      <p lang="en"><strong>JavaScript is off.</strong> The English content and every download, Support, and Privacy link remain available. Enable JavaScript only for language switching.</p>
+      <p lang="zh-Hans"><strong>JavaScript 已关闭。</strong>英文内容、下载、支持与隐私链接仍可使用；仅语言切换需要 JavaScript。</p>
     </aside>
     <main id="main" class="document">
       <article aria-labelledby="support-title">
         <header class="document-header">
           <p class="eyebrow" data-en="Help and issue reporting" data-zh="使用帮助与问题反馈">Help and issue reporting</p>
           <h1 id="support-title" data-en="Support" data-zh="使用支持">Support</h1>
-          <p class="lede" data-en="BetterNotch requires macOS 26 or later. App Store version 1.0 includes Original, Gradient, and Solid Black, with style selection for the built-in display and each external display. Liquid Glass and the new Studio interface are shown on the homepage as a preview of the next update." data-zh="BetterNotch 支持 macOS 26 或更高版本。App Store 1.0 版包含原始、渐变和纯黑，并可为内建显示器和每块外接显示器选择样式；官网首页展示的液态玻璃和新版 Studio 界面属于下一次更新预览。">BetterNotch requires macOS 26 or later. App Store version 1.0 includes Original, Gradient, and Solid Black, with style selection for the built-in display and each external display. Liquid Glass and the new Studio interface are shown on the homepage as a preview of the next update.</p>
+          <p class="lede" data-en="BetterNotch requires macOS 26 or later. Its purpose is to let the physical notch disappear into the menu bar. Gradient is the signature look; Liquid Glass, Ink blending, and a fully black appearance are additional choices. Each display can be set independently." data-zh="BetterNotch 支持 macOS 26 或更高版本，核心用途是让物理刘海自然隐入菜单栏。渐变是主打效果，也可搭配液态玻璃、选择墨水融入，或使用全黑外观。每块显示器可以独立设置。">BetterNotch requires macOS 26 or later. Its purpose is to let the physical notch disappear into the menu bar. Gradient is the signature look; Liquid Glass, Ink blending, and a fully black appearance are additional choices. Each display can be set independently.</p>
         </header>
 
         <nav class="document-nav" aria-label="On this page" data-aria-en="On this page" data-aria-zh="本页目录">
           <p data-en="On this page" data-zh="本页目录">On this page</p>
           <ul>
-            <li><a href="#available-version" data-en="Available version" data-zh="现有版本">Available version</a></li>
             <li><a href="#before-starting" data-en="Before you begin" data-zh="开始使用前">Before you begin</a></li>
-            <li><a href="#effect-missing" data-en="Effect troubleshooting" data-zh="效果故障排查">Effect troubleshooting</a></li>
+            <li><a href="#choose-a-look" data-en="Choose a look" data-zh="选择外观">Choose a look</a></li>
+            <li><a href="#effect-missing" data-en="If the effect does not appear" data-zh="如果效果没有出现">If the effect does not appear</a></li>
+            <li><a href="#compare" data-en="Compare before and after" data-zh="对比调整前后">Compare before and after</a></li>
             <li><a href="#launch-at-login" data-en="Launch at Login" data-zh="登录时启动">Launch at Login</a></li>
+            <li><a href="#app-icon" data-en="App icon" data-zh="App 图标">App icon</a></li>
+            <li><a href="#restore" data-en="Restore the original look" data-zh="恢复原始外观">Restore the original look</a></li>
             <li><a href="#contact-support" data-en="Contact support" data-zh="联系支持">Contact support</a></li>
           </ul>
         </nav>
 
-        <section class="document-release" aria-labelledby="available-version">
-          <div>
-            <p class="release-kicker" data-en="Available now" data-zh="现已提供">Available now</p>
-            <h2 id="available-version" data-en="Version 1.0 on the Mac App Store" data-zh="Mac App Store 1.0 版">Version 1.0 on the Mac App Store</h2>
-            <p data-en="If the controls in your app differ from the homepage preview, follow the instructions for version 1.0 below." data-zh="如果你 App 中的控制界面与首页预览不同，请按照下方的 1.0 版说明操作。">If the controls in your app differ from the homepage preview, follow the instructions for version 1.0 below.</p>
-          </div>
-          <a class="button button-primary" href="https://apps.apple.com/app/id6791836457?mt=12" data-app-store-link data-en="View on the Mac App Store" data-zh="前往 Mac App Store">View on the Mac App Store</a>
-        </section>
-
         <section class="document-section" aria-labelledby="before-starting">
           <h2 id="before-starting" data-en="Before you begin" data-zh="开始使用前">Before you begin</h2>
-          <p data-en="Open System Settings → Menu Bar and turn off “Show menu bar background.” If this option remains enabled, the system menu bar backdrop will interfere with BetterNotch’s visual effect." data-zh="前往“系统设置 → 菜单栏”，关闭“显示菜单栏背景”。如果该选项保持开启，系统菜单栏底板会影响 BetterNotch 的视觉效果。">Open System Settings → Menu Bar and turn off “Show menu bar background.” If this option remains enabled, the system menu bar backdrop will interfere with BetterNotch’s visual effect.</p>
+          <p data-en="If the system menu bar background is covering BetterNotch, open System Settings → Menu Bar and turn off “Show menu bar background.”" data-zh="如果系统菜单栏背景挡住了 BetterNotch，请前往“系统设置 → 菜单栏”，关闭“显示菜单栏背景”。">If the system menu bar background is covering BetterNotch, open System Settings → Menu Bar and turn off “Show menu bar background.”</p>
+          <p data-en="Accessibility → Display → Reduce Transparency can also cover the effect with an opaque menu bar. The app may point you to System Settings so you can decide. It does not change accessibility settings for you, and you do not need to turn off features you rely on." data-zh="辅助功能中的“降低透明度”也可能用不透明菜单栏盖住效果。App 可能会提示你前往系统设置自行决定，不会代你改辅助功能，也不要求关闭你需要的功能。">Accessibility → Display → Reduce Transparency can also cover the effect with an opaque menu bar. The app may point you to System Settings so you can decide. It does not change accessibility settings for you, and you do not need to turn off features you rely on.</p>
+        </section>
+
+        <section class="document-section" aria-labelledby="choose-a-look">
+          <h2 id="choose-a-look" data-en="Choose a look" data-zh="选择外观">Choose a look</h2>
+          <p data-en="Open BetterNotch. Everything is in the main window, in three steps:" data-zh="打开 BetterNotch。全部设置都在主窗口里，分三步：">Open BetterNotch. Everything is in the main window, in three steps:</p>
+          <ol>
+            <li data-en="Choose a display." data-zh="选择显示器。">Choose a display.</li>
+            <li data-en="Menu bar appearance: Default, Liquid Glass, or Black." data-zh="菜单栏外观：默认、液态玻璃或全黑。">Menu bar appearance: Default, Liquid Glass, or Black.</li>
+            <li data-en="Blend the notch: None, Standard, or Ink. Displays without a notch keep this step visible but disabled. You can still change appearance, including glass end shapes." data-zh="融入刘海：无、常规或墨水。没有刘海的显示器会看到这一步，但整步不可用；仍可改外观，包括玻璃端形。">Blend the notch: None, Standard, or Ink. Displays without a notch keep this step visible but disabled. You can still change appearance, including glass end shapes.</li>
+          </ol>
+          <p data-en="Default and Liquid Glass both work with Standard or Ink. Black is its own appearance and pauses blending. Default with None restores that display’s original look." data-zh="默认和液态玻璃都能搭配常规或墨水。全黑是独立外观，选中后融入会暂停。默认外观加“无”融入，即恢复该屏原貌。">Default and Liquid Glass both work with Standard or Ink. Black is its own appearance and pauses blending. Default with None restores that display’s original look.</p>
         </section>
 
         <section class="document-section" aria-labelledby="effect-missing">
           <h2 id="effect-missing" data-en="If the effect does not appear" data-zh="如果效果没有出现">If the effect does not appear</h2>
           <ol>
-            <li data-en="Make sure Desktop Effect is enabled." data-zh="确认已经启用桌面效果。">Make sure Desktop Effect is enabled.</li>
-            <li data-en="Choose Gradient or Solid Black in version 1.0. If your app already offers Liquid Glass, you can choose it as well. Original means no effect is applied to that display." data-zh="在 1.0 版中选择“渐变”或“纯黑”；如果你的 App 已提供“液态玻璃”，也可以选择它。“原始”表示该显示器不应用效果。">Choose Gradient or Solid Black in version 1.0. If your app already offers Liquid Glass, you can choose it as well. Original means no effect is applied to that display.</li>
-            <li data-en="If you use multiple displays, confirm that you are configuring the intended display." data-zh="如果连接了多块显示器，请确认当前设置的是目标显示器。">If you use multiple displays, confirm that you are configuring the intended display.</li>
-            <li data-en="Switch to another effect once, or turn Desktop Effect off and back on." data-zh="尝试切换一次效果，或者关闭并重新启用桌面效果。">Switch to another effect once, or turn Desktop Effect off and back on.</li>
+            <li data-en="Open BetterNotch and select the intended screen under Choose a display." data-zh="打开 BetterNotch，在“选择显示器”中选中目标屏幕。">Open BetterNotch and select the intended screen under Choose a display.</li>
+            <li data-en="On a notched display, choose Standard or Ink under Blend the notch, or Liquid Glass or Black under Menu bar appearance. Displays without a notch support appearance only." data-zh="有刘海的屏幕可在“融入刘海”中选择“常规”或“墨水”，也可在“菜单栏外观”中选择“液态玻璃”或“全黑”。无刘海的显示器只能调整菜单栏外观。">On a notched display, choose Standard or Ink under Blend the notch, or Liquid Glass or Black under Menu bar appearance. Displays without a notch support appearance only.</li>
+            <li data-en="Default appearance with None selected for blending keeps the original look. Check any system-setting guidance in the window." data-zh="“默认”外观搭配“无”融入表示保留原始外观。请查看窗口内的系统设置提示。">Default appearance with None selected for blending keeps the original look. Check any system-setting guidance in the window.</li>
+            <li data-en="Switch to another appearance, then return to your previous choice." data-zh="尝试切换到另一种外观，再切回原来的选择。">Switch to another appearance, then return to your previous choice.</li>
             <li data-en="If the problem continues, quit and reopen BetterNotch." data-zh="如果问题仍然存在，请退出并重新打开 BetterNotch。">If the problem continues, quit and reopen BetterNotch.</li>
           </ol>
-          <div class="version-note">
-            <strong data-en="Using Liquid Glass?" data-zh="正在使用液态玻璃？">Using Liquid Glass?</strong>
-            <p data-en="After connecting or disconnecting a display, BetterNotch may briefly come to the foreground while macOS rebuilds the glass, then return focus to the app you were using. This is expected. If the glass does not recover, switch to another style and back once, then quit and reopen BetterNotch." data-zh="连接或断开显示器后，BetterNotch 可能会短暂切到前台，以便 macOS 重建玻璃效果，随后会把焦点还给你原先使用的 App。这属于预期行为。如果玻璃效果没有恢复，请切换到其他样式后再切回一次，然后退出并重新打开 BetterNotch。">After connecting or disconnecting a display, BetterNotch may briefly come to the foreground while macOS rebuilds the glass, then return focus to the app you were using. This is expected. If the glass does not recover, switch to another style and back once, then quit and reopen BetterNotch.</p>
-          </div>
+        </section>
+
+        <section class="document-section" aria-labelledby="compare">
+          <h2 id="compare" data-en="Compare before and after" data-zh="对比调整前后">Compare before and after</h2>
+          <p data-en="Hold the comparison control at the top right of the main window to temporarily see the selected display’s original appearance. Release to restore the effect. Comparing does not change your saved settings, and it applies only to the current display." data-zh="按住主窗口右上角的对比控件，临时查看当前选中屏幕的原始外观；松开后恢复效果。对比不会改动已保存的配置，也只作用于当前屏幕。">Hold the comparison control at the top right of the main window to temporarily see the selected display’s original appearance. Release to restore the effect. Comparing does not change your saved settings, and it applies only to the current display.</p>
+          <p data-en="Keyboard and accessibility activation uses a toggle instead of hold. Comparison ends when the control deactivates or the window is no longer active." data-zh="键盘和辅助功能激活时是开关，而不是按住。控件失活或窗口不再处于活动状态时，对比结束。">Keyboard and accessibility activation uses a toggle instead of hold. Comparison ends when the control deactivates or the window is no longer active.</p>
         </section>
 
         <section class="document-section" aria-labelledby="launch-at-login">
           <h2 id="launch-at-login" data-en="Launch at Login" data-zh="登录时启动">Launch at Login</h2>
-          <p data-en="The Launch at Login switch is in BetterNotch Settings." data-zh="“登录时启动”开关位于 BetterNotch 设置中。">The Launch at Login switch is in BetterNotch Settings.</p>
-          <p data-en="If macOS says approval is required, select “Open Login Items Settings,” approve BetterNotch in System Settings, then return to the app. BetterNotch will refresh the current status automatically." data-zh="如果 macOS 提示需要批准，请选择“打开登录项设置”，在系统设置中完成授权，然后返回 BetterNotch。App 会自动刷新当前状态。">If macOS says approval is required, select “Open Login Items Settings,” approve BetterNotch in System Settings, then return to the app. BetterNotch will refresh the current status automatically.</p>
+          <p data-en="To start BetterNotch when you log in:" data-zh="要在登录 Mac 时启动 BetterNotch：">To start BetterNotch when you log in:</p>
+          <ol>
+            <li data-en="Click Settings at the top right of the main window. Settings opens inside the same window; there is no separate settings window." data-zh="点击主窗口右上角的“设置”。设置在同一个主窗口内打开，没有独立设置窗口。">Click Settings at the top right of the main window. Settings opens inside the same window; there is no separate settings window.</li>
+            <li data-en="Turn on Launch at Login." data-zh="打开“登录时启动”开关。">Turn on Launch at Login.</li>
+            <li data-en="If macOS says approval is required, approve BetterNotch in Login Items in System Settings, then return to the app." data-zh="如果 macOS 提示需要批准，请在系统设置的登录项中批准 BetterNotch，然后返回 App。">If macOS says approval is required, approve BetterNotch in Login Items in System Settings, then return to the app.</li>
+          </ol>
+          <p data-en="Login launch restores your effects. It does not bring BetterNotch to the front or open the main window." data-zh="登录启动只恢复效果，不抢前台，也不打开主窗口。">Login launch restores your effects. It does not bring BetterNotch to the front or open the main window.</p>
+        </section>
+
+        <section class="document-section" aria-labelledby="app-icon">
+          <h2 id="app-icon" data-en="App icon" data-zh="App 图标">App icon</h2>
+          <p data-en="In Settings, choose whether the app icon appears in the menu bar, in the Dock, or in neither. Effects keep running when both entry points are hidden. Open BetterNotch from Applications to return to the main window." data-zh="在设置中，App 图标可选择显示在菜单栏、Dock，或均不显示。隐藏两个入口后，效果仍会运行；从“应用程序”重新打开 BetterNotch 即可回到主窗口。">In Settings, choose whether the app icon appears in the menu bar, in the Dock, or in neither. Effects keep running when both entry points are hidden. Open BetterNotch from Applications to return to the main window.</p>
+        </section>
+
+        <section class="document-section" aria-labelledby="restore">
+          <h2 id="restore" data-en="Restore the original look" data-zh="恢复原始外观">Restore the original look</h2>
+          <p data-en="Select the display and choose Default under Menu bar appearance. On a notched display, also choose None under Blend the notch. Quitting BetterNotch removes its effects from every display." data-zh="选择目标屏幕，将“菜单栏外观”设为“默认”；有刘海的屏幕还需将“融入刘海”设为“无”。退出 BetterNotch 会移除所有屏幕上的效果。">Select the display and choose Default under Menu bar appearance. On a notched display, also choose None under Blend the notch. Quitting BetterNotch removes its effects from every display.</p>
         </section>
 
         <section class="document-section" aria-labelledby="contact-support">
