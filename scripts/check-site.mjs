@@ -258,8 +258,8 @@ if (!jsonLdMatch) {
     if (jsonLd["@type"] !== "SoftwareApplication") fail("index.html: JSON-LD type mismatch");
     if (jsonLd.name !== "BetterNotch") fail("index.html: JSON-LD name must stay BetterNotch");
     if (jsonLd.alternateName !== "BetterNotch: Seamless Menu Bar") fail("index.html: approved App Store name mismatch");
-    if (jsonLd.offers?.price !== "2.99" || jsonLd.offers?.priceCurrency !== "USD") fail("index.html: US App Store price mismatch");
-    if (jsonLd.softwareVersion !== "2.0") fail("index.html: JSON-LD softwareVersion must be 2.0");
+    if (jsonLd.offers?.price !== "0" || jsonLd.offers?.priceCurrency !== "USD") fail("index.html: US App Store price mismatch");
+    if (jsonLd.softwareVersion !== "2.1") fail("index.html: JSON-LD softwareVersion must be 2.1");
     if (jsonLd.downloadUrl !== appStoreUrl) fail("index.html: JSON-LD download URL mismatch");
     if (jsonLd.offers?.url !== appStoreUrl) fail("index.html: JSON-LD offer URL mismatch");
     if (!String(jsonLd.image || "").endsWith("/assets/og-betternotch-2.0.png")) fail("index.html: JSON-LD image must be the shared 2.0 OG file");
