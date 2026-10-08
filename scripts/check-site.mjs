@@ -191,6 +191,7 @@ forbidMatch(home, /data-effect-cycle|data-backdrop|class="notch-control"/, "inde
 requireMatch(home, /site\.js\?v=/, "index.html: site script cache key is missing");
 requireMatch(home, /data-src-zh="assets\/window-zh-web\.png"/, "index.html: Chinese main-window source is missing");
 requireMatch(home, /data-href-zh="assets\/window-zh\.png"/, "index.html: Chinese full-size window link is missing");
+requireMatch(home, /data-href-zh="https:\/\/apps\.apple\.com\/cn\/app\/id6791836457\?mt=12"/, "index.html: Chinese App Store link is missing");
 forbidMatch(home, /window-zh-\d+\.avif|details-(?:blend|glass)-[a-z]+-\d+\.avif/, "index.html: window and detail panels must stay alpha PNG, not AVIF");
 
 
@@ -211,6 +212,7 @@ requireMatch(languageScript, /menu\.addEventListener\("focusout"[\s\S]*?!menu\.c
 requireMatch(languageScript, /menu\?\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: language selection must restore focus to its trigger");
 requireMatch(languageScript, /const shouldRestoreFocus = menu\.contains\(document\.activeElement\);[\s\S]*?if \(shouldRestoreFocus\) menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: outside clicks must not leave focus inside a closed menu");
 requireMatch(languageScript, /if \(menu\.contains\(document\.activeElement\)\)[\s\S]*?menu\.querySelector\("summary"\)\?\.focus\(\);/, "assets/language.js: Escape must not leave focus inside a closed menu");
+requireMatch(languageScript, /navigator\.language/, "assets/language.js: browser language detection is missing");
 requireMatch(languageScript, /data-href-en\]\[data-href-zh/, "assets/language.js: locale-specific full-size hrefs are not applied");
 
 const siteScript = await readFile(path.join(repoDir, "assets/site.js"), "utf8");

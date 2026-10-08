@@ -65,10 +65,15 @@
   function storedLanguage() {
     try {
       const language = localStorage.getItem(storageKey);
-      return supportedLanguages.has(language) ? language : "en";
+      if (supportedLanguages.has(language)) return language;
     } catch {
-      return "en";
+      // Local storage may be unavailable in a restricted browsing context.
     }
+
+    const browserLanguage = (navigator.languages?.[0] || navigator.language || "").toLowerCase();
+    if (browserLanguage.startsWith("zh")) return "zh-Hans";
+
+    return "en";
   }
 
   function rememberLanguage(language) {
